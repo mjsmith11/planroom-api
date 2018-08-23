@@ -1,4 +1,4 @@
-#planroom-api 
+# planroom-api 
 
 This repository contains a php back end using the slim framework for the planroom project.
 It adheres to [Semantic Versioning](https://semver.org/) and [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
