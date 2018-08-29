@@ -2,6 +2,8 @@ languange: php
 php:
  - '7.1.11'
 script:
-  - php -v
-  - composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
+  - echo $TRAVIS_PHP_VERSION
+  - composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
   - composer run test
+  - rm -rf vendor
+  - composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
