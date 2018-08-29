@@ -1,8 +1,9 @@
 languange: php
 php:
  - '7.1.11'
+ - hhvm
+ - nightly
 script:
-  - echo $TRAVIS_PHP_VERSION
   - composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
   - composer run test
   - rm -rf vendor
