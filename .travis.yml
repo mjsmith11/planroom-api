@@ -1,3 +1,3 @@
 languange: php
 php:
- - '7.2'
+ - '7.1.11'
