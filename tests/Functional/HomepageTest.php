@@ -24,7 +24,7 @@ class HomepageTest extends BaseTestCase
         $response = $this->runApp('GET', '/name');
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('Hello namexyz!', (string)$response->getBody());
+        $this->assertContains('Hello name!', (string)$response->getBody());
     }
 
     /**
