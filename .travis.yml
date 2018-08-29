@@ -1,6 +1,7 @@
 language: php
 php:
   - '7.1'
+  - nightly
 script:
   - composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
   - composer run test
