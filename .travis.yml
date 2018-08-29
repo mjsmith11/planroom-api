@@ -1,6 +1,6 @@
 languange: php
 php:
- - '7.1.11'
+ - '7.1'
  - hhvm
  - nightly
 script:
