@@ -1,8 +1,9 @@
-languange: php
+language: php
 php:
- - '7.1'
- - hhvm
- - nightly
+  - '5.6'
+  - '7.1'
+  - hhvm # on Trusty only
+  - nightly
 script:
   - composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
   - composer run test
