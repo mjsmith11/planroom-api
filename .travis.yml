@@ -2,4 +2,4 @@ languange: php
 php:
  - '7.1.11'
 script:
-  - php composer.phar install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
+  - composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
