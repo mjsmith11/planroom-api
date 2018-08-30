@@ -8,16 +8,14 @@ script:
 - rm -rf vendor
 - composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
 before_deploy: 
- - rm -f composer.json
- - rm -f composer.lock
- - rm -f docker-compose.yml
- - rm -f .gitignore
- - rm -f phpunit.xml
- - rm -f README.md
- - rm -f .travis.yml
- - rm -rf tests
- - rm -rf .git
- - zip -r planroom-api-${TRAVIS_TAG}.zip .
+ - mkdir dist
+ - cp LICENSE dist
+ - cp -r logs dist
+ - cp -r public dist
+ - cp -r src dist
+ - cp -r templates dist
+ - cp -r vendor dist
+ - zip -r planroom-api-${TRAVIS_TAG}.zip dist
 deploy:
   provider: releases
   api_key:
