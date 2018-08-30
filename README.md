@@ -1,4 +1,4 @@
-#planroom-api [![Master Build Status](https://travis-ci.org/mjsmith11/planroom-api.svg?branch=master)](https://travis-ci.org/mjsmith11/planroom-api)
+# planroom-api [![Master Build Status](https://travis-ci.org/mjsmith11/planroom-api.svg?branch=master)](https://travis-ci.org/mjsmith11/planroom-api)
 
 This repository contains a php back end using the slim framework for the planroom project.
 It adheres to [Semantic Versioning](https://semver.org/) and [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
