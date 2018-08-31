@@ -6,7 +6,6 @@ script:
 - composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
 - composer run test
 - rm -rf vendor/!(.htaccess|..|.)
-- ls -a vendor
 - composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
 before_deploy: 
  - mkdir dist
