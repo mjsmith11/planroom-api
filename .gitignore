@@ -1,4 +1,4 @@
-/vendor/
+/vendor/*
 !/vendor/.htaccess
 /logs/*
 !/logs/README.md
