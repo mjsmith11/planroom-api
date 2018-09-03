@@ -1,5 +1,4 @@
-/vendor/*
-!/vendor/.htaccess
+/vendor/
 /logs/*
 !/logs/README.md
-!/logs/.htaccess
+config.json

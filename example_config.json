@@ -1,0 +1,9 @@
+{
+    "mysql": {
+        "host": "<mysql ip/url - Don't use localhost>",
+        "port": "<mysql port>",
+        "username": "<mysql user>",
+        "password": "<mysql password>",
+        "database": "<mysql database name>"
+    }
+}
