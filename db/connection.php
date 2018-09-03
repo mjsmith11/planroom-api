@@ -17,8 +17,11 @@
     ];
     try {
         $pdo =  new PDO($dsn, $user, $pass, $opt);
-        unset($host, $port, $db, $user, $pass, $charset, $dsn, $config, $opt);
-        return $pdo;
+        unset($host, $port, $user, $pass, $charset, $dsn, $config, $opt);
+        return [
+            'conn' => $pdo,
+            'dbName' => $db
+        ];
     } catch (\PDOException $e) {
         unset($host, $port, $db, $user, $pass, $charset, $dsn, $config, $opt);
         throw new \PDOException($e->getMessage(), (int)$e->getCode());
