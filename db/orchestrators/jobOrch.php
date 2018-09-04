@@ -1,9 +1,10 @@
 <?php
-$dbSettings = require __DIR__ . '/../connection.php';
-$pdo = $dbSettings['conn'];
 
 class JobOrch {
+
+
     public static function Create($object) {
+        $pdo = self::getPdo();
         $sql = "INSERT INTO job (`name`, `bidDate`, `subcontractorBidsDue`, `prebidDateTime`, `prebidAddress`, `bidEmail`, `bonding`, `taxible`) VALUES (:name, :bidDate, :subcontractorBidsDue, :prebidDateTime, :prebidAddress, :bidEmail, :bonding, :taxible)";
         $statement = $pdo->prepare($sql);
         $statement->bindParam("name", $object['name']);
@@ -15,6 +16,7 @@ class JobOrch {
         $statement->bindParam("bonding", $object['bonding']);
         $statement->bindParam("taxible", $object['taxible']);
         $statement->execute();
-        $object['id'] = $pdo->lastInsertedId();   
+        $object['id'] = $pdo->lastInsertId();   
+        return $object;
     }
 }
