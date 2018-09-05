@@ -5,7 +5,7 @@
         public static function getConnection() {
             if (!isset(self::$connection)) {
         
-                $json_string = file_get_contents(__DIR__ . '/../config.json');
+                $json_string = file_get_contents(__DIR__ . '/../../config.json');
                 $config = json_decode($json_string, true);
                 
                 $host    = $config['mysql']['host'];
