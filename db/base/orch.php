@@ -29,7 +29,6 @@
                 $statement->bindParam($value, $object[$value]);
             }
             $statement->execute();
-            //$object['id'] = $pdo->lastInsertId();   
             return self::Read($pdo->lastInsertId());
         }
 
