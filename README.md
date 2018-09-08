@@ -13,6 +13,9 @@ It adheres to [Semantic Versioning](https://semver.org/) and [Gitflow](https://w
 1. Run database migrations `vendor/bin/phinx migrate`
 1. Use `composer.phar run start` to start a development server.
 
+## Helpful Tools
+ - MySQL Workbench
+
 ### Prepare for production
 ```
 composer.phar install --no-dev --optimize-autoloader
