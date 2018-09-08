@@ -14,3 +14,7 @@ $app->group('/jobs', function(){
         return $this->response->withJson($out);
     });
 });
+
+$app->options('/{routes:.+}', function ($request, $response, $args){
+    return $response;
+});

@@ -5,5 +5,10 @@
         "username": "<mysql user>",
         "password": "<mysql password>",
         "database": "<mysql database name>"
-    }
+    },
+    "cors_origins": [
+        "<urls to accept CORS requests from",
+        "http://localhost:8080 in development"
+    ],
+    "display_error_details": true
 }
