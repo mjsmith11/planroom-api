@@ -6,7 +6,7 @@ use Slim\Http\Response;
 // Routes
 
 $app->group('/jobs', function(){
-    require_once(__DIR__ . "/db/orchestrators/jobOrch.php")
+    require_once(__DIR__ . "/db/orchestrators/jobOrch.php");
     
     $this->post('', function($request, $response, $args){
         $in = $request->getParsedBody();
