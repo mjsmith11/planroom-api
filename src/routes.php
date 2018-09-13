@@ -5,16 +5,18 @@ use Slim\Http\Response;
 
 // Routes
 
-$app->group('/jobs', function(){
-    require_once(__DIR__ . "/db/orchestrators/jobOrch.php");
-    
-    $this->post('', function($request, $response, $args){
-        $in = $request->getParsedBody();
-        $out = JobOrch::Create($in);
-        return $this->response->withJson($out);
-    });
+$app->group('/jobs', function() {
+	require_once(__DIR__ . "/db/orchestrators/jobOrch.php");
+
+	$this->post('', function($request, $response, $args) {
+		$in = $request->getParsedBody();
+		$out = JobOrch::Create($in);
+		return $this->response->withJson($out);
+	});
 });
 
-$app->options('/{routes:.+}', function ($request, $response, $args){
-    return $response;
+$app->group('', function() {
+	$this->options('/{routes:.+}', function ($req, $response, $args) {
+		return $response;
+	});
 });
