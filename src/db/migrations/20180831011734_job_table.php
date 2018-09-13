@@ -4,7 +4,6 @@
 use Phinx\Migration\AbstractMigration;
 /**
  * DB Migration to create Job Table
- * @SupressWarnings fileNaming
  */
 class JobTable extends AbstractMigration {
 	/**
