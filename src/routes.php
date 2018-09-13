@@ -10,7 +10,7 @@ $app->group('/jobs', function() {
 
 	$this->post('', function($request, $response, $args) {
 		$in = $request->getParsedBody();
-		$out = JobOrch::Create($in);
+		$out = JobOrch::create($in);
 		return $this->response->withJson($out);
 	});
 });
