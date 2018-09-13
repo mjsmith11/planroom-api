@@ -11,7 +11,8 @@
 		 * Gets the allowable origins for CORS requests
 		 * @returns array of allowed CORS origins 
 		 */
-		public static function getCorsOrigins() {
+		public static function getCorsOrigins() 
+		{
 			if (!self::$readDone) {
 				self::_read();
 			}
