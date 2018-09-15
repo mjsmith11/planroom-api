@@ -26,6 +26,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 
     public function tearDown() {
         unlink(self::$filePath);
+        ConfigReader::reset();
     }
     public function testBasicConfigFile() {
         $config = array();

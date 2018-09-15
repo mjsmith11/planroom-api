@@ -29,11 +29,19 @@
 			}
 			return self::$displayErrorDetails;
 		}
+
+		/**
+		 * Forces the next call to reread the configuration file.
+		 * This is necessary for testing.
+		 */
+		public static function reset() {
+			self::$readDone = false;
+		}
 		
 		private static function _read() {
 			$jsonString = file_get_contents(__DIR__ . '/../../config.json');
 			$config = json_decode($jsonString, true);
-
+			var_dump($config);
 			self::$corsOrigins = $config['cors_origins'];
 			self::$displayErrorDetails = $config['display_error_details'];
 
