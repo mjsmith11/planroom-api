@@ -19,7 +19,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @var bool
 	 */
-	protected $withMiddleware = true;
+	protected $withMiddleware = false;
 
 	/**
 	 * Process the application given a request method and URI
