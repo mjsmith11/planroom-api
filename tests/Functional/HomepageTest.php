@@ -5,6 +5,12 @@ namespace Tests\Functional;
  * Test for the homepage that comes with skeleton slim app
  */
 class HomepageTest extends BaseTestCase {
+	/**
+	 * Test so that the warning about no tests in the class goes away.
+	 */
+	public function testDummy() {
+		$this->assertEquals(1, 1);
+	}
 	// /**
 	//  * Test that the index route returns a rendered response containing the text 'SlimFramework' but not a greeting
 	//  */

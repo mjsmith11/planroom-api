@@ -11,8 +11,15 @@
 		 * @return pdo connection
 		 * 
 		 * @throws PDOException when connecting fails
+		 * 
+		 * @param boolean defaults to false. Creates a connection as Tests\Functional\FakePdo when true
 		 */
-		public static function getConnection() {
+		public static function getConnection($test = false) {
+			if ($test) {
+				self::$connection = [
+					'conn' => new Tests\Functional\FakePdo()
+				];
+			}
 			if (!isset(self::$connection)) {
 		
 				$jsonString = file_get_contents(__DIR__ . '/../../config.json');

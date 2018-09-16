@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e9790817d586409ae796cf09ee24b70",
+    "content-hash": "949a137def5479316ca47eef3ccc0390",
     "packages": [
         {
             "name": "cakephp/cache",
@@ -1205,6 +1205,45 @@
                 "instantiate"
             ],
             "time": "2017-07-22T11:58:36+00:00"
+        },
+        {
+            "name": "jimbojsb/pseudo",
+            "version": "0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jimbojsb/pseudo.git",
+                "reference": "f6de3bdecc372b137715b3cfa8268d89ffbad747"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jimbojsb/pseudo/zipball/f6de3bdecc372b137715b3cfa8268d89ffbad747",
+                "reference": "f6de3bdecc372b137715b3cfa8268d89ffbad747",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Pseudo": "src/"
+                },
+                "files": [
+                    "src/php-sql-parser.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Josh Butts",
+                    "email": "josh@joshbutts.com"
+                }
+            ],
+            "description": "PDO/MySQL Connection Mocking",
+            "time": "2018-07-13T13:55:10+00:00"
         },
         {
             "name": "myclabs/deep-copy",
