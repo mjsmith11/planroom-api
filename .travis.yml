@@ -16,7 +16,6 @@ before_deploy:
  - cp -r logs dist
  - cp -r public dist
  - cp -r src dist
- - cp -r templates dist
  - cp -r vendor dist
  - rm -f dist/logs/app.log
  - zip -r planroom-api-${TRAVIS_TAG}.zip dist
