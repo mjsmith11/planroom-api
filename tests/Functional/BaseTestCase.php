@@ -19,7 +19,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @var bool
 	 */
-	protected $withMiddleware = false;
+	protected $withMiddleware = true;
 
 	/**
 	 * Process the application given a request method and URI
@@ -65,6 +65,8 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 
 		// Register routes
 		require __DIR__ . '/../../src/routes.php';
+
+		$_SERVER['HTTP_ORIGIN'] = 'localhost';
 
 		// Process the application
 		$response = $app->process($request, $response);
