@@ -22,11 +22,11 @@ composer.phar install --no-dev --optimize-autoloader
 ```
 ### Run unit tests
 ```
-composer.phar test
+composer.phar run test
 ```
 ### Run Linting
 Note the db migrations directory is excluded because the phinx naming convention breaks a phpcheckstyle rule
 ```
-php vendor/phpcheckstyle/phpcheckstyle/run.php --src . --format console --exclude vendor --exclude src/db/migrations
+composer.phar run lint
 ``` 
 

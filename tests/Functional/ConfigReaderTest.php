@@ -6,57 +6,76 @@ use ConfigReader;
 
 /**
  * Tests for configuration reader
+ * @SuppressWarnings checkProhibitedFunctions
  */
 class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
-    private static $fileBackup;
-    private static $filePath = __DIR__ . '/../../config.json';
-    public static function setUpBeforeClass() {
-        if (file_exists(self::$filePath)) {
-            self::$fileBackup = file_get_contents(self::$filePath);
-            unlink(self::$filePath);
-        }
-    }
-    public static function tearDownAfterClass() {
-        if (isset(self::$fileBackup)) {
-            $file = fopen(__DIR__ . '/../../config.json', 'w');
-            fwrite($file, self::$fileBackup);
-            fclose($file);
-        }
-    }
+	private static $fileBackup;
+	private static $filePath = __DIR__ . '/../../config.json';
 
-    public function tearDown() {
-        unlink(self::$filePath);
-        ConfigReader::reset();
-    }
-    public function testBasicConfigFile() {
-        $config = array();
-        $config['display_error_details'] = true;
-        $config['cors_origins'] = array('testurl.com');
-        $config['mysql'] = array();
+	/**
+	 * Set up for tests. Backup config file and delete it if it exists
+	 */
+	public static function setUpBeforeClass() {
+		if (file_exists(self::$filePath)) {
+			self::$fileBackup = file_get_contents(self::$filePath);
+			unlink(self::$filePath);
+		}
+	}
 
-        $file = fopen(self::$filePath, 'w');
-        fwrite($file, json_encode($config));
-        fclose($file);
-        $this->assertEquals(true, ConfigReader::getDisplayErrorDetails());
-        $corsOrigins = ConfigReader::getCorsOrigins();
-        $this->assertEquals(1, count($corsOrigins));
-        $this->assertEquals('testurl.com', $corsOrigins[0]);
-    }
+	/**
+	 * After tests: Restore config file if it was backed up
+	 */
+	public static function tearDownAfterClass() {
+		if (isset(self::$fileBackup)) {
+			$file = fopen(__DIR__ . '/../../config.json', 'w');
+			fwrite($file, self::$fileBackup);
+			fclose($file);
+		}
+	}
 
-    public function testMultiCORSConfigFile() {
-        $config = array();
-        $config['display_error_details'] = true;
-        $config['cors_origins'] = array('testurl.com', 'testurl2.com');
-        $config['mysql'] = array();
+	/**
+	 * Remove the config file and reset the ConfigReader after each test
+	 */
+	public function tearDown() {
+		unlink(self::$filePath);
+		ConfigReader::reset();
+	}
 
-        $file = fopen(self::$filePath, 'w');
-        fwrite($file, json_encode($config));
-        fclose($file);
-        $this->assertEquals(true, ConfigReader::getDisplayErrorDetails());
-        $corsOrigins = ConfigReader::getCorsOrigins();
+	/**
+	 * Test with a basic config file
+	 */
+	public function testBasicConfigFile() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
 
-        $this->assertEquals(2, count($corsOrigins));
-        $this->assertEquals('testurl.com', $corsOrigins[0]);
-        $this->assertEquals('testurl2.com', $corsOrigins[1]);
-    }
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+		$this->assertEquals(true, ConfigReader::getDisplayErrorDetails());
+		$corsOrigins = ConfigReader::getCorsOrigins();
+		$this->assertEquals(1, count($corsOrigins));
+		$this->assertEquals('testurl.com', $corsOrigins[0]);
+	}
+
+	/**
+	 * Test a config file with multiple CORS urls to allow
+	 */
+	public function testMultiCORSConfigFile() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com', 'testurl2.com');
+		$config['mysql'] = array();
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+		$this->assertEquals(true, ConfigReader::getDisplayErrorDetails());
+		$corsOrigins = ConfigReader::getCorsOrigins();
+
+		$this->assertEquals(2, count($corsOrigins));
+		$this->assertEquals('testurl.com', $corsOrigins[0]);
+		$this->assertEquals('testurl2.com', $corsOrigins[1]);
+	}
 }
