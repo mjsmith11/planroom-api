@@ -10,5 +10,10 @@
         "<urls to accept CORS requests from",
         "http://localhost:8080 in development"
     ],
-    "display_error_details": true
+    "display_error_details": true,
+    "logging": {
+        "level": "debug",
+        "maxFiles": 7
+    }
+    
 }

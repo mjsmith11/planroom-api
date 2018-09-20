@@ -9,8 +9,8 @@ return [
 		'logger' => [
 			'name' => 'planroom-api',
 			'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
-			'level' => \Monolog\Logger::DEBUG,
-			'maxfiles' => 7,
+			'level' => ConfigReader::getLogLevel(),
+			'maxfiles' => ConfigReader::getMaxLogFiles(),
 		],
 	],
 ];
