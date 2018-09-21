@@ -12,6 +12,7 @@
 		 * Creates a record in the database
 		 * 
 		 * @param object $object the object to add without id
+		 * @param container dependency container
 		 * 
 		 * @return object the object as added including id
 		 * 
@@ -50,7 +51,8 @@
 		/**
 		 * Read one record from database
 		 * 
-		 * @param int $id the id of the record to read
+		 * @param id the id of the record to read
+		 * @param container dependency container
 		 * 
 		 * @return object read record
 		 */
