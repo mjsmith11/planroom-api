@@ -1,11 +1,16 @@
 <?php
 /**
- * @SuppressWarnings checkUnusedVariables
  * Middleware functions
  */
 
 require_once(__DIR__ . "/config/configReader.php");
 // Application middleware
+
+// Request Logger
+$app->add(function($req, $res, $next) {
+	$this->logger->info('Request Received');
+	return $next($req, $res);
+});
 
 // CORS Header Middleware
 $app->add(function($req, $res, $next) {
@@ -15,6 +20,7 @@ $app->add(function($req, $res, $next) {
 	$httpOrigin = $_SERVER['HTTP_ORIGIN'];
 	$corsOrigins = ConfigReader::getCorsOrigins();
 	$shouldAddHeader = in_array($httpOrigin, $corsOrigins, true);
+	$this->logger->debug('CORS Origin Evaluation', array('httpOrigin' => $httpOrigin, 'corsOrigins' => $corsOrigins));
 	if ($shouldAddHeader) {
 		$response = $response->withHeader("Access-Control-Allow-Origin", $httpOrigin);
 	}

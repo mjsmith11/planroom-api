@@ -68,11 +68,16 @@
 		/**
 		 * Forces the next call to reread the configuration file.
 		 * This is necessary for testing.
+		 * 
+		 * @param container dependency container
 		 */
-		public static function reset() {
+		public static function reset($container) {
+			$container->logger->debug('Resetting Configuration');
 			self::$readDone = false;
 		}
 		
+		// This function cannot do any logging because it must be called to get configuration
+		// that is needed to setup the logger.
 		private static function _read() {
 			$jsonString = file_get_contents(__DIR__ . '/../../config.json');
 			$config = json_decode($jsonString, true);
