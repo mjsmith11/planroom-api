@@ -52,7 +52,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['display_error_details'] = true;
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
-		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
+		$config['logging'] = array('level' => 'debug', 'maxFiles' => 12);
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -61,6 +61,8 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$corsOrigins = ConfigReader::getCorsOrigins();
 		$this->assertEquals(1, count($corsOrigins));
 		$this->assertEquals('testurl.com', $corsOrigins[0]);
+		$this->assertEquals(12, ConfigReader::getMaxLogFiles(), "Expected Max Log Files");
+		$this->assertEquals(\Monolog\Logger::DEBUG, ConfigReader::getLogLevel(), "Expected Log Level");
 	}
 
 	/**
@@ -83,5 +85,148 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(2, count($corsOrigins));
 		$this->assertEquals('testurl.com', $corsOrigins[0]);
 		$this->assertEquals('testurl2.com', $corsOrigins[1]);
+	}
+
+	/**
+	 * Test INFO value of log level enum
+	 */
+	public function testInfoLogLevel() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'info', 'maxFiles' => 12);
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		$this->assertEquals(\Monolog\Logger::INFO, ConfigReader::getLogLevel(), "Expected Log Level");
+	}
+
+	/**
+	 * Test NOTICE value of log level enum
+	 */
+	public function testNoticeLogLevel() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'notice', 'maxFiles' => 12);
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		$this->assertEquals(\Monolog\Logger::NOTICE, ConfigReader::getLogLevel(), "Expected Log Level");
+	}
+
+	/**
+	 * Test WARNING value of log level enum
+	 */
+	public function testWarningLogLevel() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'warning', 'maxFiles' => 12);
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		$this->assertEquals(\Monolog\Logger::WARNING, ConfigReader::getLogLevel(), "Expected Log Level");
+	}
+
+	/**
+	 * Test ERROR value of log level enum
+	 */
+	public function testErrorLogLevel() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'error', 'maxFiles' => 12);
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		$this->assertEquals(\Monolog\Logger::ERROR, ConfigReader::getLogLevel(), "Expected Log Level");
+	}
+
+	/**
+	 * Test CRITICAL value of log level enum
+	 */
+	public function testCriticalLogLevel() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'critical', 'maxFiles' => 12);
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		$this->assertEquals(\Monolog\Logger::CRITICAL, ConfigReader::getLogLevel(), "Expected Log Level");
+	}
+
+	/**
+	 * Test ALERT value of log leve enum
+	 */
+	public function testAlertLogLevel() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'alert', 'maxFiles' => 12);
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		$this->assertEquals(\Monolog\Logger::ALERT, ConfigReader::getLogLevel(), "Expected Log Level");
+	}
+
+	/**
+	 * Test EMERGENCY value of log leve enum
+	 */
+	public function testEmergencyLogLevel() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'emergency', 'maxFiles' => 12);
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		$this->assertEquals(\Monolog\Logger::EMERGENCY, ConfigReader::getLogLevel(), "Expected Log Level");
+	}
+
+	/**
+	 * Test Unknown value of log leve enum
+	 */
+	public function testUnknownLogLevel() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'unknown', 'maxFiles' => 12);
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		try {
+			ConfigReader::getLogLevel();
+			$this-fail("Expected an exception to be thrown");
+		} catch (\Throwable $e) {
+			$this->assertEquals('Undefined index: unknown', $e->getMessage(), "Exception Message");
+		}
+
+		//$this->assertEquals(\Monolog\Logger::INFO, ConfigReader::getLogLevel(), "Expected Log Level");
 	}
 }
