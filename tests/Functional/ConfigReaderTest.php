@@ -222,7 +222,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 
 		try {
 			ConfigReader::getLogLevel();
-			$this-fail("Expected an exception to be thrown");
+			$this->fail("Expected an exception to be thrown");
 		} catch (\Throwable $e) {
 			$this->assertEquals('Undefined index: unknown', $e->getMessage(), "Exception Message");
 		}
