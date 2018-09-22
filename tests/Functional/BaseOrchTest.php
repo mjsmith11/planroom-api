@@ -3,9 +3,11 @@ namespace Tests\Functional;
 
 require_once(__DIR__ . '/../../src/db/base/orch.php');
 require_once(__DIR__ . "/../../src/db/connection.php");
+require_once(__DIR__ . "/testDependenciesContainer.php");
 
 use BaseOrch;
 use Connection;
+use TestContainer;
 
 /**
  * Tests for the Base Orch
@@ -25,7 +27,7 @@ class BaseOrchTest extends \PHPUnit_Framework_TestCase {
 			protected static $tableName = "testTable";
 			protected static $fieldList = array('id, field1', 'field2', 'field3');
 		};
-		$this->pdo = Connection::getConnection(true)['conn'];
+		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 
 	/**
@@ -35,7 +37,7 @@ class BaseOrchTest extends \PHPUnit_Framework_TestCase {
 		$mockResult = [[ 'id' => 42, 'field1' => "expectedData1", 'field2' => "expectedData2", 'field3' => "expectedData3"]];
 		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult);
 
-		$result = $this->testOrch::Read(42);
+		$result = $this->testOrch::Read(42, TestContainer::getContainer());
 		$this->assertEquals(42, $result['id'], 'Read id');
 		$this->assertEquals('expectedData1', $result['field1'], 'Read expectedData1');
 		$this->assertEquals('expectedData2', $result['field2'], 'Read expectedData2');
@@ -50,7 +52,7 @@ class BaseOrchTest extends \PHPUnit_Framework_TestCase {
 	public function testCreateWithId() {
 		$data = ['id' => 43];
 		try {
-			$this->testOrch::Create($data);
+			$this->testOrch::Create($data, TestContainer::getContainer());
 			$this->fail("Expected Exception not thrown");
 		} catch (\Throwable $e) {
 			$this->assertEquals('Id cannot be specified on Create', $e->getMessage(), "Exception Message");
@@ -63,7 +65,7 @@ class BaseOrchTest extends \PHPUnit_Framework_TestCase {
 	public function testCreateNoMock() {
 		$data = ['field1' => "Data1", 'field2' => "Data2", 'field3' => "Data3"];
 		try {
-			$this->testOrch::Create($data);
+			$this->testOrch::Create($data, TestContainer::getContainer());
 			$this->fail("Expected Exception not thrown");
 		} catch (\Pseudo\Exception $e) {
 			$query = 'INSERT INTO testTable (`id, field1`, `field2`, `field3`) VALUES (:id, field1, :field2, :field3)';
@@ -85,7 +87,7 @@ class BaseOrchTest extends \PHPUnit_Framework_TestCase {
 		$this->pdo->setLastId(45);
 		
 		$data = ['field1' => "Data1", 'field2' => "Data2", 'field3' => "Data3"];
-		$result = $this->testOrch::Create($data);
+		$result = $this->testOrch::Create($data, TestContainer::getContainer());
 
 		$this->assertEquals(45, $result['id'], 'Read id');
 		$this->assertEquals('myData1', $result['field1'], 'Read expectedData1');

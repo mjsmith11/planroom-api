@@ -19,9 +19,9 @@
 		 * @throws Exception if id is defined
 		 */
 		public static function create($object, $container) {
-			$container->logger->info('Creating', array('table' => static::$tableName));
+			$container['logger']->info('Creating', array('table' => static::$tableName));
 			if (isset($object['id'])) {
-				$container->logger->error('Id specified on create', array('table' => static::$tableName));
+				$container['logger']->error('Id specified on create', array('table' => static::$tableName));
 				throw new Exception("Id cannot be specified on Create");
 			}
 
@@ -38,7 +38,7 @@
 			$valuePlaceholders = substr($valuePlaceholders, 0, -2);
 
 			$sql = "INSERT INTO " . static::$tableName . " (" . $fields . ") VALUES (" . $valuePlaceholders . ")";
-			$container->logger->debug('Create query built', array('sql' => $sql));
+			$container['logger']->debug('Create query built', array('sql' => $sql));
 			$statement = $pdo->prepare($sql);
 
 			foreach (static::$fieldList as $value) {
@@ -57,10 +57,10 @@
 		 * @return object read record
 		 */
 		public static function read($id, $container) {
-			$container->logger->info('Reading', array('table' => static::$tableName, 'id' => $id));
+			$container['logger']->info('Reading', array('table' => static::$tableName, 'id' => $id));
 			$pdo = Connection::getConnection($container)['conn'];
 			$sql = "SELECT * FROM " . static::$tableName . " WHERE `id` = :id";
-			$container->logger->debug("Read query built", array('sql' => $sql));
+			$container['logger']->debug("Read query built", array('sql' => $sql));
 			$statement = $pdo->prepare($sql);
 			$statement->bindParam("id", $id);
 			$statement->execute();

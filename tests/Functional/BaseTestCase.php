@@ -56,7 +56,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 		$app = new App($settings);
 
 		// Set up dependencies
-		require __DIR__ . '/../../src/dependencies.php';
+		require __DIR__ . '/testDependencies.php';
 
 		// Register middleware
 		if ($this->withMiddleware) {

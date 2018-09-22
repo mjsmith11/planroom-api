@@ -22,7 +22,7 @@
 				];
 			}
 			if (!isset(self::$connection)) {
-				$container->logger->debug('Reading Database Config');
+				$container['logger']->debug('Reading Database Config');
 				$jsonString = file_get_contents(__DIR__ . '/../../config.json');
 				$config = json_decode($jsonString, true);
 				
@@ -40,7 +40,7 @@
 					PDO::ATTR_EMULATE_PREPARES   => false,
 				];
 				try {
-					$container->logger->debug('Connecting to database');
+					$container['logger']->debug('Connecting to database');
 					$pdo =  new PDO($dsn, $user, $pass, $opt);
 					unset($host, $port, $user, $pass, $charset, $dsn, $config, $opt);
 					self::$connection = [
@@ -49,7 +49,7 @@
 					];
 				} catch (\PDOException $e) {
 					unset($host, $port, $db, $user, $pass, $charset, $dsn, $config, $opt);
-					$container->logger->alert('Cannot connect to database', array('Exception' => $e));
+					$container['logger']->alert('Cannot connect to database', array('Exception' => $e));
 					throw new \PDOException($e->getMessage(), (int)$e->getCode());
 				}
 			}

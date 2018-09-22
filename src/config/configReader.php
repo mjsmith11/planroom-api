@@ -72,7 +72,7 @@
 		 * @param container dependency container
 		 */
 		public static function reset($container) {
-			$container->logger->debug('Resetting Configuration');
+			$container['logger']->debug('Resetting Configuration');
 			self::$readDone = false;
 		}
 		

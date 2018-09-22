@@ -2,7 +2,10 @@
 namespace Tests\Functional;
 
 require_once(__DIR__ . "/../../src/config/configReader.php");
+require_once(__DIR__ . "/testDependenciesContainer.php");
+
 use ConfigReader;
+use TestContainer;
 
 /**
  * Tests for configuration reader
@@ -38,7 +41,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function tearDown() {
 		unlink(self::$filePath);
-		ConfigReader::reset();
+		ConfigReader::reset(TestContainer::getContainer());
 	}
 
 	/**
@@ -49,6 +52,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['display_error_details'] = true;
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -67,6 +71,8 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['display_error_details'] = true;
 		$config['cors_origins'] = array('testurl.com', 'testurl2.com');
 		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
+
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));

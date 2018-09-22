@@ -3,7 +3,10 @@
 namespace Tests\Functional;
 
 require_once(__DIR__ . "/../../src/config/configReader.php");
+require_once(__DIR__ . "/testDependenciesContainer.php");
+
 use ConfigReader;
+use TestContainer;
 
 /**
  * Test Route OPTIONS route for CORS
@@ -40,7 +43,7 @@ class CORSTest extends BaseTestCase {
 	 */
 	public function tearDown() {
 		unlink(self::$filePath);
-		ConfigReader::reset();
+		ConfigReader::reset(TestContainer::getContainer());
 	}
 	
 	/**
@@ -51,6 +54,7 @@ class CORSTest extends BaseTestCase {
 		$config['display_error_details'] = true;
 		$config['cors_origins'] = array('localhost');
 		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -71,6 +75,7 @@ class CORSTest extends BaseTestCase {
 		$config['display_error_details'] = true;
 		$config['cors_origins'] = array('www.google.com');
 		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));

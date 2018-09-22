@@ -27,6 +27,7 @@ class CreateJobApiTest extends BaseTestCase {
 		$config['display_error_details'] = true;
 		$config['cors_origins'] = array();
 		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
