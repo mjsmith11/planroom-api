@@ -13,6 +13,11 @@ $app->group('/jobs', function() {
 		$out = JobOrch::create($in, $this);
 		return $this->response->withJson($out);
 	});
+
+	$this->get('', function($request, $response, $args) {
+		$out = JobOrch::getAllByBidDate($this);
+		return $this->response->withJson($out);
+	});
 });
 
 $app->group('', function() {
