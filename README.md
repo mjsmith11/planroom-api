@@ -9,7 +9,7 @@ It adheres to [Semantic Versioning](https://semver.org/) and [Gitflow](https://w
 1. Install MySQL for php 7.2 `sudo apt-get install php7.2-mysql`
 1. Install composer globally [Directions](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
 1. Install dependencies `composer.phar install`
-1. Copy `example_config.json` to `config.json` and fill in information.
+1. Copy `example_config.json` to `config.json` and fill in information. Valid log levels are debug, info, notice, warning, error, critical, alert, and emergency.
 1. Run database migrations `vendor/bin/phinx migrate`
 1. Use `composer.phar run start` to start a development server.
 
