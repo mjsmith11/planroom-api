@@ -18,6 +18,11 @@ $app->group('/jobs', function() {
 		$out = JobOrch::getAllByBidDate($this);
 		return $this->response->withJson($out);
 	});
+
+	$this->get('/{id}', function($request, $response, $args) {
+		$out = JobOrch::read($args['id'], $this);
+		return $this->response->withJson($out);
+	});
 });
 
 $app->group('', function() {
