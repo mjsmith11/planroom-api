@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @SuppressWarnings checkUnusedFunctionParameters
+ */
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -11,6 +13,16 @@ $app->group('/jobs', function() {
 	$this->post('', function($request, $response, $args) {
 		$in = $request->getParsedBody();
 		$out = JobOrch::create($in, $this);
+		return $this->response->withJson($out);
+	});
+
+	$this->get('', function($request, $response, $args) {
+		$out = JobOrch::getAllByBidDate($this);
+		return $this->response->withJson($out);
+	});
+
+	$this->get('/{id}', function($request, $response, $args) {
+		$out = JobOrch::read($args['id'], $this);
 		return $this->response->withJson($out);
 	});
 });
