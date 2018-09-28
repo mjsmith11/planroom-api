@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @SuppressWarnings checkUnusedFunctionParameters
+ */
 use Slim\Http\Request;
 use Slim\Http\Response;
 
