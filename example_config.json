@@ -14,6 +14,10 @@
     "logging": {
         "level": "debug",
         "maxFiles": 7
+    },
+    "aws": {
+        "key": "<AWS Key>",
+        "secret": "<AWS Secret>"
     }
     
 }
