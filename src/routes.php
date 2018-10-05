@@ -25,6 +25,10 @@ $app->group('/jobs', function() {
 		$out = JobOrch::read($args['id'], $this);
 		return $this->response->withJson($out);
 	});
+
+	$this->get('/{id}/upload', function($request, $response, $args) {
+
+	});
 });
 
 $app->group('', function() {
