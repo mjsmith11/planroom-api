@@ -12,7 +12,7 @@
 		 * 
 		 * @throws PDOException when connecting fails
 		 * 
-		 * @param object dependency container
+		 * @param object dependency container. Phinx will pass null
 		 * @param boolean defaults to false. Creates a connection as Tests\Functional\FakePdo when true
 		 */
 		public static function getConnection($container, $test = false) {
@@ -22,7 +22,9 @@
 				];
 			}
 			if (!isset(self::$connection)) {
-				$container['logger']->debug('Reading Database Config');
+				if (isset($container)) {
+					$container['logger']->debug('Reading Database Config');
+				}
 				$jsonString = file_get_contents(__DIR__ . '/../../config.json');
 				$config = json_decode($jsonString, true);
 				
@@ -40,7 +42,9 @@
 					PDO::ATTR_EMULATE_PREPARES   => false,
 				];
 				try {
-					$container['logger']->debug('Connecting to database');
+					if (isset($container)) {
+						$container['logger']->debug('Connecting to database');
+					}
 					$pdo =  new PDO($dsn, $user, $pass, $opt);
 					unset($host, $port, $user, $pass, $charset, $dsn, $config, $opt);
 					self::$connection = [
@@ -49,7 +53,9 @@
 					];
 				} catch (\PDOException $e) {
 					unset($host, $port, $db, $user, $pass, $charset, $dsn, $config, $opt);
-					$container['logger']->alert('Cannot connect to database', array('Exception' => $e));
+					if (isset($container)) {
+						$container['logger']->alert('Cannot connect to database', array('Exception' => $e));
+					}
 					throw new \PDOException($e->getMessage(), (int)$e->getCode());
 				}
 			}
