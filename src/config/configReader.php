@@ -7,6 +7,7 @@
 		private static $corsOrigins;
 		private static $displayErrorDetails;
 		private static $logging;
+		private static $awsRegion;
 
 		/**
 		 * Gets the allowable origins for CORS requests
@@ -66,6 +67,18 @@
 		}
 
 		/**
+		 * Get aws region
+		 * 
+		 * @returns aws region
+		 */
+		public static function getAwsRegion() {
+			if (!self::$readDone) {
+				self::_read();
+			}
+			return self::$awsRegion;
+		}
+
+		/**
 		 * Forces the next call to reread the configuration file.
 		 * This is necessary for testing.
 		 * 
@@ -85,6 +98,7 @@
 			self::$corsOrigins = $config['cors_origins'];
 			self::$displayErrorDetails = $config['display_error_details'];
 			self::$logging = $config['logging'];
+			self::$awsRegion = $config['aws']['region'];
 
 			unset($config);
 			self::$readDone = true;
