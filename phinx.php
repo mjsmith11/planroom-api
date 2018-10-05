@@ -1,5 +1,6 @@
 <?php
-$dbSettings = require __DIR__ . '/db/connection.php';
+require __DIR__ . '/src/db/connection.php';
+$dbSettings = Connection::getConnection(null);
 return  [
 			'environments' => [
 				'default_database' => 'app-db',
@@ -9,7 +10,7 @@ return  [
 				]
 			],
 			'paths' => [
-				'migrations' => __DIR__ . '/db/migrations'
+				'migrations' => __DIR__ . '/src/db/migrations'
 			]
 
 		];

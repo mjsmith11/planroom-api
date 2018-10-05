@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2]
+### Fixed
+ - Development server command for vagrant
+ - Phinx migration paths, imports, and logging
+
 ## [0.2.0] - 09/27/2018
 ### Added
  - Logging
