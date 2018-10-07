@@ -67,4 +67,15 @@
 			return $statement->fetch(PDO::FETCH_ASSOC);
 
 		}
+
+		public static function exists($id, $container) {
+			$container['logger']->info('Checking Existance', array('table' => static::$tableName, 'id' => $id));
+			$pdo = Connection::getConnection($container)['conn'];
+			$sql = "SELECT * FROM " . static::$tableName . " WHERE `id` = :id";
+			$container['logger']->debug("Exists query built", array('sql' => $sql));
+			$statement = $pdo->prepare($sql);
+			$statement->bindParam("id", $id);
+			$statement->execute();
+			return $statement->rowCount() > 0;
+		}
 	}

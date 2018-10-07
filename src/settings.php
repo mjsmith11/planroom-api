@@ -15,7 +15,7 @@ return [
 
 		// AWS Settings
 		'aws' => [
-			'region' => ConfigReader::getAwsRegion(),
+			'region' => ConfigReader::getAwsConfig()['region'],
 		]
 	],
 ];

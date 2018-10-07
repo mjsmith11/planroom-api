@@ -6,9 +6,9 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 // Routes
-
 $app->group('/jobs', function() {
 	require_once(__DIR__ . "/db/orchestrators/jobOrch.php");
+	require_once(__DIR__ . "/s3/orch.php");
 
 	$this->post('', function($request, $response, $args) {
 		$in = $request->getParsedBody();
@@ -26,8 +26,10 @@ $app->group('/jobs', function() {
 		return $this->response->withJson($out);
 	});
 
-	$this->get('/{id}/upload', function($request, $response, $args) {
-
+	$this->get('/{id}/signed-upload', function($request, $response, $args) {
+		$filename = $request->getQueryParam('filename', $default='');
+		$out = Planroom\S3\S3Orch::getPresignedPost($args['id'], $filename, $this);
+		return $this->response->withJson($out);
 	});
 });
 
