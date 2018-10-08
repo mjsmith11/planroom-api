@@ -26,7 +26,12 @@ $app->group('/jobs', function() {
 		return $this->response->withJson($out);
 	});
 
-	$this->get('/{id}/signed-upload', function($request, $response, $args) {
+	$this->get('/{id}/plans', function($request, $response, $args){
+		$out = Planroom\S3\S3Orch::getObjectsByJob($args['id'], $this);
+		return $this->response->withJson($out);
+	});
+
+	$this->post('/{id}/plans', function($request, $response, $args) {
 		$filename = $request->getQueryParam('filename', $default='');
 		$out = Planroom\S3\S3Orch::getPresignedPost($args['id'], $filename, $this);
 		return $this->response->withJson($out);
