@@ -53,6 +53,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 12);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -74,6 +75,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['cors_origins'] = array('testurl.com', 'testurl2.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
+		$config['aws'] = array('region' => 'test-region');
 
 
 		$file = fopen(self::$filePath, 'w');
@@ -96,6 +98,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'info', 'maxFiles' => 12);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -113,6 +116,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'notice', 'maxFiles' => 12);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -130,6 +134,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'warning', 'maxFiles' => 12);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -147,6 +152,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'error', 'maxFiles' => 12);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -164,6 +170,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'critical', 'maxFiles' => 12);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -181,6 +188,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'alert', 'maxFiles' => 12);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -198,6 +206,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'emergency', 'maxFiles' => 12);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -215,6 +224,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['cors_origins'] = array('testurl.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'unknown', 'maxFiles' => 12);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -226,7 +236,5 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		} catch (\Throwable $e) {
 			$this->assertEquals('Undefined index: unknown', $e->getMessage(), "Exception Message");
 		}
-
-		//$this->assertEquals(\Monolog\Logger::INFO, ConfigReader::getLogLevel(), "Expected Log Level");
 	}
 }
