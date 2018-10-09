@@ -84,6 +84,6 @@
 			$statement = $pdo->prepare($sql);
 			$statement->bindParam("id", $id);
 			$statement->execute();
-			return $statement->rowCount() > 0;
+			return $statement->fetchColumn() > 0;
 		}
 	}
