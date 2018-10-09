@@ -237,4 +237,28 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 			$this->assertEquals('Undefined index: unknown', $e->getMessage(), "Exception Message");
 		}
 	}
+
+	/**
+	 * Test aws config
+	 */
+	public function testAwsConfig() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'unknown', 'maxFiles' => 12);
+		$config['aws'] = array('key' => 'mytestkey', 'secret' => 'mytestsecret', 'region' => 'test-region', 'bucket' => 'some-bucket', 'urlExpiration' => 42);
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		$actualAwsConfig = ConfigReader::getAwsConfig();
+
+		$this->assertFalse(isset($actualAwsConfig['key']), 'AWS Key should not be returned');
+		$this->assertFalse(isset($actualAwsConfig['secret']), 'AWS Secret should not be returned');
+		$this->assertEquals($actualAwsConfig['region'], 'test-region', 'AWS region');
+		$this->assertEquals($actualAwsConfig['bucket'], 'some-bucket', 'AWS bucket');
+		$this->assertEquals($actualAwsConfig['urlExpiration'], 42, 'AWS urlExpiration');
+	}
 }
