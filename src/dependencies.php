@@ -1,5 +1,5 @@
 <?php
-	require __DIR__.'/s3/credentialProvider.php';
+	require __DIR__ . '/s3/credentialProvider.php';
 /**
  * @SuppressWarnings checkUnusedVariables
  * DIC configuration

@@ -68,6 +68,14 @@
 
 		}
 
+		/**
+		 * Checks if a record exists in the database
+		 * 
+		 * @param id the id of the record to check
+		 * @param container dependency container
+		 * 
+		 * @return boolean
+		 */
 		public static function exists($id, $container) {
 			$container['logger']->info('Checking Existance', array('table' => static::$tableName, 'id' => $id));
 			$pdo = Connection::getConnection($container)['conn'];
