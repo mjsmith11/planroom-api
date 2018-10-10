@@ -43,7 +43,9 @@ class S3CredentialProviderTest extends \PHPUnit_Framework_TestCase {
 	 * Remove the config file and reset the ConfigReader after each test
 	 */
 	public function tearDown() {
-		//unlink(self::$filePath);
+		if (file_exists(self::$filePath)) {
+			unlink(self::$filePath);
+		}
 		ConfigReader::reset(TestContainer::getContainer());
     }
     
@@ -56,5 +58,59 @@ class S3CredentialProviderTest extends \PHPUnit_Framework_TestCase {
         } catch (\Aws\Exception\CredentialsException $e) {
             $this->assertEquals($e->getMessage(), 'Error parsing config file', 'Expected exception message');
         }
-    }
+	}
+	
+	public function testNoKey() {
+		$config = array();
+		$config['aws'] = array('secret' => 'mytestsecret', 'key'=>'');
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+        try {
+            $cp = \Planroom\S3\CredentialProvider::json(TestContainer::getContainer());
+            $promise = $cp();
+            $promise->wait();
+            $this->fail('Exception not thrown');
+        } catch (\Aws\Exception\CredentialsException $e) {
+            $this->assertEquals($e->getMessage(), 'Could not find credentials in config.json', 'Expected exception message');
+        }
+	}
+	
+	public function testNoSecret() {
+		$config = array();
+		$config['aws'] = array('secret' => '', 'key'=>'myTestKey');
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+        try {
+            $cp = \Planroom\S3\CredentialProvider::json(TestContainer::getContainer());
+            $promise = $cp();
+            $promise->wait();
+            $this->fail('Exception not thrown');
+        } catch (\Aws\Exception\CredentialsException $e) {
+            $this->assertEquals($e->getMessage(), 'Could not find credentials in config.json', 'Expected exception message');
+        }
+	}
+	
+	// public function testGoodCreds() {
+	// 	$config = array();
+	// 	$config['aws'] = array('secret' => 'mySecret', 'key'=>'myTestKey');
+
+	// 	$file = fopen(self::$filePath, 'w');
+	// 	fwrite($file, json_encode($config));
+	// 	fclose($file);
+
+    //     try {
+    //         $cp = \Planroom\S3\CredentialProvider::json(TestContainer::getContainer());
+    //         $promise = $cp();
+    //         $promise->wait();
+    //         $this->fail('Exception not thrown');
+    //     } catch (\Aws\Exception\CredentialsException $e) {
+    //         $this->assertEquals($e->getMessage(), 'Could not find credentials in config.json', 'Expected exception message');
+    //     }
+    // }
 }
