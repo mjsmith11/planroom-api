@@ -4,7 +4,7 @@
 	use GuzzleHttp\Promise;
 	use GuzzleHttp\Promise\RejectedPromise;
 	use Aws\Credentials\Credentials;
-	use Aws\Credentials\CredentialsException;
+	use Aws\Exception\CredentialsException;
 
 	/**
 	 * Credential Provider for AWS
