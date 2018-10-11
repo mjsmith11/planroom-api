@@ -84,4 +84,20 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($res['postEndpoint'], "https://some-bucket.s3.amazonaws.com", "post endpoint");
 		$this->assertEquals($res['signature']['key'], "1/file.txt", "s3 key");
 	}
+
+	public function testGetObjectsByJobNoJob() {
+		$mockResult = [];
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		
+		try {
+			\Planroom\S3\S3Orch::getObjectsByJob(1, TestContainer::getContainer());
+			$this->fail('No exception');
+		} catch (\Exception $e) {
+			$this->assertEquals($e->getMessage(), "Job 1 does not exist", "Exception Message");
+		}
+	}
+
+	// empty list
+	// one item list
+	// two item list
 }
