@@ -12,5 +12,10 @@ return [
 			'level' => ConfigReader::getLogLevel(),
 			'maxfiles' => ConfigReader::getMaxLogFiles(),
 		],
+
+		// AWS Settings
+		'aws' => [
+			'region' => ConfigReader::getAwsConfig()['region'],
+		]
 	],
 ];

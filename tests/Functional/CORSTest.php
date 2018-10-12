@@ -55,6 +55,7 @@ class CORSTest extends BaseTestCase {
 		$config['cors_origins'] = array('localhost');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -76,6 +77,7 @@ class CORSTest extends BaseTestCase {
 		$config['cors_origins'] = array('www.google.com');
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
+		$config['aws'] = array('region' => 'test-region');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));

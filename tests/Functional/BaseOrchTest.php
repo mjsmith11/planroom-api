@@ -94,4 +94,26 @@ class BaseOrchTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('myData2', $result['field2'], 'Read expectedData2');
 		$this->assertEquals('myData3', $result['field3'], 'Read expectedData3');
 	}
+
+	/**
+	 * Test Exists Finding Record
+	 */
+	public function testExistsYes() {
+		$mockResult = [[ 'id' => 42, 'field1' => "expectedData1", 'field2' => "expectedData2", 'field3' => "expectedData3"]];
+		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult);
+
+		$result = $this->testOrch::exists(42, TestContainer::getContainer());
+		$this->assertEquals(true, $result, "record should exist");
+	}
+
+	/**
+	 * Test Exists No Record
+	 */
+	public function testExistsNo() {
+		$mockResult = [];
+		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult);
+
+		$result = $this->testOrch::exists(42, TestContainer::getContainer());
+		$this->assertEquals(false, $result, "record should exist");
+	}
 }

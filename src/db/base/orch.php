@@ -67,4 +67,23 @@
 			return $statement->fetch(PDO::FETCH_ASSOC);
 
 		}
+
+		/**
+		 * Checks if a record exists in the database
+		 * 
+		 * @param id the id of the record to check
+		 * @param container dependency container
+		 * 
+		 * @return boolean
+		 */
+		public static function exists($id, $container) {
+			$container['logger']->info('Checking Existance', array('table' => static::$tableName, 'id' => $id));
+			$pdo = Connection::getConnection($container)['conn'];
+			$sql = "SELECT * FROM " . static::$tableName . " WHERE `id` = :id";
+			$container['logger']->debug("Exists query built", array('sql' => $sql));
+			$statement = $pdo->prepare($sql);
+			$statement->bindParam("id", $id);
+			$statement->execute();
+			return $statement->fetchColumn() > 0;
+		}
 	}

@@ -12,3 +12,13 @@ $container['logger'] = function () {
 	$logger->pushHandler(new Monolog\Handler\NullHandler());
 	return $logger;
 };
+
+$container['S3Client'] = function($cont) {
+	$credProvider = Planroom\S3\CredentialProvider::json($cont);
+	$client = new Aws\S3\S3Client([
+		'version' => 'latest',
+		'region' => 'us-east-1',
+		'credentials' => $credProvider
+	]);
+	return $client;
+};
