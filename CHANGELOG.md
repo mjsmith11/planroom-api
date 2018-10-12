@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Endpoint to get a Presigned Post to S3
  - Endpoint to get a list of plans for a job and signed download url
 
-## [0.2.2]
+## [0.2.2] - 10/04/2018
 ### Fixed
  - Development server command for vagrant
  - Phinx migration paths, imports, and logging
@@ -20,11 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Read single job endpoint
  - Read all jobs endpoint
 
-## [0.1.1]
+## [0.1.1] - 09/16/2018
 ### Fixed
  - Remove nonexistant template directory from build artifacts
 
-## [0.1.0]
+## [0.1.0] - 09/26/2018
 ### Added
  - Empty PHP Slim Skeleton Project
  - CI Build using Travis
