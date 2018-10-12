@@ -12,7 +12,7 @@ use Connection;
 use ConfigReader;
 
 /**
- * Tests for AWS Credential Provider
+ * Tests for AWS S3 Orch
  * @SuppressWarnings checkProhibitedFunctions
  */
 class S3OrchTest extends \PHPUnit_Framework_TestCase {
@@ -52,10 +52,16 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		ConfigReader::reset(TestContainer::getContainer());
 	}
 
+	/**
+	 * Setup pdo for the test
+	 */
 	public function setUp() {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 
+	/**
+	 * Test presigned post with a job that doesn't exist
+	 */
 	public function testGetPresignedPostNoJob() {
 		$mockResult = [];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
@@ -68,6 +74,9 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	/**
+	 * Test presigned post without providing filename
+	 */
 	public function testGetPresignedPostBlankFile() {
 		$mockResult = [[ 'id' => 45 ]];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
@@ -80,6 +89,9 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	/**
+	 * Test Presigned Post with valid parameters
+	 */
 	public function testGetPresignedPostSuccess() {
 		$mockResult = [[ 'id' => 45 ]];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
@@ -89,6 +101,9 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($res['signature']['key'], "1/file.txt", "s3 key");
 	}
 
+	/**
+	 * Test GetObjectsByJob with a job that doesn't exist
+	 */
 	public function testGetObjectsByJobNoJob() {
 		$mockResult = [];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
@@ -101,6 +116,9 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	/**
+	 * Test Get Objects By Job with nothing returned
+	 */
 	public function testGetObjectsByJobEmpty() {
 		$mockResult = [[ 'id' => 45 ]];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
@@ -118,6 +136,9 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(count($objects), 0, "Result should be empty");
 	}
 
+	/**
+	 * Test Get Objects By Job with 1 object returned
+	 */
 	public function testGetObjectsByJobOne() {
 		$mockResult = [[ 'id' => 45 ]];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
@@ -141,6 +162,9 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($objects[0]['url'], 'www.test.com', "1st object url");
 	}
 
+	/**
+	 * Test Get Objects By Job with 2 jobs returned
+	 */
 	public function testGetObjectsByJobTwo() {
 		$mockResult = [[ 'id' => 45 ]];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
