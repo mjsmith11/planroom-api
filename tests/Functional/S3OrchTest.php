@@ -115,6 +115,51 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(count($objects), 0, "Result should be empty");
 	}
 
-	// one item list
-	// two item list
+	public function testGetObjectsByJobOne() {
+		$mockResult = [[ 'id' => 45 ]];
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		
+		$stub = $this->createMock(\Aws\S3\S3Client::class);
+		$stub->method('getIterator')
+			->willReturn([[ 'Key' => 'firstObj']]);
+		$stub->method('getCommand')
+			->willReturn(new \Aws\Command("dummy-command"));
+		$stub->method('createPresignedRequest')
+			->willReturn(new \GuzzleHttp\Psr7\Request('GET', 'www.test.com'));
+
+		$container = TestContainer::getContainer();
+		unset($container['S3Client']);
+		$container['S3Client'] = $stub;
+
+		$objects = \Planroom\S3\S3Orch::getObjectsByJob(45, $container);
+
+		$this->assertEquals(count($objects), 1, "Result should have 1 object");
+		$this->assertEquals($objects[0]['key'], 'firstObj', "1st object key");
+		$this->assertEquals($objects[0]['url'], 'www.test.com', "1st object url");
+	}
+
+	public function testGetObjectsByJobTwo() {
+		$mockResult = [[ 'id' => 45 ]];
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		
+		$stub = $this->createMock(\Aws\S3\S3Client::class);
+		$stub->method('getIterator')
+			->willReturn([[ 'Key' => 'firstObj'], [ 'Key' => 'secondObj']]);
+		$stub->method('getCommand')
+			->willReturn(new \Aws\Command("dummy-command"));
+		$stub->method('createPresignedRequest')
+			->willReturn(new \GuzzleHttp\Psr7\Request('GET', 'www.test.com'));
+
+		$container = TestContainer::getContainer();
+		unset($container['S3Client']);
+		$container['S3Client'] = $stub;
+
+		$objects = \Planroom\S3\S3Orch::getObjectsByJob(45, $container);
+
+		$this->assertEquals(count($objects), 2, "Result should have 2 objects");
+		$this->assertEquals($objects[0]['key'], 'firstObj', "1st object key");
+		$this->assertEquals($objects[0]['url'], 'www.test.com', "1st object url");
+		$this->assertEquals($objects[1]['key'], 'secondObj', "2nd object key");
+		$this->assertEquals($objects[1]['url'], 'www.test.com', "2nd object url");
+	}
 }
