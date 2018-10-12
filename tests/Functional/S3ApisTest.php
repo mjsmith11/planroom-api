@@ -67,4 +67,20 @@ class S3ApisTest extends BaseTestCase {
         $this->assertEquals($parsedResp['postEndpoint'], "https://some-bucket.s3.amazonaws.com", "post endpoint");
 		$this->assertEquals($parsedResp['signature']['key'], "45/xyz.abc", "s3 key");
     }
+
+    public function testGetObjects() {
+        $mockResult = [[ 'id' => 45 ]];
+        $this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+
+        $response = $this->runApp('GET', '/jobs/45/plans?filename', null, true);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $parsedResp = json_decode((string)$response->getBody(), true);
+        $this->assertEquals(count($parsedResp), 2, "Result should have 2 objects");
+		$this->assertEquals($parsedResp[0]['key'], 'firstObj', "1st object key");
+		$this->assertEquals($parsedResp[0]['url'], 'www.test.com', "1st object url");
+		$this->assertEquals($parsedResp[1]['key'], 'secondObj', "2nd object key");
+		$this->assertEquals($parsedResp[1]['url'], 'www.test.com', "2nd object url");
+    }
 }

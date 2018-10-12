@@ -29,7 +29,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param array|object|null $requestData the request data
 	 * @return \Slim\Http\Response
 	 */
-	public function runApp($requestMethod, $requestUri, $requestData = null) {
+	public function runApp($requestMethod, $requestUri, $requestData = null, $S3Mock = false ) {
 		// Create a mock environment for testing with
 		$environment = Environment::mock(
 			[
@@ -57,6 +57,19 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 
 		// Set up dependencies
 		require __DIR__ . '/testDependencies.php';
+		if ($S3Mock) {
+			$stub = $this->createMock(\Aws\S3\S3Client::class);
+			$stub->method('getIterator')
+				->willReturn([[ 'Key' => 'firstObj'], [ 'Key' => 'secondObj']]);
+			$stub->method('getCommand')
+				->willReturn(new \Aws\Command("dummy-command"));
+			$stub->method('createPresignedRequest')
+				->willReturn(new \GuzzleHttp\Psr7\Request('GET', 'www.test.com'));
+
+			$container = $app->getContainer();
+			unset($container['S3Client']);
+			$container['S3Client'] = $stub;
+		}
 
 		// Register middleware
 		if ($this->withMiddleware) {
