@@ -5,9 +5,11 @@ require_once(__DIR__ . "/testDependenciesContainer.php");
 require_once(__DIR__ . "/../../src/s3/orch.php");
 require_once(__DIR__ . "/../../src/db/connection.php");
 require_once __DIR__ . '/../../vendor/autoload.php';
+require_once(__DIR__ . '/../../src/config/configReader.php');
 
 use TestContainer;
 use Connection;
+use ConfigReader;
 
 /**
  * Tests for AWS Credential Provider
@@ -47,6 +49,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 			fwrite($file, self::$fileBackup);
 			fclose($file);
 		}
+		ConfigReader::reset(TestContainer::getContainer());
 	}
 
 	public function setUp() {
