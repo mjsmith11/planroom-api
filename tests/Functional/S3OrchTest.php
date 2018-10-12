@@ -4,6 +4,7 @@ namespace Tests\Functional;
 require_once(__DIR__ . "/testDependenciesContainer.php");
 require_once(__DIR__ . "/../../src/s3/orch.php");
 require_once(__DIR__ . "/../../src/db/connection.php");
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use TestContainer;
 use Connection;
@@ -97,7 +98,23 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	// empty list
+	public function testGetObjectsByJobEmpty() {
+		$mockResult = [[ 'id' => 45 ]];
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+
+		$stub = $this->createMock(\Aws\S3\S3Client::class);
+		$stub->method('getIterator')
+			->willReturn([]);
+
+		$container = TestContainer::getContainer();
+		unset($container['S3Client']);
+		$container['S3Client'] = $stub;
+
+		$objects = \Planroom\S3\S3Orch::getObjectsByJob(45, $container);
+
+		$this->assertEquals(count($objects), 0, "Result should be empty");
+	}
+
 	// one item list
 	// two item list
 }
