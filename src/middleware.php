@@ -14,7 +14,8 @@ $app->add(function($req, $res, $next) {
 
 $app->add(new Tuupola\Middleware\JwtAuthentication([
 	"secret" => ConfigReader::getJwtSecret(),
-	"logger" => $app->getContainer()['logger']
+	"logger" => $app->getContainer()['logger'],
+	"ignore" => ['/login']
 ]));
 
 // CORS Header Middleware
