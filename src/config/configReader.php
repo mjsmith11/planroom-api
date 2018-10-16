@@ -78,12 +78,12 @@
 			return self::$aws;
 		}
 
-		public static function getJwtSecret() {
+		public static function getJwtInfo() {
 			// always read file so the secret isn't in memory
 			$jsonString = file_get_contents(__DIR__ . '/../../config.json');
 			$config = json_decode($jsonString, true);
 
-			return $config['jwt']['secret'];
+			return $config['jwt'];
 		}
 
 		/**

@@ -39,6 +39,22 @@ $app->group('/jobs', function() {
 });
 
 $app->group('', function() {
+	require_once(__DIR__ . "/jwt/orch.php");
+	require_once(__DIR__ . "/db/orchestrators/userOrch.php");
+	
+	$this->post('/login', function($request, $response, $args){
+		$in = $request->getParsedBody();
+		if (UserOrch::checkPassword($in['email'], $in['password'], $this)) {
+			$this['logger']->info('User logged in', array('email' => $in['email']));
+			return $this->response->withJson(array(
+				'token' => \Planroom\JWT\Orch::getContractorToken($in['email'], $this)
+			));
+		} else {
+			$this['logger']->warning('User failed to log in', array('email' => $in['email']));
+			return $response->withStatus(401);
+		}
+	});
+
 	$this->options('/{routes:.+}', function ($req, $response, $args) {
 		return $response;
 	});

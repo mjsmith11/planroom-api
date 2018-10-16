@@ -21,6 +21,10 @@
         "region": "<AWS Region (us-east-1)>",
         "bucket": "<bucket name>",
         "urlExpiration": "<# of minutes a server signed url is valid>"
+    },
+    "jwt": {
+        "secret": "SuperSecret",
+        "contractorExp": 15
     }
     
 }

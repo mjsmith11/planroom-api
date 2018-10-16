@@ -12,10 +12,13 @@ $app->add(function($req, $res, $next) {
 	return $next($req, $res);
 });
 
+// JWT Authentication
 $app->add(new Tuupola\Middleware\JwtAuthentication([
-	"secret" => ConfigReader::getJwtSecret(),
+	"secret" => ConfigReader::getJwtInfo()['secret'],
 	"logger" => $app->getContainer()['logger'],
-	"ignore" => ['/login']
+	"path" => ['/'],
+	"ignore" => ['/login'],
+	"algorithm" => 'HS512'
 ]));
 
 // CORS Header Middleware

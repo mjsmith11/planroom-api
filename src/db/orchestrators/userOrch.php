@@ -4,7 +4,7 @@
 	 * @SuppressWarnings checkUnusedVariables
 	 * Orchestrator for Jobs
 	 */
-	class JobOrch extends BaseOrch {
+	class UserOrch extends BaseOrch {
 		protected static $tableName = "user";
         protected static $fieldList = array("email", "password");
 
@@ -22,7 +22,7 @@
 
         public static function checkPassword($email, $password, $container) {
             $user = self::readByEmail($email, $container);
-            if (count($user) !== 1) {
+            if (!$user) {
                 return false;
             }
             return password_verify($password, $user['password']);
