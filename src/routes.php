@@ -41,6 +41,7 @@ $app->group('/jobs', function() {
 $app->group('', function() {
 	require_once(__DIR__ . "/jwt/orch.php");
 	require_once(__DIR__ . "/db/orchestrators/userOrch.php");
+	require_once(__DIR__ . "/config/configReader.php");
 	
 	$this->post('/login', function($request, $response, $args){
 		$in = $request->getParsedBody();
@@ -53,6 +54,16 @@ $app->group('', function() {
 			$this['logger']->warning('User failed to log in', array('email' => $in['email']));
 			return $response->withStatus(401);
 		}
+	});
+
+	$this->get('/token-refresh', function($request, $response, $args){
+		$authHeader = $request->getHeader('Authorization')[0];
+		$token = explode(' ', $authHeader)[1];
+		$decoded = (array) \Firebase\JWT\JWT::decode($token, ConfigReader::getJwtInfo()['secret'], array('HS512'));
+		$email = $decoded['email'];
+		return $response->withJson(array(
+			'token' => \Planroom\JWT\Orch::getContractorToken($email, $this)
+		));
 	});
 
 	$this->options('/{routes:.+}', function ($req, $response, $args) {
