@@ -16,6 +16,8 @@ It adheres to [Semantic Versioning](https://semver.org/) and [Gitflow](https://w
 
 ## Helpful Tools
  - MySQL Workbench
+ - Postman
+ - [jwt.io](https://jwt.io/)
 
 ### Prepare for production
 ```
