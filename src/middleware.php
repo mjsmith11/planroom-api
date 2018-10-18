@@ -25,17 +25,20 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
 $app->add(function($req, $res, $next) {
 	$response = $next($req, $res);
 	
-	//Look for Origin in Origins that are allowed
-	$httpOrigin = $_SERVER['HTTP_ORIGIN'];
-	$corsOrigins = ConfigReader::getCorsOrigins();
-	$shouldAddHeader = in_array($httpOrigin, $corsOrigins, true);
-	$this['logger']->debug('CORS Origin Evaluation', array('httpOrigin' => $httpOrigin, 'corsOrigins' => $corsOrigins));
-	if ($shouldAddHeader) {
-		$response = $response->withHeader("Access-Control-Allow-Origin", $httpOrigin);
-	}
+	if ($response->getStatusCode() == 200 && $req->isOptions()) {
+		//Look for Origin in Origins that are allowed
+		$httpOrigin = $_SERVER['HTTP_ORIGIN'];
+		$corsOrigins = ConfigReader::getCorsOrigins();
+		$shouldAddHeader = in_array($httpOrigin, $corsOrigins, true);
+		$this['logger']->debug('CORS Origin Evaluation', array('httpOrigin' => $httpOrigin, 'corsOrigins' => $corsOrigins));
+		if ($shouldAddHeader) {
+			$response = $response->withHeader("Access-Control-Allow-Origin", $httpOrigin);
+		}
 
-	//Add headers that are the same every time
-	return $response->withHeader("Access-Control-Allow-Headers", "Content-Type, Accept")
-					->withHeader("Access-Control-Max-Age", "86400")
-					->withHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+		//Add headers that are the same every time
+		$response = $response->withHeader("Access-Control-Allow-Headers", "Content-Type, Accept")
+						     ->withHeader("Access-Control-Max-Age", "86400")
+						     ->withHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+	}
+	return $response;
 });
