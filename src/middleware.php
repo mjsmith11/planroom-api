@@ -25,7 +25,7 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
 $app->add(function($req, $res, $next) {
 	$response = $next($req, $res);
 	
-	if ($response->getStatusCode() == 200 && $req->isOptions()) {
+	if ($response->getStatusCode() == 200) {
 		//Look for Origin in Origins that are allowed
 		$httpOrigin = $_SERVER['HTTP_ORIGIN'];
 		$corsOrigins = ConfigReader::getCorsOrigins();
@@ -36,7 +36,7 @@ $app->add(function($req, $res, $next) {
 		}
 
 		//Add headers that are the same every time
-		$response = $response->withHeader("Access-Control-Allow-Headers", "Content-Type, Accept")
+		$response = $response->withHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization")
 						     ->withHeader("Access-Control-Max-Age", "86400")
 						     ->withHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 	}
