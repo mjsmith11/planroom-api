@@ -15,13 +15,6 @@ use Slim\Http\Environment;
  */
 class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	/**
-	 * Use middleware when running application?
-	 *
-	 * @var bool
-	 */
-	protected $withMiddleware = true;
-
-	/**
 	 * Process the application given a request method and URI
 	 *
 	 * @param string $requestMethod the request method (e.g. GET, POST, etc.)
@@ -30,7 +23,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param boolean $s3Mock Should S3 be mocked for getting Objects
 	 * @return \Slim\Http\Response
 	 */
-	public function runApp($requestMethod, $requestUri, $requestData = null, $s3Mock = false) {
+	public function runApp($requestMethod, $requestUri, $requestData = null, $s3Mock = false, $middleware = true) {
 		// Create a mock environment for testing with
 		$environment = Environment::mock(
 			[
@@ -73,7 +66,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 		}
 
 		// Register middleware
-		if ($this->withMiddleware) {
+		if ($middleware) {
 			require __DIR__ . '/../../src/middleware.php';
 		}
 

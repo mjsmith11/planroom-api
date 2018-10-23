@@ -29,6 +29,7 @@ class CreateJobApiTest extends BaseTestCase {
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
 		$config['aws'] = array('region' => 'test-region');
+		$config['jwt'] = array('secret' => 'test');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -90,7 +91,7 @@ class CreateJobApiTest extends BaseTestCase {
 			'taxible' => 0 
 		]];
 
-		$response = $this->runApp('POST', '/jobs', $data);
+		$response = $this->runApp('POST', '/jobs', $data, false, false);
 		
 		$this->assertEquals(200, $response->getStatusCode());
 
