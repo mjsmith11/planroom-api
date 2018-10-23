@@ -54,6 +54,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 12);
 		$config['aws'] = array('region' => 'test-region');
+		$config['jwt'] = array('secret' => 'test', 'contractorExp' => 42);
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -64,6 +65,9 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('testurl.com', $corsOrigins[0]);
 		$this->assertEquals(12, ConfigReader::getMaxLogFiles(), "Expected Max Log Files");
 		$this->assertEquals(\Monolog\Logger::DEBUG, ConfigReader::getLogLevel(), "Expected Log Level");
+		$jwtInfo = ConfigReader::getJwtInfo();
+		$this->assertEquals('test', $jwtInfo['secret'], "Expected jwt secret");
+		$this->assertEquals(42, $jwtInfo['contractorExp'], "Expected jwt contractor expiration");
 	}
 
 	/**
