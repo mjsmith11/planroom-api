@@ -43,9 +43,10 @@ $app->group('', function() {
 	require_once(__DIR__ . "/db/orchestrators/userOrch.php");
 	require_once(__DIR__ . "/config/configReader.php");
 	
-	$this->post('/login', function($request, $response, $args){
+	$this->post('/login', function($request, $response, $args) {
 		$in = $request->getParsedBody();
-		if (UserOrch::checkPassword($in['email'], $in['password'], $this)) {
+		$authenticated = UserOrch::checkPassword($in['email'], $in['password'], $this);
+		if ($authenticated) {
 			$this['logger']->info('User logged in', array('email' => $in['email']));
 			return $this->response->withJson(array(
 				'token' => \Planroom\JWT\Orch::getContractorToken($in['email'], $this)
@@ -56,7 +57,7 @@ $app->group('', function() {
 		}
 	});
 
-	$this->get('/token-refresh', function($request, $response, $args){
+	$this->get('/token-refresh', function($request, $response, $args) {
 		$authHeader = $request->getHeader('Authorization')[0];
 		$token = explode(' ', $authHeader)[1];
 		$decoded = (array) \Firebase\JWT\JWT::decode($token, ConfigReader::getJwtInfo()['secret'], array('HS512'));

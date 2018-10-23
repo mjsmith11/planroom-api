@@ -12,6 +12,8 @@ use Slim\Http\Environment;
  * runs the application. Note that it doesn't cover all use-cases and is
  * tuned to the specifics of this skeleton app, so if your needs are
  * different, you'll need to change it.
+ * 
+ * @SuppressWarnings functionMaxParameters
  */
 class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	/**
@@ -21,6 +23,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param string $requestUri the request URI
 	 * @param array|object|null $requestData the request data
 	 * @param boolean $s3Mock Should S3 be mocked for getting Objects
+	 * @param boolean $middleware Should middleware be used
 	 * @return \Slim\Http\Response
 	 */
 	public function runApp($requestMethod, $requestUri, $requestData = null, $s3Mock = false, $middleware = true) {

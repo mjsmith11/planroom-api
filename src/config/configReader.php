@@ -78,6 +78,9 @@
 			return self::$aws;
 		}
 
+		/**
+		 * @return array jwt configuration options
+		 */
 		public static function getJwtInfo() {
 			// always read file so the secret isn't in memory
 			$jsonString = file_get_contents(__DIR__ . '/../../config.json');
