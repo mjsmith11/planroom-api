@@ -33,6 +33,7 @@ class S3ApisTest extends BaseTestCase {
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 12);
 		$config['aws'] = array('key' => 'mytestkey', 'secret' => 'mytestsecret', 'region' => 'test-region', 'bucket' => 'some-bucket', 'urlExpiration' => 42);
+		$config['jwt'] = array('secret' => 'test');
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
 		fclose($file);
@@ -65,7 +66,7 @@ class S3ApisTest extends BaseTestCase {
 		$mockResult = [[ 'id' => 45 ]];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
 		
-		$response = $this->runApp('POST', '/jobs/45/plans?filename=xyz.abc', null);
+		$response = $this->runApp('POST', '/jobs/45/plans?filename=xyz.abc', null, false, false);
 		
 		$this->assertEquals(200, $response->getStatusCode());
 
@@ -81,7 +82,7 @@ class S3ApisTest extends BaseTestCase {
 		$mockResult = [[ 'id' => 45 ]];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
 
-		$response = $this->runApp('GET', '/jobs/45/plans?filename', null, true);
+		$response = $this->runApp('GET', '/jobs/45/plans?filename', null, true, false);
 
 		$this->assertEquals(200, $response->getStatusCode());
 
