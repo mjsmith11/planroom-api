@@ -56,14 +56,15 @@ class CORSTest extends BaseTestCase {
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
 		$config['aws'] = array('region' => 'test-region');
+		$config['jwt'] = array('secret' => 'test');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
 		fclose($file);
 		
-		$response = $this->runApp('OPTIONS', '/');
+		$response = $this->runApp('OPTIONS', '/jobs');
 		$this->assertEquals('localhost', $response->getHeader('Access-Control-Allow-Origin')[0], "Allow-Origin Header");
-		$this->assertEquals('Content-Type, Accept', $response->getHeader('Access-Control-Allow-Headers')[0], "Allow-Headers Header");
+		$this->assertEquals('Content-Type, Accept, Authorization', $response->getHeader('Access-Control-Allow-Headers')[0], "Allow-Headers Header");
 		$this->assertEquals('GET, POST, PUT, DELETE, OPTIONS', $response->getHeader('Access-Control-Allow-Methods')[0], "Allow-Methods Header");
 		$this->assertEquals('86400', $response->getHeader('Access-Control-Max-Age')[0], 'Max-Age Header');
 	}
@@ -78,14 +79,15 @@ class CORSTest extends BaseTestCase {
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
 		$config['aws'] = array('region' => 'test-region');
+		$config['jwt'] = array('secret' => 'test');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
 		fclose($file);
 		
-		$response = $this->runApp('OPTIONS', '/');
+		$response = $this->runApp('OPTIONS', '/jobs');
 		$this->assertEquals(0, count($response->getHeader('Access-Control-Allow-Origin')), "No Allow-Origin Header");
-		$this->assertEquals('Content-Type, Accept', $response->getHeader('Access-Control-Allow-Headers')[0], "Allow-Headers Header");
+		$this->assertEquals('Content-Type, Accept, Authorization', $response->getHeader('Access-Control-Allow-Headers')[0], "Allow-Headers Header");
 		$this->assertEquals('GET, POST, PUT, DELETE, OPTIONS', $response->getHeader('Access-Control-Allow-Methods')[0], "Allow-Methods Header");
 		$this->assertEquals('86400', $response->getHeader('Access-Control-Max-Age')[0], 'Max-Age Header');
 	}
