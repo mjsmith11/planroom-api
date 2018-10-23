@@ -28,6 +28,7 @@ class ReadJobsApisTest extends BaseTestCase {
 		$config['cors_origins'] = array();
 		$config['mysql'] = array();
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
+		$config['jwt'] = array('secret' => 'test');
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -71,7 +72,7 @@ class ReadJobsApisTest extends BaseTestCase {
 
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
 		
-		$response = $this->runApp('GET', '/jobs/45');
+		$response = $this->runApp('GET', '/jobs/45', null, false, false);
 		
 		$this->assertEquals(200, $response->getStatusCode());
 
@@ -116,7 +117,7 @@ class ReadJobsApisTest extends BaseTestCase {
 
 		$this->pdo->mock("SELECT * FROM job order by bidDate<CURDATE(), ABS(DATEDIFF(bidDate,CURDATE()))", $readMockResult);
 		
-		$response = $this->runApp('GET', '/jobs');
+		$response = $this->runApp('GET', '/jobs', null, false, false);
 		
 		$this->assertEquals(200, $response->getStatusCode());
 
