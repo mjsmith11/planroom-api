@@ -93,6 +93,9 @@ class CORSTest extends BaseTestCase {
 		$this->assertEquals('86400', $response->getHeader('Access-Control-Max-Age')[0], 'Max-Age Header');
 	}
 
+	/**
+	 * Test that there are no CORS headers on non-200 response
+	 */
 	public function testWith401() {
 		$config = array();
 		$config['display_error_details'] = true;

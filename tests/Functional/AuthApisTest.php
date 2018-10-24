@@ -56,32 +56,38 @@ class AuthApisTest extends BaseTestCase {
 	 */
 	public function setUp() {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
-    }
+	}
 
-    // public static function testTokenRefresh() {
-    // This test requires adding a header to the request.  I haven't found a way to do this.
-    // }
+	// public static function testTokenRefresh() {
+	// This test requires adding a header to the request.  I haven't found a way to do this.
+	// }
 
-    public function testFailedLogin() {
-        $mockResult = [];
-        $this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+	/**
+	 * Test a login that fails
+	 */
+	public function testFailedLogin() {
+		$mockResult = [];
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
 
-        $data = array('email' => 'test@test.com', 'password' => 'p');
-        $response = $this->runApp('POST', '/login', $data, false, false);
-        $this->assertEquals($response->getStatusCode(), 401, "Should be unauthenticated");
-    }
+		$data = array('email' => 'test@test.com', 'password' => 'p');
+		$response = $this->runApp('POST', '/login', $data, false, false);
+		$this->assertEquals($response->getStatusCode(), 401, "Should be unauthenticated");
+	}
 
-    public function testSuccessfulLogin() {
-        $mockResult = [['email' => 'test@email.com', 'password' => '$2y$10$XtLla3j.dySzJa4PA93mu.6lxIle5WbnRlQoa.la1LGSHXlmd/k3q']];
-        $this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+	/**
+	 * Test a successful login
+	 */
+	public function testSuccessfulLogin() {
+		$mockResult = [['email' => 'test@email.com', 'password' => '$2y$10$XtLla3j.dySzJa4PA93mu.6lxIle5WbnRlQoa.la1LGSHXlmd/k3q']];
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
 
-        $data = array('email' => 'test@test.com', 'password' => 'password123');
-        $response = $this->runApp('POST', '/login', $data, false, false);
-        $this->assertEquals($response->getStatusCode(), 200, "Should be unauthenticated");
+		$data = array('email' => 'test@test.com', 'password' => 'password123');
+		$response = $this->runApp('POST', '/login', $data, false, false);
+		$this->assertEquals($response->getStatusCode(), 200, "Should be unauthenticated");
 
-        $parsedResp = json_decode((string)$response->getBody(), true);
-        $decodedToken = \Firebase\JWT\JWT::decode($parsedResp['token'], 'test', array('HS512'));
-        $this->assertEquals($decodedToken->email, 'test@test.com', 'email in token');
-        $this->assertTrue(time() + 600 - $decodedToken->exp <= 1, 'token expiration');
-    }
+		$parsedResp = json_decode((string)$response->getBody(), true);
+		$decodedToken = \Firebase\JWT\JWT::decode($parsedResp['token'], 'test', array('HS512'));
+		$this->assertEquals($decodedToken->email, 'test@test.com', 'email in token');
+		$this->assertTrue(time() + 600 - $decodedToken->exp <= 1, 'token expiration');
+	}
 }
