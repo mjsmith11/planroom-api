@@ -21,6 +21,7 @@ class CORSTest extends BaseTestCase {
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
 	public static function setUpBeforeClass() {
+		ConfigReader::reset(TestContainer::getContainer());
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
 			unlink(self::$filePath);
@@ -61,7 +62,7 @@ class CORSTest extends BaseTestCase {
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
 		fclose($file);
-		
+
 		$response = $this->runApp('OPTIONS', '/jobs');
 		$this->assertEquals('localhost', $response->getHeader('Access-Control-Allow-Origin')[0], "Allow-Origin Header");
 		$this->assertEquals('Content-Type, Accept, Authorization', $response->getHeader('Access-Control-Allow-Headers')[0], "Allow-Headers Header");
