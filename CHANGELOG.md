@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 10/27/2018
+### Added
+ - Endpoints for authentication
+ - Protection for secure routes
+
 ## [0.3.0] - 10/13/2018
 ### Added
  - Endpoint to get a Presigned Post to S3
