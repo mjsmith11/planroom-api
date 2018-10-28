@@ -18,7 +18,8 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
 	"logger" => $app->getContainer()['logger'],
 	"path" => ['/'],
 	"ignore" => ['/login'],
-	"algorithm" => 'HS512'
+	"algorithm" => 'HS512',
+	"header" => 'Planroom-Authorization'
 ]));
 
 // CORS Header Middleware
@@ -37,7 +38,7 @@ $app->add(function($req, $res, $next) {
 		}
 
 		//Add headers that are the same every time
-		$response = $response->withHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization")
+		$response = $response->withHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Planroom-Authorization")
 							->withHeader("Access-Control-Max-Age", "86400")
 							->withHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 	}

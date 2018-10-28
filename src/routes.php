@@ -58,7 +58,7 @@ $app->group('', function() {
 	});
 
 	$this->get('/token-refresh', function($request, $response, $args) {
-		$authHeader = $request->getHeader('Authorization')[0];
+		$authHeader = $request->getHeader('Planroom-Authorization')[0];
 		$token = explode(' ', $authHeader)[1];
 		$decoded = (array) \Firebase\JWT\JWT::decode($token, ConfigReader::getJwtInfo()['secret'], array('HS512'));
 		$email = $decoded['email'];

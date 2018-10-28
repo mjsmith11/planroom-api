@@ -21,7 +21,7 @@ It adheres to [Semantic Versioning](https://semver.org/) and [Gitflow](https://w
 
 ## Request Authorization
  - JWT tokens for contractor users can be obtained by calling the '/login' endpoint with valid credentials.
- - Calls to other endpoints must have the header 'Authorization' containing the word 'Bearer' followed by a single space and a valid token.
+ - Calls to other endpoints must have the header 'Planroom-Authorization' containing the word 'Bearer' followed by a single space and a valid token.
  - Tokens for contractors expire after an amount of time specified in the config.json file.
  - The 'token-refresh' route will provide a new token with new expiration time to contractor users.
 
