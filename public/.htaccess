@@ -6,3 +6,6 @@ Allow from all
   RewriteRule ^(.*)$ /index.php?path=$1 [NC,L,QSA]
   # RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
