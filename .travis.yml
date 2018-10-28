@@ -13,6 +13,7 @@ script:
 before_deploy: 
  - mkdir dist
  - cp LICENSE dist
+ - cp .htaccess dist
  - cp -r logs dist
  - cp -r public dist
  - cp -r src dist
