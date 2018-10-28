@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 10/28/2018
+### Added
+ - .htaccess rule to redirect http to https
+
 ## [1.0.0] - 10/27/2018
 ### Added
  - Endpoints for authentication
