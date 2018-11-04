@@ -35,8 +35,8 @@ $app->add(function($req, $res, $next) {
 $app->add(function($req, $res, $next){
 	$token = $req->getAttribute('token');
 	$this['logger']->debug("Authorizing Request", array("token" => $token, "path" => $req->getUri()->getPath()));
-	if ($req->getUri()->getPath() === '/login') {
-		// login doesn't need authorization
+	if ($req->getUri()->getPath() === '/login' || $req->isOptions()) {
+		// login and options doesn't need authorization
 		return $next($req, $res);
 	} elseif ($token['role'] === 'contractor') {
 		// Contractor can access all routes
