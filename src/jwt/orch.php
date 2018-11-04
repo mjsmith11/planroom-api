@@ -23,8 +23,10 @@ class Orch {
 		$validSeconds = $config['contractorExp'] * 60;
 		$exp = time() + $validSeconds;
 		$token = array(
-			"exp" => $exp,
-			"email" => $email
+			"exp"   => $exp,
+			"email" => $email,
+			"role"  => "contractor",
+			"job"   => "*"
 		);
 		return JWT::encode($token, $secret, 'HS512');
 
