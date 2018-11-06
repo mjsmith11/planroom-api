@@ -26,7 +26,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param boolean $middleware Should middleware be used
 	 * @return \Slim\Http\Response
 	 */
-	public function runApp($requestMethod, $requestUri, $requestData = null, $s3Mock = false, $middleware = true) {
+	public function runApp($requestMethod, $requestUri, $requestData = null, $s3Mock = false, $middleware = true, $token=null) {
 		// Create a mock environment for testing with
 		$environment = Environment::mock(
 			[
@@ -41,6 +41,10 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 		// Add request data, if it exists
 		if (isset($requestData)) {
 			$request = $request->withParsedBody($requestData);
+		}
+
+		if (isset($token)) {
+			$request = $request->withHeader('Planroom-Authorization', $token);
 		}
 
 		// Set up a response object
