@@ -49,7 +49,7 @@ $app->add(function($req, $res, $next){
 		$path = '/jobs/' . $token['job'];
 		if ($req->getUri()->getPath() === $path && $req->isGet()) { $authorized = true; }
 
-		// GET /jobs/:id
+		// GET /jobs/:id/plans
 		$path = '/jobs/' . $token['job'] . '/plans';
 		if ($req->getUri()->getPath() === $path && $req->isGet()) { $authorized = true; }
 

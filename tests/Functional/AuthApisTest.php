@@ -83,7 +83,7 @@ class AuthApisTest extends BaseTestCase {
 
 		$data = array('email' => 'test@test.com', 'password' => 'password123');
 		$response = $this->runApp('POST', '/login', $data, false, false);
-		$this->assertEquals($response->getStatusCode(), 200, "Should be unauthenticated");
+		$this->assertEquals($response->getStatusCode(), 200, "Should be successful");
 
 		$parsedResp = json_decode((string)$response->getBody(), true);
 		$decodedToken = \Firebase\JWT\JWT::decode($parsedResp['token'], 'test', array('HS512'));
