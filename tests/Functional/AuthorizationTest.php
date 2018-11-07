@@ -12,7 +12,7 @@ use TestContainer;
 use \Firebase\JWT\JWT;
 
 /**
- * Test Routes that read jobs
+ * Test Authorization Middleware
  * @SuppressWarnings checkProhibitedFunctions
  */
 class AuthorizationTest extends BaseTestCase {
@@ -39,8 +39,8 @@ class AuthorizationTest extends BaseTestCase {
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
-        fclose($file);
-        ConfigReader::reset(TestContainer::getContainer());
+		fclose($file);
+		ConfigReader::reset(TestContainer::getContainer());
 	}
 
 	/**
@@ -60,26 +60,35 @@ class AuthorizationTest extends BaseTestCase {
 	 */
 	public function setUp() {
 		$this->pdo = Connection::getConnection(true)['conn'];
-    }
+	}
 
-    public function testUnknownRole() {
-        $exp = time() + 500;
+	/**
+	 * Unauthorized request because of unknown role.
+	 */
+	public function testUnknownRole() {
+		$exp = time() + 500;
 		$token = array(
 			"exp"   => $exp,
 			"email" => "email@email.com",
 			"role"  => "notARole",
 			"job"   => "*"
 		);
-        $encoded = JWT::encode($token, 'test', 'HS512');
-        $response = $this->runApp('GET', '/jobs', null, false, true, $encoded);
-        $this->assertEquals(403, $response->getStatusCode(), "unknown role should be 403");
+		$encoded = JWT::encode($token, 'test', 'HS512');
+		$response = $this->runApp('GET', '/jobs', null, false, true, $encoded);
+		$this->assertEquals(403, $response->getStatusCode(), "unknown role should be 403");
 	}
 	
+	/**
+	 * Test OPTIONS request that doesn't require authorization
+	 */
 	public function testOptions() {
 		$response = $this->runApp('OPTIONS', '/jobs', null, false, true, null);
 		$this->assertEquals(200, $response->getStatusCode(), "OPTIONS requests don't need authorization");
 	}
 
+	/**
+	 * Test login api that doesn't require authorization.
+	 */
 	public function testLogin() {
 		$mockResult = [['email' => 'test@email.com', 'password' => '$2y$10$XtLla3j.dySzJa4PA93mu.6lxIle5WbnRlQoa.la1LGSHXlmd/k3q']];
 		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
@@ -89,6 +98,9 @@ class AuthorizationTest extends BaseTestCase {
 		$this->assertEquals($response->getStatusCode(), 200, "Login shouldn't require authorization");
 	}
 
+	/**
+	 * Authorized request by contractor
+	 */
 	public function testContractorRole() {
 		$readMockResult = [[ 
 			'id' => 45, 
@@ -128,6 +140,9 @@ class AuthorizationTest extends BaseTestCase {
 		$this->assertEquals(200, $response->getStatusCode(), "contractor should be able to access all routes");
 	}
 
+	/**
+	 * Unauthorized subcontractor request to /jobs
+	 */
 	function testSubcontractorUnauthorizedRoute() {
 		$exp = time() + 500;
 		$token = array(
@@ -142,6 +157,9 @@ class AuthorizationTest extends BaseTestCase {
 		$this->assertEquals(403, $response->getStatusCode(), "subcontractor should not be able to access /jobs");
 	}
 
+	/**
+	 * Unauthorized call to GET /jobs/:id  Subcontractor with wrong job
+	 */
 	function testSubGetJobWrongJob() {
 		$exp = time() + 500;
 		$token = array(
@@ -155,6 +173,9 @@ class AuthorizationTest extends BaseTestCase {
 		$this->assertEquals(403, $response->getStatusCode(), "subcontractor should only be able to access their job");
 	}
 
+	/**
+	 * Unauthorized call to GET /jobs/:id/plans.  Subcontractor with wrong job
+	 */
 	function testSubGetPlansWrongJob() {
 		$exp = time() + 500;
 		$token = array(
@@ -168,7 +189,10 @@ class AuthorizationTest extends BaseTestCase {
 		$this->assertEquals(403, $response->getStatusCode(), "subcontractor should only be able to access plans for their job");
 	}
 
-	function testSubGetJob(){
+	/**
+	 * Authorized Subcontractor call to GET /job/:id
+	 */
+	function testSubGetJob() {
 		$readMockResult = [[ 
 			'id' => 45, 
 			'name' => 'jobName',
@@ -195,6 +219,9 @@ class AuthorizationTest extends BaseTestCase {
 		$this->assertEquals(200, $response->getStatusCode(), "subcontractor should be able to access their job");
 	}
 
+	/**
+	 * Authorized subcontractor call to GET /job/:id/plans
+	 */
 	function testSubGetPlans() {
 		$mockResult = [[ 'id' => 7 ]];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);

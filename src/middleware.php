@@ -32,10 +32,11 @@ $app->add(function($req, $res, $next) {
 
 // Authorization
 // This needs to run after jwt authnetication
-$app->add(function($req, $res, $next){
+$app->add(function($req, $res, $next) {
 	$token = $req->getAttribute('token');
 	$this['logger']->debug("Authorizing Request", array("token" => $token, "path" => $req->getUri()->getPath()));
-	if ($req->getUri()->getPath() === '/login' || $req->isOptions()) {
+	$skipAuthorization = $req->getUri()->getPath() === '/login' || $req->isOptions();
+	if ($skipAuthorization) {
 		// login and options doesn't need authorization
 		return $next($req, $res);
 	} elseif ($token['role'] === 'contractor') {
@@ -47,11 +48,17 @@ $app->add(function($req, $res, $next){
 		
 		// GET /jobs/:id
 		$path = '/jobs/' . $token['job'];
-		if ($req->getUri()->getPath() === $path && $req->isGet()) { $authorized = true; }
+		$isGetJob = $req->getUri()->getPath() === $path && $req->isGet();
+		if ($isGetJob) { 
+			$authorized = true; 
+		}
 
 		// GET /jobs/:id/plans
 		$path = '/jobs/' . $token['job'] . '/plans';
-		if ($req->getUri()->getPath() === $path && $req->isGet()) { $authorized = true; }
+		$isGetPlans = $req->getUri()->getPath() === $path && $req->isGet();
+		if ($isGetPlans) { 
+			$authorized = true; 
+		}
 
 		if ($authorized) {
 			return $next($req, $res);

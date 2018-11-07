@@ -24,9 +24,10 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param array|object|null $requestData the request data
 	 * @param boolean $s3Mock Should S3 be mocked for getting Objects
 	 * @param boolean $middleware Should middleware be used
+	 * @param string $token provide a token to be used
 	 * @return \Slim\Http\Response
 	 */
-	public function runApp($requestMethod, $requestUri, $requestData = null, $s3Mock = false, $middleware = true, $token=null) {
+	public function runApp($requestMethod, $requestUri, $requestData = null, $s3Mock = false, $middleware = true, $token = null) {
 		// Create a mock environment for testing with
 		$environment = Environment::mock(
 			[
@@ -38,9 +39,9 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 		// Set up a request object based on the environment
 		$request = Request::createFromEnvironment($environment);
 
-		 if (isset($token)) {
-			 $request = $request->withHeader('Planroom-Authorization', 'Bearer ' . $token);
-		 }
+		if (isset($token)) {
+			$request = $request->withHeader('Planroom-Authorization', 'Bearer ' . $token);
+		}
 
 		// Add request data, if it exists
 		if (isset($requestData)) {
