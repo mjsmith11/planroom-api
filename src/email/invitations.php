@@ -2,7 +2,7 @@
 namespace Planroom\Email;
 
 class Invitations {
-    public static function SendInvitation($email, $job, $exp, $container) {
-        
+    public static function sendInvitation($email, $job, $exp, $container) {
+
     }
 }
