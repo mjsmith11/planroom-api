@@ -25,6 +25,12 @@
     "jwt": {
         "secret": "SuperSecret",
         "contractorExp": 15
-    }
-    
+    },
+    "smtp": {
+        "host": "<smtp server>",
+        "username": "<smtp user>",
+        "password": "<smtp password>",
+        "port": "<smtp port>",
+        "fromName": "<friendly name>"
+    }    
 }
