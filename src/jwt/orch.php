@@ -29,6 +29,24 @@ class Orch {
 			"job"   => "*"
 		);
 		return JWT::encode($token, $secret, 'HS512');
-
 	}
+
+	/**
+	 * @param email contractor user's email
+	 * @param container dependency container
+	 * 
+	 * @return string auth token for passed user
+	 */
+	public static function getSubcontractorToken($email, $job, $exp, $container) {
+		$container['logger']->debug('Generating Token For subcontractor User', array('email' => $email));
+		$config = ConfigReader::getJwtInfo();
+		$secret = $config['secret'];
+		$token = array(
+			"exp"   => $exp,
+			"email" => $email,
+			"role"  => "subcontractor",
+			"job"   => $job
+		);
+		return JWT::encode($token, $secret, 'HS512');
+	}	
 }
