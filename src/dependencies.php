@@ -1,5 +1,9 @@
 <?php
 	require __DIR__ . '/s3/credentialProvider.php';
+
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\Exception;
+	
 /**
  * @SuppressWarnings checkUnusedVariables
  * DIC configuration
@@ -27,4 +31,21 @@ $container['S3Client'] = function($cont) {
 		'credentials' => $credProvider
 	]);
 	return $client;
+};
+
+$container['mailer'] = function($cont) {
+	$settings = $cont->get('settings')['smtp'];
+
+	$mailer = new PHPMailer(true);
+	$mailer->SMTPDebug = 0;
+	$mailer->isSMTP();
+	$mailer->Host = $settings['host'];
+	$mailer->SMTPAuth = true;
+	$mailer->Username = $settings['username'];
+	$mailer->Password = $settings['password'];
+	$mailer->SMTPSecure = 'tls';
+	$mailer->Port = $settings['port'];
+	$mailer->setFrom($settings['username'], $settings['fromName']);
+
+	return $mailer;
 };

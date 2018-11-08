@@ -90,6 +90,17 @@
 		}
 
 		/**
+		 * @return array smtp configuration options
+		 */
+		public static function getSmtpInfo() {
+			// always read file so the password isn't in memory
+			$jsonString = file_get_contents(__DIR__ . '/../../config.json');
+			$config = json_decode($jsonString, true);
+
+			return $config['smtp'];
+		}
+
+		/**
 		 * Forces the next call to reread the configuration file.
 		 * This is necessary for testing.
 		 * 

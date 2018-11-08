@@ -16,6 +16,8 @@ return [
 		// AWS Settings
 		'aws' => [
 			'region' => ConfigReader::getAwsConfig()['region'],
-		]
+		],
+		
+		'smtp' => ConfigReader::GetSmtpInfo()
 	],
 ];
