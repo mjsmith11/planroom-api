@@ -32,5 +32,6 @@
         "password": "<smtp password>",
         "port": "<smtp port>",
         "fromName": "<friendly name>"
-    }    
+    },
+    "baseUrl": "https://someurl.com"  
 }

@@ -8,6 +8,7 @@
 		private static $displayErrorDetails;
 		private static $logging;
 		private static $aws;
+		private static $baseUrl;
 
 		/**
 		 * Gets the allowable origins for CORS requests
@@ -79,6 +80,18 @@
 		}
 
 		/**
+		 * Get base url
+		 * 
+		 * @returns base url
+		 */
+		public static function getBaseUrl() {
+			if (!self::$readDone) {
+				self::_read();
+			}
+			return self::$baseUrl;
+		}
+
+		/**
 		 * @return array jwt configuration options
 		 */
 		public static function getJwtInfo() {
@@ -122,6 +135,7 @@
 			self::$logging = $config['logging'];
 			self::$aws = $config['aws'];
 			unset(self::$aws['key'], self::$aws['secret']);
+			self::$baseUrl = $config['baseUrl'];
 
 			unset($config);
 			self::$readDone = true;
