@@ -21,6 +21,7 @@ class Invitations {
 
         $mail->send();
         $container['logger']->info('Invitation Sent', array('email' => $email, 'Job Id' => $jobId, 'Expiration' => $exp));
+        $mail->clearAddresses(); // so they aren't there for the next email.
     }
 
     protected static function buildSubject($jobId, $container) {

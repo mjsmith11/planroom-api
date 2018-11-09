@@ -36,6 +36,12 @@ $app->group('/jobs', function() {
 		$out = Planroom\S3\S3Orch::getPresignedPost($args['id'], $filename, $this);
 		return $this->response->withJson($out);
 	});
+
+	$this->post('/{id}/invite', function($request, $response, $args) {
+		$in = $request->getParsedBody();
+		JobOrch::sendInvitations($args['id'], $in['validDays'], $in['emails'], $this);
+		return $response;
+	});
 });
 
 $app->group('', function() {
