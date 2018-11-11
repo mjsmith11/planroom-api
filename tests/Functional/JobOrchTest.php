@@ -16,6 +16,43 @@ use PHPMailer\PHPMailer\Exception;
  */
 class JobOrchTest extends \PHPUnit_Framework_TestCase {
 	private $pdo;
+	private static $fileBackup;
+	private static $filePath = __DIR__ . '/../../config.json';
+		
+	/**
+	 * Set up for tests. Backup config file and delete it if it exists
+	 */
+	public static function setUpBeforeClass() {
+		if (file_exists(self::$filePath)) {
+			self::$fileBackup = file_get_contents(self::$filePath);
+			unlink(self::$filePath);
+		}
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array();
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
+		$config['aws'] = array('key' => 'mytestkey', 'secret' => 'mytestsecret', 'region' => 'test-region', 'bucket' => 'some-bucket', 'urlExpiration' => 42);
+		$config['jwt'] = array('secret' => 'test');
+		$config['baseUrl'] = 'test.com';
+		$config['smtp'] = array();
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+	}
+
+	/**
+	 * After tests: Restore config file if it was backed up
+	 */
+	public static function tearDownAfterClass() {
+		unlink(self::$filePath);
+		if (isset(self::$fileBackup)) {
+			$file = fopen(__DIR__ . '/../../config.json', 'w');
+			fwrite($file, self::$fileBackup);
+			fclose($file);
+		}
+	}
 
 	/**
 	 * Setup class to FakePdo connection
