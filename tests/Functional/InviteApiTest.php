@@ -55,9 +55,12 @@ class InviteApiTest extends BaseTestCase {
 	 */
 	public function setUp() {
 		$this->pdo = Connection::getConnection(true)['conn'];
-    }
-    public function testInviteApi() {
-        $readMockResult = [[ 
+	}
+	/**
+	 * Test /jobs/:id/invite
+	 */
+	public function testInviteApi() {
+		$readMockResult = [[ 
 			'id' => 45, 
 			'name' => 'jobName',
 			'bidDate' => '08-19-2019',
@@ -69,12 +72,12 @@ class InviteApiTest extends BaseTestCase {
 			'taxible' => 0 
 		]];
 
-        $this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
-        
-        $data = array('validDays' => 3, 'emails' => array('email1@test.com', 'email2@test.com'));
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		
+		$data = array('validDays' => 3, 'emails' => array('email1@test.com', 'email2@test.com'));
 
-        $response = $this->runApp('POST', '/jobs/45/invite', $data, false, false, null);
+		$response = $this->runApp('POST', '/jobs/45/invite', $data, false, false, null);
 		
 		$this->assertEquals(200, $response->getStatusCode());
-    }
+	}
 }

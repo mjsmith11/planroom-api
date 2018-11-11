@@ -13,6 +13,7 @@ use PHPMailer\PHPMailer\Exception;
 
 /**
  * Tests for the Base Orch
+ * @SuppressWarnings checkProhibitedFunctions
  */
 class JobOrchTest extends \PHPUnit_Framework_TestCase {
 	private $pdo;
@@ -76,6 +77,9 @@ class JobOrchTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
+	/**
+	 * Test sending invitations
+	 */
 	public function testSendInvitations() {
 		$readMockResult = [[ 
 			'id' => 45, 

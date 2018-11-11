@@ -25,6 +25,6 @@ $container['S3Client'] = function($cont) {
 	return $client;
 };
 
-$container['mailer'] = function($cont) {
+$container['mailer'] = function() {
 	return new PHPMailer(true);
 };

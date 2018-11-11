@@ -72,6 +72,9 @@ class JwtOrchTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($decodedToken->job, '*', 'job in contractor token');
 	}
 
+	/**
+	 * Test Token Generation for subcontractors
+	 */
 	public function testGetSubcontractorToken() {
 		$token = Orch::getSubcontractorToken('subcontractor@email.com', 42, 19999999999, TestContainer::getContainer());
 		$decodedToken = \Firebase\JWT\JWT::decode($token, 'test', array('HS512'));

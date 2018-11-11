@@ -287,6 +287,9 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($actualAwsConfig['urlExpiration'], 42, 'AWS urlExpiration');
 	}
 
+	/**
+	 * Test Base Url
+	 */
 	public function testBaseUrl() {
 		$config = array();
 		$config['display_error_details'] = true;
@@ -306,6 +309,9 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($actualUrl, 'test.com', "Base Url");
 	}
 
+	/**
+	 * Test smtp info
+	 */
 	public function testSmtpInfo() {
 		$config = array();
 		$config['display_error_details'] = true;
