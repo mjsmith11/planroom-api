@@ -286,4 +286,46 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($actualAwsConfig['bucket'], 'some-bucket', 'AWS bucket');
 		$this->assertEquals($actualAwsConfig['urlExpiration'], 42, 'AWS urlExpiration');
 	}
+
+	public function testBaseUrl() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'unknown', 'maxFiles' => 12);
+		$config['aws'] = array('key' => 'mytestkey', 'secret' => 'mytestsecret', 'region' => 'test-region', 'bucket' => 'some-bucket', 'urlExpiration' => 42);
+		$config['baseUrl'] = 'test.com';
+		$config['smtp'] = array();
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		$actualUrl = ConfigReader::getBaseUrl();
+
+		$this->assertEquals($actualUrl, 'test.com', "Base Url");
+	}
+
+	public function testSmtpInfo() {
+		$config = array();
+		$config['display_error_details'] = true;
+		$config['cors_origins'] = array('testurl.com');
+		$config['mysql'] = array();
+		$config['logging'] = array('level' => 'unknown', 'maxFiles' => 12);
+		$config['aws'] = array('key' => 'mytestkey', 'secret' => 'mytestsecret', 'region' => 'test-region', 'bucket' => 'some-bucket', 'urlExpiration' => 42);
+		$config['baseUrl'] = 'test.com';
+		$config['smtp'] = array('host' => 'smtp.com', 'username' => 'test@email.com', 'password' => 'myPassword', 'port' => 587, 'fromName' => 'Sir Tester');
+
+		$file = fopen(self::$filePath, 'w');
+		fwrite($file, json_encode($config));
+		fclose($file);
+
+		$actual = ConfigReader::getSmtpInfo();
+		$this->assertEquals($actual['host'], 'smtp.com', 'smtp host');
+		$this->assertEquals($actual['username'], 'test@email.com', 'smtp username');
+		$this->assertEquals($actual['password'], 'myPassword', 'smtp password');
+		$this->assertEquals($actual['port'], 587, 'smtp port');
+		$this->assertEquals($actual['fromName'], 'Sir Tester', 'smtp from');
+
+	}
 }
