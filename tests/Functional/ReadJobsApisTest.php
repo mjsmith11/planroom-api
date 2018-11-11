@@ -30,6 +30,8 @@ class ReadJobsApisTest extends BaseTestCase {
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
 		$config['aws'] = array('key' => 'mytestkey', 'secret' => 'mytestsecret', 'region' => 'test-region', 'bucket' => 'some-bucket', 'urlExpiration' => 42);
 		$config['jwt'] = array('secret' => 'test');
+		$config['baseUrl'] = 'test.com';
+		$config['smtp'] = array();
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));

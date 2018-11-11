@@ -30,6 +30,8 @@ class CreateJobApiTest extends BaseTestCase {
 		$config['logging'] = array('level' => 'debug', 'maxFiles' => 1);
 		$config['aws'] = array('region' => 'test-region');
 		$config['jwt'] = array('secret' => 'test');
+		$config['baseUrl'] = 'test.com';
+		$config['smtp'] = array();
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
