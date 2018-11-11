@@ -71,4 +71,13 @@ class JwtOrchTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($decodedToken->role, 'contractor', 'role in contractor token');
 		$this->assertEquals($decodedToken->job, '*', 'job in contractor token');
 	}
+
+	public function testGetSubcontractorToken() {
+		$token = Orch::getSubcontractorToken('subcontractor@email.com', 42, 19999999999, TestContainer::getContainer());
+		$decodedToken = \Firebase\JWT\JWT::decode($token, 'test', array('HS512'));
+		$this->assertEquals($decodedToken->email, 'subcontractor@email.com', 'email in token');
+		$this->assertEquals($decodedToken->exp, 19999999999, 'token expiration');
+		$this->assertEquals($decodedToken->role, 'subcontractor', 'role in contractor token');
+		$this->assertEquals($decodedToken->job, 42, 'job in contractor token');
+	}
 }
