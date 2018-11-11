@@ -6,6 +6,8 @@ use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\Environment;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 /**
  * This is an example class that shows how you could set up a method that
@@ -72,6 +74,19 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
 			unset($container['S3Client']);
 			$container['S3Client'] = $stub;
 		}
+
+		$stub = $this->createMock(PHPMailer::class);
+		$stub->method('clearAddresses')
+			->willReturn('');
+		$stub->method('addAddress')
+			->willReturn('');
+		$stub->method('isHTML')
+			->willReturn('');
+		$stub->method('send')
+			->willReturn('');
+		$container = $app->getContainer();
+		unset($container['mailer']);
+		$container['mailer'] = $stub;
 
 		// Register middleware
 		if ($middleware) {

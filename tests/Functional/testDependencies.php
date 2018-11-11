@@ -3,6 +3,8 @@
  * @SuppressWarnings checkUnusedVariables
  * DIC configuration
  */
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\Exception;
 
 $container = $app->getContainer();
 
@@ -21,4 +23,8 @@ $container['S3Client'] = function($cont) {
 		'credentials' => $credProvider
 	]);
 	return $client;
+};
+
+$container['mailer'] = function($cont) {
+	return new PHPMailer(true);
 };

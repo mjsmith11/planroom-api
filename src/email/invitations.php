@@ -41,7 +41,7 @@ class Invitations {
 	 * 
 	 * @returns subject
 	 */
-	protected static function buildSubject($jobId, $container) {
+	public static function buildSubject($jobId, $container) {
 		$job = JobOrch::Read($jobId, $container);
 		return "Invitation To Bid: " . $job['name'];
 	}
@@ -55,7 +55,7 @@ class Invitations {
 	 * 
 	 * @returns html body
 	 */
-	protected static function buildBody($email, $jobId, $exp, $container) {
+	public static function buildBody($email, $jobId, $exp, $container) {
 		$job = JobOrch::Read($jobId, $container);
 		$dt = new \DateTime('@' . $exp);
 		$dt->setTimeZone(new \DateTimeZone('America/Indianapolis'));
@@ -84,14 +84,14 @@ class Invitations {
 	 * 
 	 * @returns alternate body
 	 */
-	protected static function buildAltBody($email, $jobId, $exp, $container) {
+	public static function buildAltBody($email, $jobId, $exp, $container) {
 		$job = JobOrch::Read($jobId, $container);
 		$dt = new \DateTime('@' . $exp);
 		$dt->setTimeZone(new \DateTimeZone('America/Indianapolis'));
 		$expStr = $dt->format("F j, Y, g:i a");  
 		$token = \Planroom\JWT\Orch::getSubcontractorToken($email, $jobId, $exp, $container);
 		$link = ConfigReader::getBaseUrl() . '/jobs/' . $jobId . '?token=' . $token;
-		$body = 'This is an invitation from Benchmark Mechanical to bid on the ' . $job['name'] . 'project. Bidding documents';
+		$body = 'This is an invitation from Benchmark Mechanical to bid on the ' . $job['name'] . ' project. Bidding documents';
 		$body .= 'and project details are available at the link below. The link will expire ' . $expStr . '.';
 		$body .= '\n\n';
 		$body .= $link;
