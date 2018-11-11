@@ -9,7 +9,7 @@ use TestContainer;
 use Connection;
 
 /**
- * Test Routes that read jobs
+ * Test Routes that do authentication
  * @SuppressWarnings checkProhibitedFunctions
  */
 class AuthApisTest extends BaseTestCase {
@@ -60,9 +60,20 @@ class AuthApisTest extends BaseTestCase {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 
-	// public static function testTokenRefresh() {
-	// This test requires adding a header to the request.  I haven't found a way to do this.
-	// }
+	/**
+	 * Test token refresh api
+	 */
+	 public function testTokenRefresh() {
+		 $token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjI5OTk5OTk5OTk5LCJyb2xlIjoiY29udHJhY3RvciIsImpvYiI6IioiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20ifQ.Isa8HwqE2zJ4nKpu-M8a1j0GFk5acncvh_ioOPC-66TlDETWISFNyMgvyDnKF5Jpt7g1msPXym_spv7vcFX7aQ';
+		 $response = $this->runApp('GET', '/token-refresh', null, false, false, $token);
+		 $this->assertEquals($response->getStatusCode(), 200, "Should be successful");
+		 $parsedResp = json_decode((string)$response->getBody(), true);
+		 $decodedToken = \Firebase\JWT\JWT::decode($parsedResp['token'], 'test', array('HS512'));
+		 $this->assertEquals($decodedToken->email, 'test@test.com', 'email in token');
+		 $this->assertTrue(time() + 600 - $decodedToken->exp <= 1, 'token expiration');
+		 $this->assertEquals($decodedToken->job, '*', 'job in token');
+		 $this->assertEquals($decodedToken->role, 'contractor', 'role in token');
+	 }
 
 	/**
 	 * Test a login that fails
