@@ -33,6 +33,8 @@ class Orch {
 
 	/**
 	 * @param email contractor user's email
+	 * @param job job to authorize
+	 * @param exp unix expiration time
 	 * @param container dependency container
 	 * 
 	 * @return string auth token for passed user

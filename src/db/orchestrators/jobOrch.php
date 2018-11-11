@@ -21,10 +21,17 @@
 			return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		/**
+		 * Sends invitations to a job via email
+		 * @param id id of the job to invite
+		 * @param expDays How many days should the link in the email be valid
+		 * @param emails array of emails to invite
+		 * @param container dependency container
+		 */
 		public static function sendInvitations($id, $expDays, $emails, $container) {
 			$container['logger']->debug('sending invitations', array('id' => $id, 'expDays' => $expDays, 'emails' => $emails));
 			$exp = time() + ($expDays * 86400);
-			foreach($emails as $email){
+			foreach ($emails as $email) {
 				\Planroom\Email\Invitations::sendInvitation($email, $id, $exp, $container);
 			}
 		}
