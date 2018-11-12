@@ -9,6 +9,7 @@
 		private static $logging;
 		private static $aws;
 		private static $baseUrl;
+		private static $mail;
 
 		/**
 		 * Gets the allowable origins for CORS requests
@@ -103,14 +104,13 @@
 		}
 
 		/**
-		 * @return array smtp configuration options
+		 * @return array mail configuration options
 		 */
-		public static function getSmtpInfo() {
-			// always read file so the password isn't in memory
-			$jsonString = file_get_contents(__DIR__ . '/../../config.json');
-			$config = json_decode($jsonString, true);
-
-			return $config['smtp'];
+		public static function getMailInfo() {
+			if (!self::$readDone) {
+				self::_read();
+			}
+			return self::$mail;
 		}
 
 		/**
@@ -136,6 +136,7 @@
 			self::$aws = $config['aws'];
 			unset(self::$aws['key'], self::$aws['secret']);
 			self::$baseUrl = $config['baseUrl'];
+			self::$mail = $config['mail'];
 
 			unset($config);
 			self::$readDone = true;

@@ -35,6 +35,8 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 		$config['logging'] = array('level' => 'unknown', 'maxFiles' => 12);
 		$config['aws'] = array('key' => 'mytestkey', 'secret' => 'mytestsecret', 'region' => 'test-region', 'bucket' => 'some-bucket', 'urlExpiration' => 42);
 		$config['baseUrl'] = 'test.com';
+		$config['mail'] = array();
+
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
 		fclose($file);

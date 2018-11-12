@@ -59,7 +59,7 @@ class CORSTest extends BaseTestCase {
 		$config['aws'] = array('region' => 'test-region');
 		$config['jwt'] = array('secret' => 'test');
 		$config['baseUrl'] = 'test.com';
-		$config['smtp'] = array();
+		$config['mail'] = array();
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -84,7 +84,7 @@ class CORSTest extends BaseTestCase {
 		$config['aws'] = array('region' => 'test-region');
 		$config['jwt'] = array('secret' => 'test');
 		$config['baseUrl'] = 'test.com';
-		$config['smtp'] = array();
+		$config['mail'] = array();
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
@@ -109,7 +109,7 @@ class CORSTest extends BaseTestCase {
 		$config['aws'] = array('region' => 'test-region');
 		$config['jwt'] = array('secret' => 'test');
 		$config['baseUrl'] = 'test.com';
-		$config['smtp'] = array();
+		$config['mail'] = array();
 
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
