@@ -39,6 +39,7 @@ class InvitationTest extends BaseTestCase {
 		$config['aws'] = array('key' => 'mytestkey', 'secret' => 'mytestsecret', 'region' => 'test-region', 'bucket' => 'some-bucket', 'urlExpiration' => 42);
 		$config['jwt'] = array('secret' => 'test', 'contractorExp' => 10);
 		$config['baseUrl'] = 'test.com';
+		$config['smtp'] = array();
 		
 		$file = fopen(self::$filePath, 'w');
 		fwrite($file, json_encode($config));
