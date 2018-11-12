@@ -33,18 +33,10 @@ $container['S3Client'] = function($cont) {
 	return $client;
 };
 
-$container['mailer'] = function($cont) {
-	$settings = $cont->get('settings')['smtp'];
-
+$container['mailer'] = function() {
 	$mailer = new PHPMailer(true);
 	$mailer->SMTPDebug = 0;
-	$mailer->isSMTP();
-	$mailer->Host = $settings['host'];
-	$mailer->SMTPAuth = true;
-	$mailer->Username = $settings['username'];
-	$mailer->Password = $settings['password'];
-	$mailer->SMTPSecure = 'tls';
-	$mailer->Port = $settings['port'];
+	$mailer->isMail();
 	$mailer->setFrom($settings['username'], $settings['fromName']);
 
 	return $mailer;

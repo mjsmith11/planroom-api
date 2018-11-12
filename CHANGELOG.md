@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 11/11/2018
+### Changed
+ - Emailing to use php mail function instead of smtp
+
 ## [1.1.0] - 11/11/2018
 ### Added
  - Request Authorization Middleware
