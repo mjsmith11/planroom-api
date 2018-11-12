@@ -18,6 +18,6 @@ return [
 			'region' => ConfigReader::getAwsConfig()['region'],
 		],
 		
-		'mail' => ConfigReader::GetMailInfo()
+		'mail' => ConfigReader::getMailInfo()
 	],
 ];
