@@ -38,7 +38,9 @@
     "scripts": {
         "start": "php -S 0.0.0.0:8000 -t public",
         "test": "phpunit",
-        "lint": "php vendor/phpcheckstyle/phpcheckstyle/run.php --src . --format console --exclude vendor --exclude src/db/migrations"
+        "lint": "php vendor/phpcheckstyle/phpcheckstyle/run.php --src . --format console --exclude vendor --exclude src/db/migrations",
+        "doc": "mkdir -p doc && ./vendor/bin/openapi --output doc/swagger.json --format json src",
+        "doc:serve": "composer.phar run doc && docker run -p 8001:8080 -e SWAGGER_JSON=/foo/swagger.json -v \"$(pwd)\"/doc:/foo swaggerapi/swagger-ui"
     }
 
 }

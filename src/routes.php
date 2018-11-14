@@ -1,6 +1,10 @@
 <?php
 /**
  * @SuppressWarnings checkUnusedFunctionParameters
+ * @OA\Info(
+ * 		title="planroom-api",
+ * 		version="1.1.1"
+ * )
  */
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -10,6 +14,31 @@ $app->group('/jobs', function() {
 	require_once(__DIR__ . "/db/orchestrators/jobOrch.php");
 	require_once(__DIR__ . "/s3/orch.php");
 
+	/**
+	 * @OA\Post(
+	 * 		path="/jobs",
+	 * 		summary="Adds a new job",
+	 * 		@OA\RequestBody(
+	 * 			@OA\MediaType(
+	 * 				mediaType="application/json",
+	 * 				@OA\Schema(
+	 * 					@OA\Property(
+ 	 *                     property="id",
+ 	 *                     type="string"
+ 	 *                 ),
+  	 *                 @OA\Property(
+ 	 *                     property="name",
+ 	 *                     type="string"
+ 	 *                 )
+	 * 				)
+	 * 			)
+	 * 		),
+	 * 		@OA\Response(
+	 * 			response="200",
+	 * 			description="OK"
+	 * 		)
+	 * )
+	 */
 	$this->post('', function($request, $response, $args) {
 		$in = $request->getParsedBody();
 		$out = JobOrch::create($in, $this);
