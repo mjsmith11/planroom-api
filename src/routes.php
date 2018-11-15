@@ -16,26 +16,22 @@ $app->group('/jobs', function() {
 
 	/**
 	 * @OA\Post(
+	 * 		tags={"Jobs"},
 	 * 		path="/jobs",
 	 * 		summary="Adds a new job",
-	 * 		@OA\RequestBody(
-	 * 			@OA\MediaType(
-	 * 				mediaType="application/json",
-	 * 				@OA\Schema(
-	 * 					@OA\Property(
- 	 *                     property="id",
- 	 *                     type="string"
- 	 *                 ),
-  	 *                 @OA\Property(
- 	 *                     property="name",
- 	 *                     type="string"
- 	 *                 )
-	 * 				)
-	 * 			)
+	 * 		@OA\RequestBody(ref="#/components/requestBodies/job_in_body"),
+	 * 		@OA\Response(
+	 * 			response=200,
+	 * 			description="job added successfully",
+	 * 			@OA\JsonContent(ref="#/components/schemas/job_resp")
 	 * 		),
 	 * 		@OA\Response(
-	 * 			response="200",
-	 * 			description="OK"
+	 * 			response=401,
+	 *	 		description="Unauthorized"
+	 * 		),
+	 * 		@OA\Response(
+	 * 			response=403,
+	 * 			description="Forbidden"
 	 * 		)
 	 * )
 	 */
@@ -45,11 +41,65 @@ $app->group('/jobs', function() {
 		return $this->response->withJson($out);
 	});
 
+	/**
+	 * @OA\Get(
+	 * 	tags={"Jobs"},
+	 * 	path="/jobs",
+	 * 	summary="Retrieve all jobs. 1st sort: (bidDate >= today). 2nd sort: (abs(today-bidDate))",
+	 * 	@OA\Response(
+	 * 		response=200,
+	 * 		description="All jobs in the system sorted",
+	 * 		@OA\JsonContent(
+	 * 			type="array",
+	 * 			@OA\Items(ref="#/components/schemas/job_resp")
+	 * 		)
+	 * 	), 
+	 * 	@OA\Response(
+	 * 		response=401,
+	 * 		description="Unauthorized"
+	 * 	),
+	 * 	@OA\Response(
+	 * 		response=403,
+	 * 		description="Forbidden"
+	 * 	)
+	 * )
+	 */
 	$this->get('', function($request, $response, $args) {
 		$out = JobOrch::getAllByBidDate($this);
 		return $this->response->withJson($out);
 	});
 
+	/**
+	 * @OA\Get(
+	 * 	tags={"Jobs"},
+	 * 	path="/jobs/{job_id}",
+	 * 	summary="Retrieve one job",
+	 * 	@OA\Parameter(
+	 * 		parameter="job_id_in_path",
+	 * 		name="job_id",
+	 * 		description="The ID of the job to retrieve",
+	 * 		@OA\Schema(
+	 * 			type="integer",
+	 * 			format="int64"
+	 * 		),
+	 * 		in="path",
+	 * 		required=true
+	 * 	),
+	 * 	@OA\Response(
+	 * 		response=200,
+	 * 		description="job read",
+	 * 		@OA\JsonContent(ref="#/components/schemas/job_resp")
+	 * 	),
+	 * 	@OA\Response(
+	 * 		response=401,
+	 * 		description="Unauthorized"
+	 * 	),
+	 * 	@OA\Response(
+	 * 		response=403,
+	 * 		description="Forbidden"
+	 * 	)
+	 * )
+	 */
 	$this->get('/{id}', function($request, $response, $args) {
 		$out = JobOrch::read($args['id'], $this);
 		return $this->response->withJson($out);

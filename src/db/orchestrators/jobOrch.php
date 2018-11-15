@@ -4,6 +4,110 @@
 	/**
 	 * @SuppressWarnings checkUnusedVariables
 	 * Orchestrator for Jobs
+	 * 
+	 * @OA\Schema(
+	 * 	schema="job_req",
+	 * 	description="Job request",
+	 * 	type="object",
+	 * 	@OA\Property(
+ 	 *  	property="name",
+	 *      type="string",
+	 *		example="Bayside High School Renovation" 
+	 *  ),
+	 *  @OA\Property(
+	 * 		property="bidDate",
+	 * 		type="string",
+	 * 		example="2018-11-24"
+	 * 	),
+	 * 	@OA\Property(
+	 * 		property="subcontractorBidsDue",
+	 * 		type="string",
+	 * 		example="2018-11-23T05:30"
+	 * 	),
+	 * @OA\Property(
+	 * 		property="prebidDateTime",
+	 * 		type="string",
+	 * 		example="2018-11-23T15:30"
+	 * 	),
+	 * @OA\Property(
+	 * 		property="prebidAddress",
+	 * 		type="string",
+	 * 		example="123 Main St., Orlando, FL 12345"
+	 * 	),
+	 * 	@OA\Property(
+	 * 		property="bidEmail",
+	 * 		type="string",
+	 * 		example="example@somewhere.com"
+	 * 	),
+	 * 	@OA\Property(
+	 * 		property="bonding",
+	 * 		type="boolean",
+	 * 		example=true 
+	 * 	),
+	 * @OA\Property(
+	 * 		property="taxible",
+	 * 		type="boolean",
+	 * 		example=false
+	 * 	) 
+	 * )
+	 * 
+	 * @OA\Schema(
+	 * 	schema="job_resp",
+	 * 	description="Job request",
+	 * 	type="object",
+	 *  @OA\Property(
+	 * 		property="id",
+	 * 		type="integer",
+	 * 		example=1
+	 * 	),
+	 * 	@OA\Property(
+ 	 *  	property="name",
+	 *      type="string",
+	 *		example="Bayside High School Renovation" 
+	 *  ),
+	 *  @OA\Property(
+	 * 		property="bidDate",
+	 * 		type="string",
+	 * 		example="2018-11-24"
+	 * 	),
+	 * 	@OA\Property(
+	 * 		property="subcontractorBidsDue",
+	 * 		type="string",
+	 * 		example="2018-11-23T05:30"
+	 * 	),
+	 * @OA\Property(
+	 * 		property="prebidDateTime",
+	 * 		type="string",
+	 * 		example="2018-11-23T15:30"
+	 * 	),
+	 * @OA\Property(
+	 * 		property="prebidAddress",
+	 * 		type="string",
+	 * 		example="123 Main St., Orlando, FL 12345"
+	 * 	),
+	 * 	@OA\Property(
+	 * 		property="bidEmail",
+	 * 		type="string",
+	 * 		example="example@somewhere.com"
+	 * 	),
+	 * 	@OA\Property(
+	 * 		property="bonding",
+	 * 		type="boolean",
+	 * 		example=true 
+	 * 	),
+	 * @OA\Property(
+	 * 		property="taxible",
+	 * 		type="boolean",
+	 * 		example=false
+	 * 	) 
+	 * )
+	 * 
+	 *	@OA\RequestBody(
+	 * 		request="job_in_body",
+	 * 		required=true,
+	 * 		description="job_request",
+	 * 		@OA\JsonContent(ref="#/components/schemas/job_req")
+	 * 	),
 	 */
 	class JobOrch extends BaseOrch {
 		protected static $tableName = "job";
