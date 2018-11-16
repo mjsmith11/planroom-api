@@ -9,10 +9,10 @@ It adheres to [Semantic Versioning](https://semver.org/) and [Gitflow](https://w
 1. Install MySQL for php 7.2 `sudo apt-get install php7.2-mysql`
 1. Install php7.2-curl `sudo apt-get install php7.2-curl`
 1. Install composer globally [Directions](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
-1. Install dependencies `composer.phar install`
+1. Install dependencies `composer install`
 1. Copy `example_config.json` to `config.json` and fill in information. Valid log levels are debug, info, notice, warning, error, critical, alert, and emergency.
 1. Run database migrations `vendor/bin/phinx migrate`
-1. Use `composer.phar run start` to start a development server.
+1. Use `composer run start` to start a development server.
 
 ## Helpful Tools
  - MySQL Workbench
@@ -27,15 +27,25 @@ It adheres to [Semantic Versioning](https://semver.org/) and [Gitflow](https://w
 
 ### Prepare for production
 ```
-composer.phar install --no-dev --optimize-autoloader
+composer install --no-dev --optimize-autoloader
 ```
 ### Run unit tests
 ```
-composer.phar run test
+composer run test
 ```
 ### Run Linting
-Note the db migrations directory is excluded because the phinx naming convention breaks a phpcheckstyle rule
+Note: the db migrations directory is excluded because the phinx naming convention breaks a phpcheckstyle rule
 ```
-composer.phar run lint
+composer run lint
 ``` 
+### Generate API Documentation
+Note: This generates API documentation in json format.  It must be run in the root of the repository. Documentation will be output to doc/swagger.json
+```
+composer run doc
+```
+### Run GUI Documentation Viewer
+Note: This requires docker to run. It will generate the documentation and then run a docker container with a web server serving a GUI for viewing the API Documentation. The documentation is accessed by navigating to `localhost:8001`.
+```
+composer run doc:serve
+```
 
