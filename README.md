@@ -44,7 +44,7 @@ Note: This generates API documentation in json format.  It must be run in the ro
 composer run doc
 ```
 ### Run GUI Documentation Viewer
-Note: This requires docker to run. It will generate the documentation and then run a docker container with a web server serving a GUI for viewing the API Documentation. The documentation is accessed by navigating to `localhost:8001`.
+Note: This requires docker to run and must be run in the root of the repository. It will generate the documentation and then run a docker container with a web server serving a GUI for viewing the API Documentation. The documentation is accessed by navigating to `localhost:8001`. 
 ```
 composer run doc:serve
 ```
