@@ -100,3 +100,24 @@ class Invitations {
 		return $body;
 	}
 }
+
+/**
+ * @OA\Schema(
+ * 	schema="invitation_req",
+ * 	description="request to send invitations",
+ * 	type="object",
+ * 	@OA\Property(	
+ * 		property="validDays",
+ * 		type="integer",
+ * 		example=3
+ * 	),
+ * 	@OA\Property(
+ * 		property="emails",
+ * 		type="array",
+ * 		@OA\Items(
+ * 			type="string",
+ * 			example="example@somewhere.com"
+ * 		)
+ * 	)
+ * )
+ */

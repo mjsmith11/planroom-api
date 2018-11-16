@@ -10,6 +10,7 @@
 
 	/**
 	 * This class contains methods for interacting with AWS S3
+	 * @SuppressWarnings lineLength
 	 */
 	class S3Orch {
 		/**
@@ -96,3 +97,65 @@
 			return $result;
 		}
 	}
+	/**
+	 * @OA\Schema(
+	 * 	schema="plan",
+	 * 	description="plan stored in s3",
+	 * 	type="object",
+	 * 	@OA\Property(
+	 * 		property="key",
+	 * 		type="string",
+	 * 		example="25/CMS_Addendum_4.pdf"
+	 * 	),
+	 * 	@OA\Property(
+	 * 		property="url",
+	 * 		type="string",
+	 * 		example="https://benchmark-planroom.s3.amazonaws.com/25/CMS_Addendum_4.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAING2TBX3PCHBVN3Q%2F20181116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20181116T002802Z&X-Amz-SignedHeaders=host&X-Amz-Expires=900&X-Amz-Signature=ec7b7fcf087de79afc1f1849ddd2cf5f8bc00238089630ffc8819758f4fcc534"
+	 * 	)
+	 * )
+	 * 
+	 * @OA\Schema(
+	 * 	schema="presigned_post",
+	 * 	description="presigned post request for AWS S3",
+	 * 	type="object",
+	 * 	@OA\Property(
+	 * 		property="postEndpoint",
+	 * 		type="string",
+	 * 		example="https://planroom-dev-1.s3.amazonaws.com"
+	 * 	),
+	 * 	@OA\Property(
+	 * 		property="signature",
+	 * 		type="object",
+	 * 		@OA\Property(
+	 * 			property="key",
+	 * 			type="string",
+	 * 			example="21/abcdef.pdf"
+	 * 		),
+	 * 		@OA\Property(
+	 * 			property="X-Amz-Credential",
+	 * 			type="string",
+	 * 			example="AKIAJY4YIUEHRS5T7NIA/20181116/us-east-1/s3/aws4_request"
+	 * 		),
+	 * 		@OA\Property(
+	 * 			property="X-Amz-Algorithm",
+	 * 			type="string",
+	 * 			example="AWS4-HMAC-SHA256"
+	 * 		),
+	 * 		@OA\Property(
+	 * 			property="X-Amz-Date",
+	 * 			type="string",
+	 * 			example="20181116T005417Z"
+	 * 		),
+	 * 		@OA\Property(
+	 * 			property="Policy",
+	 * 			type="string",
+	 * 			example="eyJleHBpcmF0aW9uIjoiMjAxOC0xMS0xNlQwMTowNDoxN1oiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJwbGFucm9vbS1kZXYtMSJ9LHsia2V5IjoiMjFcL2FiY2RlZi5wZGYifSx7IlgtQW16LURhdGUiOiIyMDE4MTExNlQwMDU0MTdaIn0seyJYLUFtei1DcmVkZW50aWFsIjoiQUtJQUpZNFlJVUVIUlM1VDdOSUFcLzIwMTgxMTE2XC91cy1lYXN0LTFcL3MzXC9hd3M0X3JlcXVlc3QifSx7IlgtQW16LUFsZ29yaXRobSI6IkFXUzQtSE1BQy1TSEEyNTYifV19"
+	 * 		),
+	 * 		@OA\Property(
+	 * 			property="X-Amz-Signature",
+	 * 			type="string",
+	 * 			example="7915c7deb548d68773ff517ffdf9bbf86d53a0ff9a92f94ef8ef3f838ca4f7b3"
+	 * 		)
+	 * 	)
+	 * )
+	 */
