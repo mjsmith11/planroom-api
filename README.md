@@ -59,4 +59,4 @@ composer run doc:serve
 ```
 
 
-**For details on the contents of this repository, see [GETTING_STARTED](https://github.com/mjsmith11/planroom-ui/blob/master/GETTING_STARTED.md)**
+**For details on the contents of this repository, see [GETTING_STARTED](https://github.com/mjsmith11/planroom-api/blob/master/GETTING_STARTED.md)**
