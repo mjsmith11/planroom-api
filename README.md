@@ -25,6 +25,15 @@ It adheres to [Semantic Versioning](https://semver.org/) and [Gitflow](https://w
  - Tokens for contractors expire after an amount of time specified in the config.json file.
  - The 'token-refresh' route will provide a new token with new expiration time to contractor users.
 
+
+### Install Dependencies
+```
+composer install
+```
+### Run Development Server
+```
+composer run start
+```
 ### Prepare for production
 ```
 composer install --no-dev --optimize-autoloader
@@ -49,3 +58,5 @@ Note: This requires docker to run and must be run in the root of the repository.
 composer run doc:serve
 ```
 
+
+**For details on the contents of this repository, see [GETTING_STARTED](https://github.com/mjsmith11/planroom-ui/blob/master/GETTING_STARTED.md)**
