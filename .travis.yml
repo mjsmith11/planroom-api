@@ -18,6 +18,7 @@ before_deploy:
  - cp -r public dist
  - cp -r src dist
  - cp -r vendor dist
+ - cp phinx.prod.php dist/vendor/bin/phinx.php
  - rm -f dist/logs/app.log
  - zip -r planroom-api-${TRAVIS_TAG}.zip dist
 deploy:
