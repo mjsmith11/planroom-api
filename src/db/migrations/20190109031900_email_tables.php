@@ -32,10 +32,22 @@ class EmailTables extends AbstractMigration
      */
     public function change()
     {
-        $emailAddresses = $this->table('emailAddress');
+        $emailAddresses = $this->table('email_address');
         $emailAddresses->addColumn('address', 'string', ['limit' => 100])
             ->addColumn('uses', 'integer', ['default' => 0])
             ->addIndex('address', ['unique' => true])
             ->save();
+
+        $emails = $this->table('sent_email');
+        $emails->addColumn('timestamp', 'datetime')
+            ->addColumn('subject', 'string', ['limit' => 100])
+            ->addColumn('body', 'string', ['limit' => 1000])
+            ->addColumn('alt_body', 'string', ['limit' => 1000])
+            ->addColumn('job_id', 'integer', ['null' => false])
+            ->addColumn('address_id', 'integer', ['null' => false])
+            ->addForeignKey('job_id', 'job', 'id')
+            ->addForeignKey('address_id', 'email_address', 'id')
+            ->save();
+
     }
 }
