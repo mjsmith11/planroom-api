@@ -4,9 +4,13 @@ namespace Planroom\Email;
 require_once(__DIR__ . "/../db/orchestrators/jobOrch.php");
 require_once(__DIR__ . "/../jwt/orch.php");
 require_once(__DIR__ . "/../config/configReader.php");
+require_once(__DIR__ . "/../db/orchestrators/emailAddressOrch.php");
+require_once(__DIR__ . "/../db/orchestrators/sentEmailOrch.php");
 
 use JobOrch;
 use ConfigReader;
+use EmailAddressOrch;
+use SentEmailOrch;
 
 /**
  * Email invitations for jobs
@@ -32,6 +36,16 @@ class Invitations {
 		$mail->send();
 		$container['logger']->info('Invitation Sent', array('email' => $email, 'Job Id' => $jobId, 'Expiration' => $exp));
 		$mail->clearAddresses(); // so they aren't there for the next email.
+
+		$emailAddressObj = EmailAddressOrch::recordUse($email, $container);
+		$sentMail = array('timestamp' => date("Y-m-d H:i:s"),
+			'subject' => $mail->Subject,
+			'body' => $mail->Body,
+			'alt_body' => $mail->AltBody,
+			'job_id' => $jobId,
+			'address_id' => $emailAddressObj['id']);
+		SentEmailOrch::create($sentMail, $container);
+		
 	}
 
 	/**
