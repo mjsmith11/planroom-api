@@ -4,11 +4,11 @@
 	 * @SuppressWarnings checkUnusedVariables
 	 * Orchestrator for Email Addresses
 	 * 
-     */
-    class EmailAddressOrch extends BaseOrch {
+	 */
+	class EmailAddressOrch extends BaseOrch {
 		protected static $tableName = "email_address";
-        protected static $fieldList = array("address", "uses");
-        
+		protected static $fieldList = array("address", "uses");
+		
 
 		/**
 		 * Add a record for new addresses and 
@@ -37,7 +37,7 @@
 			}
 		}
 
-        /**
+		/**
 		 * Checks if a address exists in the database
 		 * 
 		 * @param address the address to check
@@ -45,12 +45,12 @@
 		 * 
 		 * @return boolean
 		 */
-        public static function addressExists($address, $container) {
-            $container['logger']->info("Checking email address existence", array('address' => $address));
-            $pdo = Connection::getConnection($container)['conn'];
+		public static function addressExists($address, $container) {
+			$container['logger']->info("Checking email address existence", array('address' => $address));
+			$pdo = Connection::getConnection($container)['conn'];
 			$sql = "SELECT * FROM email_address WHERE `address` = :address";
-            $container['logger']->debug("Address exists query built", array('sql' => $sql));
-            $statement = $pdo->prepare($sql);
+			$container['logger']->debug("Address exists query built", array('sql' => $sql));
+			$statement = $pdo->prepare($sql);
 			$statement->bindParam("address", $address);
 			$statement->execute();
 			return $statement->fetchColumn() > 0;
@@ -64,14 +64,14 @@
 		 * 
 		 * @return email_address object
 		 */
-        public static function readByAddress($address, $container) {
-            $container['logger']->info("Checking email address existence", array('address' => $address));
-            $pdo = Connection::getConnection($container)['conn'];
+		public static function readByAddress($address, $container) {
+			$container['logger']->info("Checking email address existence", array('address' => $address));
+			$pdo = Connection::getConnection($container)['conn'];
 			$sql = "SELECT * FROM email_address WHERE `address` = :address";
-            $container['logger']->debug("Read by address query built", array('sql' => $sql));
-            $statement = $pdo->prepare($sql);
+			$container['logger']->debug("Read by address query built", array('sql' => $sql));
+			$statement = $pdo->prepare($sql);
 			$statement->bindParam("address", $address);
 			$statement->execute();
 			return $statement->fetch(PDO::FETCH_ASSOC);
-        }
-    }
+		}
+	}
