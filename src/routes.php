@@ -252,7 +252,49 @@ $app->group('/jobs', function() {
 });
 $app->group('/email', function() {
 	require_once(__DIR__ . "/db/orchestrators/emailAddressOrch.php");
-	
+
+	/**
+	 * @OA\Post(
+	 * 	tags={"Emails"},
+	 * 	path="/email/autocomplete?text={text}",
+	 * 	summary="Searches for email autocomplete suggestions",
+	 * 	@OA\Parameter(
+	 * 		parameter="text",
+	 * 		name="text",
+	 * 		description="Partial email address. A wildcard will be added on the right",
+	 * 		@OA\Schema(
+	 * 			type="string",
+	 * 			example="email@ex"
+	 * 		),
+	 * 		in="path",
+	 * 		required=true
+	 * 	),
+	 * 	@OA\Parameter(ref="#/components/parameters/auth-token"),
+	 * 	@OA\RequestBody(),
+	 * 	@OA\Response(
+	 * 		response=200,
+	 * 		description="matching email addresses",
+	 * 		@OA\JsonContent(
+	 * 			type="array",
+	 * 			@OA\Items(
+	 *            @OA\Property(
+	 * 		        property="address",
+  	 *      		type="string",
+	 * 		        example="email@example.com"
+	 * 	          ),
+	 *          )
+	 * 		)
+	 * 	),
+	 * 	@OA\Response(
+	 * 		response=401,
+	 * 		description="Unauthorized"
+	 * 	),
+	 * 	@OA\Response(
+	 * 		response=403,
+	 * 		description="Forbidden"
+	 * 	)
+	 * )
+	 */
 	$this->get('/autocomplete', function($request, $response, $args) {
 		$text = $request->getQueryParam('text', '');
 		$out = EmailAddressOrch::getAutoCompleteSuggestions($text, $this);
