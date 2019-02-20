@@ -250,6 +250,15 @@ $app->group('/jobs', function() {
 		return $response;
 	});
 });
+$app->group('/email', function() {
+	require_once(__DIR__ . "/db/orchestrators/emailAddressOrch.php");
+	
+	$this->get('/autocomplete', function($request, $response, $args) {
+		$text = $request->getQueryParam('text', '');
+		$out = EmailAddressOrch::getAutoCompleteSuggestions($text, $this);
+		return $this->response->withJson($out);
+	});
+});
 
 $app->group('', function() {
 	require_once(__DIR__ . "/jwt/orch.php");

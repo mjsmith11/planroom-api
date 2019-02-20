@@ -74,4 +74,25 @@
 			$statement->execute();
 			return $statement->fetch(PDO::FETCH_ASSOC);
 		}
+
+		/**
+		 * Search for autocomplete suggestions
+		 * 
+		 * @param inputString Partial email address.  A wildcard will be added on the right
+		 * @param container dependency container
+		 * 
+		 * @return array of email addresses
+		 */
+		public static function getAutoCompleteSuggestions($inputString, $container) {
+			$container['logger']->info("Reading auto complete suggestions", array('input' => $inputString));
+			$pdo = Connection::getConnection($container)['conn'];
+			$sql = "SELECT address FROM email_address WHERE `address` LIKE :input ORDER BY `uses` DESC";
+			$container['logger']->debug("Autocomplete query built", array('sql' => $sql));
+			$statement = $pdo->prepare($sql);
+			$inputString = $inputString . '%';
+			$statement->bindParam("input", $inputString);
+			$statement->execute();
+			return $statement->fetchAll(PDO::FETCH_ASSOC);
+
+		}
 	}
