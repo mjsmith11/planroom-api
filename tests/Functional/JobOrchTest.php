@@ -94,6 +94,39 @@ class JobOrchTest extends \PHPUnit_Framework_TestCase {
 		]];
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
 
+		// mock the email record
+		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[]]);
+
+		// mock the Insert query for email
+		$readEmailMock = [[
+			'id' => 12,
+			'address' => 'abc@xyz.com',
+			'uses' => 1
+		]];
+		$this->pdo->mock("INSERT INTO email_address (`address`, `uses`) VALUES (:address, :uses)", [[]]);
+		// mock the read after create
+		$readEmailMock = [[
+			'id' => 12,
+			'address' => 'abc@xyz.com',
+			'uses' => 1
+		]];
+		$this->pdo->mock("SELECT * FROM email_address WHERE `id` = :id", $readEmailMock);
+
+		//mock sent_email insertion
+		$this->pdo->mock("INSERT INTO sent_email (`timestamp`, `subject`, `body`, `alt_body`, `job_id`, `address_id`) VALUES (:timestamp, :subject, :body, :alt_body, :job_id, :address_id)", [[]]);
+		// mock read after create
+		$readSentEmailMock = [[
+			'id' => 10,
+			'timestamp' => '05-16-2018T13:00',
+			'subject' => 'mySubject',
+			'body' => 'myBody',
+			'alt_body' => 'myAltBody',
+			'job_id' => 1,
+			'address_id' => 12
+		]];
+		$this->pdo->mock("SELECT * FROM sent_email WHERE `id` = :id", $readSentEmailMock);
+
+
 		$container = TestContainer::getContainer();
 		$stub = $this->createMock(PHPMailer::class);
 		$stub->method('clearAddresses')
