@@ -65,7 +65,7 @@
 		 * @return email_address object
 		 */
 		public static function readByAddress($address, $container) {
-			$container['logger']->info("Checking email address existence", array('address' => $address));
+			$container['logger']->info("Reading email by address", array('address' => $address));
 			$pdo = Connection::getConnection($container)['conn'];
 			$sql = "SELECT * FROM email_address WHERE `address` = :address";
 			$container['logger']->debug("Read by address query built", array('sql' => $sql));
@@ -92,7 +92,13 @@
 			$inputString = $inputString . '%';
 			$statement->bindParam("input", $inputString);
 			$statement->execute();
-			return $statement->fetchAll(PDO::FETCH_ASSOC);
-
+			
+			$result = array();
+			$row = $statement->fetch();
+			while ($row) {
+				array_push($result, $row['address']);
+				$row = $statement->fetch();
+			}
+			return $result;
 		}
 	}

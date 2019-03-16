@@ -113,7 +113,9 @@ class JobOrchTest extends \PHPUnit_Framework_TestCase {
 		$this->pdo->mock("SELECT * FROM email_address WHERE `id` = :id", $readEmailMock);
 
 		//mock sent_email insertion
-		$this->pdo->mock("INSERT INTO sent_email (`timestamp`, `subject`, `body`, `alt_body`, `job_id`, `address_id`) VALUES (:timestamp, :subject, :body, :alt_body, :job_id, :address_id)", [[]]);
+		$query = "INSERT INTO sent_email (`timestamp`, `subject`, `body`, `alt_body`, `job_id`, `address_id`) ";
+		$query = $query . "VALUES (:timestamp, :subject, :body, :alt_body, :job_id, :address_id)";
+		$this->pdo->mock($query, [[]]);
 		// mock read after create
 		$readSentEmailMock = [[
 			'id' => 10,
