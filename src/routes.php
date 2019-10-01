@@ -13,6 +13,7 @@ use Slim\Http\Response;
 // Routes
 $app->group('/jobs', function() {
 	require_once(__DIR__ . "/db/orchestrators/jobOrch.php");
+	require_once(__DIR__ . "/db/orchestrators/sentEmailOrch.php");
 	require_once(__DIR__ . "/s3/orch.php");
 
 	/**
@@ -246,15 +247,20 @@ $app->group('/jobs', function() {
 	 */
 	$this->post('/{id}/invite', function($request, $response, $args) {
 		$in = $request->getParsedBody();
-		JobOrch::sendInvitations($args['id'], $in['validDays'], $in['emails'], $this);
+		JobOrch::sendInvitations($args['id'], $in['validDays'], $in['emails'], $in['message'], $this);
 		return $response;
+	});
+
+	$this->get('/{id}/invite', function($request, $response, $args) {
+		$out = SentEmailOrch::getEmailsByJob($args['id'], $this);
+		return $this->response->withJson($out);
 	});
 });
 $app->group('/email', function() {
 	require_once(__DIR__ . "/db/orchestrators/emailAddressOrch.php");
 
 	/**
-	 * @OA\Post(
+	 * @OA\Get(
 	 * 	tags={"Emails"},
 	 * 	path="/email/autocomplete?text={text}",
 	 * 	summary="Searches for email autocomplete suggestions",

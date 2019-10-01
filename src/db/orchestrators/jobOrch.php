@@ -132,11 +132,11 @@
 		 * @param emails array of emails to invite
 		 * @param container dependency container
 		 */
-		public static function sendInvitations($id, $expDays, $emails, $container) {
+		public static function sendInvitations($id, $expDays, $emails, $message, $container) {
 			$container['logger']->debug('sending invitations', array('id' => $id, 'expDays' => $expDays, 'emails' => $emails));
 			$exp = time() + ($expDays * 86400);
 			foreach ($emails as $email) {
-				\Planroom\Email\Invitations::sendInvitation($email, $id, $exp, $container);
+				\Planroom\Email\Invitations::sendInvitation($email, $id, $exp, $message, $container);
 			}
 		}
 	}
