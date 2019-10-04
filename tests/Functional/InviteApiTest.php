@@ -74,7 +74,7 @@ class InviteApiTest extends BaseTestCase {
 
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
 		
-		$data = array('validDays' => 3, 'emails' => array('email1@test.com', 'email2@test.com'));
+		$data = array('validDays' => 3, 'emails' => array('email1@test.com', 'email2@test.com'), 'message' => '');
 
 		$response = $this->runApp('POST', '/jobs/45/invite', $data, false, false, null);
 		

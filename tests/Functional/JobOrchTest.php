@@ -142,7 +142,7 @@ class JobOrchTest extends \PHPUnit_Framework_TestCase {
 		unset($container['mailer']);
 		$container['mailer'] = $stub;
 		$emails = array('test1@test.com', 'test2@test.com');
-		JobOrch::sendInvitations(45, 3, $emails, $container);
+		JobOrch::sendInvitations(45, 3, $emails, "", $container);
 		// It's tough to assert something here, but this shows it won't error
 	}
 }
