@@ -251,6 +251,50 @@ $app->group('/jobs', function() {
 		return $response;
 	});
 
+	/**
+	 * @OA\Get(
+	 * 	tags={"Jobs","Emails"},
+	 * 	path="/jobs/{job_id}/invite",
+	 * 	summary="Retrieve a list of emails that have been invited to a job",
+	 * 	@OA\Parameter(
+	 * 		parameter="job_id_in_path",
+	 * 		name="job_id",
+	 * 		description="The ID of the job to retrieve emails for",
+	 * 		@OA\Schema(
+	 * 			type="integer",
+	 * 			format="int64"
+	 * 		),
+	 * 		in="path",
+	 * 		required=true
+	 * 	),
+	 * 	@OA\Parameter(ref="#/components/parameters/auth-token"),
+	 * 	@OA\RequestBody(),
+	 * 	@OA\Response(
+	 * 		response=200,
+	 * 		description="matching email addresses",
+	 * 		@OA\JsonContent(
+	 * 			type="array",
+	 *			description="list of emails receiving invitations",
+	 * 			@OA\Items(
+	 *            @OA\Property(
+	 * 		        property="address",
+	 * 				description="the email address",
+  	 *      		type="string",
+	 * 		        example="email@example.com"
+	 * 	          ),
+	 *          )
+	 * 		)
+	 * 	),
+	 * 	@OA\Response(
+	 * 		response=401,
+	 * 		description="Unauthorized"
+	 * 	),
+	 * 	@OA\Response(
+	 * 		response=403,
+	 * 		description="Forbidden"
+	 * 	)
+	 * )
+	 */
 	$this->get('/{id}/invite', function($request, $response, $args) {
 		$out = SentEmailOrch::getEmailsByJob($args['id'], $this);
 		return $this->response->withJson($out);

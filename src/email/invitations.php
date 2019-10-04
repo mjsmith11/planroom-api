@@ -144,6 +144,7 @@ class Invitations {
  * 	description="request to send invitations",
  * 	type="object",
  * 	@OA\Property(	
+ * 		description="the number of days that the invitations should be valid",
  * 		property="validDays",
  * 		type="integer",
  * 		example=3
@@ -151,10 +152,17 @@ class Invitations {
  * 	@OA\Property(
  * 		property="emails",
  * 		type="array",
+ *      description="list of emails to invite",
  * 		@OA\Items(
  * 			type="string",
  * 			example="example@somewhere.com"
  * 		)
+ * 	),
+ *  @OA\Property(	
+ *		description="message to include in the invitations",
+ * 		property="message",
+ * 		type="string",
+ * 		example="Please contact us"
  * 	)
  * )
  */
