@@ -24,14 +24,14 @@ class Invitations {
 	 * @param container dependency container
 	 */
 	public static function sendInvitation($email, $jobId, $exp, $message, $container) {
-		$mail = $container['mailer'];
-		$mail->clearAddresses(); // try to avoid sending to extraneous addresses
-		$mail->addAddress($email);
+		 $mail = $container['mailer'];
+		 $mail->clearAddresses(); // try to avoid sending to extraneous addresses
+		 $mail->addAddress($email);
 
-		$mail->isHTML(true);
-		$mail->Subject = self::buildSubject($jobId, $container);
-		$mail->Body = self::buildBody($email, $jobId, $exp, $message, $container);
-		$mail->AltBody = self::buildAltBody($email, $jobId, $exp, $container);
+		 $mail->isHTML(true);
+		 $mail->Subject = self::buildSubject($jobId, $container);
+		 $mail->Body = self::buildBody($email, $jobId, $exp, $message, $container);
+		 $mail->AltBody = self::buildAltBody($email, $jobId, $exp, $message, $container);
 
 		$mail->send();
 		$container['logger']->info('Invitation Sent', array('email' => $email, 'Job Id' => $jobId, 'Expiration' => $exp));
@@ -116,7 +116,7 @@ class Invitations {
 	 * 
 	 * @returns alternate body
 	 */
-	public static function buildAltBody($email, $jobId, $exp, $container) {
+	public static function buildAltBody($email, $jobId, $exp, $message, $container) {
 		$job = JobOrch::Read($jobId, $container);
 		$dt = new \DateTime('@' . $exp);
 		$dt->setTimeZone(new \DateTimeZone('America/Indianapolis'));
