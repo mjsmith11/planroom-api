@@ -56,7 +56,7 @@ class AuthApisTest extends BaseTestCase {
 	/**
 	 * Set up test connection
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 
