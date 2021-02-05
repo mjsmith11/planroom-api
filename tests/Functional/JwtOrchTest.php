@@ -16,7 +16,7 @@
  * Tests for the JWT Orch
  * @SuppressWarnings checkProhibitedFunctions
  */
-class JwtOrchTest extends \TestCase {
+class JwtOrchTest extends TestCase {
 	private $pdo;
 	private static $fileBackup;
 	private static $filePath = __DIR__ . '/../../config.json';
