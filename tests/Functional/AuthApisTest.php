@@ -21,7 +21,7 @@ class AuthApisTest extends BaseTestCase {
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
 			unlink(self::$filePath);
@@ -44,7 +44,7 @@ class AuthApisTest extends BaseTestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		unlink(self::$filePath);
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');
