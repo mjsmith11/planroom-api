@@ -28,7 +28,7 @@ class UserOrchTest extends TestCase {
 	 */
 	public function testReadByEmail() {
 		$mockResult = [[ 'id' => 12, 'field1' => "fakeData1", 'field2' => "fakeData2", 'field3' => "fakeData3"]];
-		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult, array('email' => 'test@email.com'));
 
 		$result = UserOrch::readByEmail('test@email.com', TestContainer::getContainer());
 		$this->assertEquals(12, $result['id'], 'Read id');
@@ -42,7 +42,7 @@ class UserOrchTest extends TestCase {
 	 */
 	public function testCheckPasswordNoUser() {
 		$mockResult = [];
-		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult, array('email' => 'test@email.com'));
 		
 		$result = UserOrch::checkPassword('test@email.com', 'password', TestContainer::getContainer());
 		$this->assertFalse($result, "login should fail");
@@ -54,7 +54,7 @@ class UserOrchTest extends TestCase {
 	public function testCheckPasswordBadPassword() {
 		/// hash is for 'password123'
 		$mockResult = [['email' => 'test@email.com', 'password' => '$2y$10$XtLla3j.dySzJa4PA93mu.6lxIle5WbnRlQoa.la1LGSHXlmd/k3q']];
-		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult, array('email' => 'test@email.com'));
 		
 		$result = UserOrch::checkPassword('test@email.com', 'password', TestContainer::getContainer());
 		$this->assertFalse($result, "login should fail");
@@ -66,7 +66,7 @@ class UserOrchTest extends TestCase {
 	public function testCheckPasswordSuccess() {
 		/// hash is for 'password123'
 		$mockResult = [['email' => 'test@email.com', 'password' => '$2y$10$XtLla3j.dySzJa4PA93mu.6lxIle5WbnRlQoa.la1LGSHXlmd/k3q']];
-		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult, array('email' => 'test@email.com'));
 		
 		$result = UserOrch::checkPassword('test@email.com', 'password123', TestContainer::getContainer());
 		$this->assertTrue($result, "login should succeed");

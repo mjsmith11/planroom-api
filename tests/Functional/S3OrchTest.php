@@ -125,7 +125,7 @@ class S3OrchTest extends TestCase {
 	 */
 	public function testGetObjectsByJobEmpty() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array(id => 45));
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 45));
 
 		$stub = $this->createMock(\Aws\S3\S3Client::class);
 		$stub->method('getIterator')
