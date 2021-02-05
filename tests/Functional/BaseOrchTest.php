@@ -80,7 +80,7 @@ class BaseOrchTest extends TestCase {
 	 */
 	public function testCreate() {
 		$readMockResult = [[ 'id' => 45, 'field1' => "myData1", 'field2' => "myData2", 'field3' => "myData3"]];
-		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $readMockResult, array('id' => 45));
 
 		$createMockResult = [[ 'id' => 45 ]];
 		$this->pdo->mock("INSERT INTO testTable (`id, field1`, `field2`, `field3`) VALUES (:id, field1, :field2, :field3)", $createMockResult, array('id' => 45));
