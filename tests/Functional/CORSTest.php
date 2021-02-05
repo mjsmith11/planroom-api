@@ -20,7 +20,7 @@ class CORSTest extends BaseTestCase {
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		ConfigReader::reset(TestContainer::getContainer());
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
@@ -31,7 +31,7 @@ class CORSTest extends BaseTestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');
 			fwrite($file, self::$fileBackup);
@@ -42,7 +42,7 @@ class CORSTest extends BaseTestCase {
 	/**
 	 * Remove the config file and reset the ConfigReader after each test
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		unlink(self::$filePath);
 		ConfigReader::reset(TestContainer::getContainer());
 	}

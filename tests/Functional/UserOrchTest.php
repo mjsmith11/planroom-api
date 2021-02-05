@@ -8,17 +8,18 @@
 	use UserOrch;
 	use Connection;
 	use TestContainer;
+	use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for the User Orch
  */
-class UserOrchTest extends \PHPUnit_Framework_TestCase {
+class UserOrchTest extends TestCase {
 	private $pdo;
 
 	/**
 	 * Setup class to FakePdo connection
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 

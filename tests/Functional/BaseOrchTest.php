@@ -8,6 +8,7 @@ require_once(__DIR__ . "/testDependenciesContainer.php");
 use BaseOrch;
 use Connection;
 use TestContainer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for the Base Orch
@@ -15,14 +16,14 @@ use TestContainer;
  * @SuppressWarnings docBlocks
  * @SuppressWarnings oneClassPerFile
  */
-class BaseOrchTest extends \PHPUnit_Framework_TestCase {
+class BaseOrchTest extends TestCase {
 	private $testOrch;
 	private $pdo;
 
 	/**
 	 * Setup class to extend BaseOrch and FakePdo connection
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		$this->testOrch = new class extends BaseOrch {
 			protected static $tableName = "testTable";
 			protected static $fieldList = array('id, field1', 'field2', 'field3');
