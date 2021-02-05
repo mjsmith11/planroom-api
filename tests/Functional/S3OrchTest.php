@@ -68,7 +68,7 @@ class S3OrchTest extends TestCase {
 	 */
 	public function testGetPresignedPostNoJob() {
 		$mockResult = [];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 1));
 		
 		try {
 			\Planroom\S3\S3Orch::getPresignedPost(1, 'myFile', TestContainer::getContainer());
@@ -83,7 +83,7 @@ class S3OrchTest extends TestCase {
 	 */
 	public function testGetPresignedPostBlankFile() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 1));
 		
 		try {
 			\Planroom\S3\S3Orch::getPresignedPost(1, ' ', TestContainer::getContainer());
@@ -98,7 +98,7 @@ class S3OrchTest extends TestCase {
 	 */
 	public function testGetPresignedPostSuccess() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 1));
 		
 		$res = \Planroom\S3\S3Orch::getPresignedPost(1, 'file.txt', TestContainer::getContainer());
 		$this->assertEquals($res['postEndpoint'], "https://some-bucket.s3.amazonaws.com", "post endpoint");
@@ -110,7 +110,7 @@ class S3OrchTest extends TestCase {
 	 */
 	public function testGetObjectsByJobNoJob() {
 		$mockResult = [];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 1));
 		
 		try {
 			\Planroom\S3\S3Orch::getObjectsByJob(1, TestContainer::getContainer());
@@ -125,7 +125,7 @@ class S3OrchTest extends TestCase {
 	 */
 	public function testGetObjectsByJobEmpty() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array(id => 45));
 
 		$stub = $this->createMock(\Aws\S3\S3Client::class);
 		$stub->method('getIterator')
@@ -145,7 +145,7 @@ class S3OrchTest extends TestCase {
 	 */
 	public function testGetObjectsByJobOne() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 45));
 		
 		$stub = $this->createMock(\Aws\S3\S3Client::class);
 		$stub->method('getIterator')
@@ -171,7 +171,7 @@ class S3OrchTest extends TestCase {
 	 */
 	public function testGetObjectsByJobTwo() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 45));
 		
 		$stub = $this->createMock(\Aws\S3\S3Client::class);
 		$stub->method('getIterator')

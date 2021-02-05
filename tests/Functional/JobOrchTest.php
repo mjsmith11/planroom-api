@@ -93,7 +93,7 @@ class JobOrchTest extends TestCase {
 			'bonding' => 1,
 			'taxible' => 0 
 		]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 45));
 
 		$container = TestContainer::getContainer();
 		$stub = $this->createMock(PHPMailer::class);
