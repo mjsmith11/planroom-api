@@ -81,7 +81,7 @@ class InvitationTest extends BaseTestCase {
 			'taxible' => 0 
 		]];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult,array('id' => 45));
 		
 		$subject = Invitations::buildSubject(45, TestContainer::getContainer());
 		$this->assertEquals($subject, 'Invitation To Bid: jobName', 'Generated subject');
@@ -103,7 +103,7 @@ class InvitationTest extends BaseTestCase {
 			'taxible' => 0 
 		]];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 45));
 		$expected = '<center>
 	   <img src="https://benchmarkmechanical.com/Images/logo1.jpg" />
 	   <br><br><br>
@@ -135,7 +135,7 @@ class InvitationTest extends BaseTestCase {
 			'taxible' => 0 
 		]];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult,array('id' => 45));
 		$expected = 'This is an invitation from Benchmark Mechanical to bid on the jobName project. Bidding documentsand project details are available at the link below. The link will expire December 31, 1969, 7:16 pm.\n\ntest.com/jobs/45?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjEwMDAsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsInJvbGUiOiJzdWJjb250cmFjdG9yIiwiam9iIjo0NX0.97GW23zdyQRPYkdgQSWbHewLj82PdKAP-EaJ8ewPRxsa1wvh41x92JV1tXEDa8n8r8szwwuDiXoJEhNa4AZX5w\n\nPlease do not reply to this email. The mailbox is not monitored';
 		$actual = Invitations::buildAltBody('test@test.com', 45, 1000, TestContainer::getContainer());
 		$this->assertEquals($expected, $actual, 'Generated body');
@@ -156,7 +156,7 @@ class InvitationTest extends BaseTestCase {
 			'bonding' => 1,
 			'taxible' => 0 
 		]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 45));
 
 		$container = TestContainer::getContainer();
 		$stub = $this->createMock(PHPMailer::class);
