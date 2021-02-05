@@ -73,7 +73,7 @@ class CreateJobApiTest extends BaseTestCase {
 			'taxible' => 0 
 		]];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 45));
 
 		$query = "INSERT INTO job (`name`, `bidDate`, `subcontractorBidsDue`, `prebidDateTime`, `prebidAddress`, `bidEmail`, `bonding`, `taxible`) ";
 		$query = $query . "VALUES (:name, :bidDate, :subcontractorBidsDue, :prebidDateTime, :prebidAddress, :bidEmail, :bonding, :taxible)";
