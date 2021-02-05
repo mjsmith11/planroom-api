@@ -83,7 +83,7 @@ class BaseOrchTest extends TestCase {
 		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $readMockResult);
 
 		$createMockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("INSERT INTO testTable (`id, field1`, `field2`, `field3`) VALUES (:id, field1, :field2, :field3)", $createMockResult);
+		$this->pdo->mock("INSERT INTO testTable (`id, field1`, `field2`, `field3`) VALUES (:id, field1, :field2, :field3)", $createMockResult, array('id' => 45));
 
 		$this->pdo->setLastId(45);
 		
@@ -101,7 +101,7 @@ class BaseOrchTest extends TestCase {
 	 */
 	public function testExistsYes() {
 		$mockResult = [[ 'id' => 42, 'field1' => "expectedData1", 'field2' => "expectedData2", 'field3' => "expectedData3"]];
-		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult, array('id' => 42));
 
 		$result = $this->testOrch::exists(42, TestContainer::getContainer());
 		$this->assertEquals(true, $result, "record should exist");
@@ -112,7 +112,7 @@ class BaseOrchTest extends TestCase {
 	 */
 	public function testExistsNo() {
 		$mockResult = [];
-		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult, array('id' => 42));
 
 		$result = $this->testOrch::exists(42, TestContainer::getContainer());
 		$this->assertEquals(false, $result, "record should exist");
