@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "801dd61de451c089c40365361db57eb4",
+    "content-hash": "6d51bdf16f3f829198d9998f4ecf0a7e",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2690,16 +2690,16 @@
         },
         {
             "name": "jimbojsb/pseudo",
-            "version": "0.3.1",
+            "version": "v0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jimbojsb/pseudo.git",
-                "reference": "f6de3bdecc372b137715b3cfa8268d89ffbad747"
+                "reference": "50de1934d53ee73004770ccc7113bd7908ed0661"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jimbojsb/pseudo/zipball/f6de3bdecc372b137715b3cfa8268d89ffbad747",
-                "reference": "f6de3bdecc372b137715b3cfa8268d89ffbad747",
+                "url": "https://api.github.com/repos/jimbojsb/pseudo/zipball/50de1934d53ee73004770ccc7113bd7908ed0661",
+                "reference": "50de1934d53ee73004770ccc7113bd7908ed0661",
                 "shasum": ""
             },
             "require-dev": {
@@ -2729,7 +2729,7 @@
                 "issues": "https://github.com/jimbojsb/pseudo/issues",
                 "source": "https://github.com/jimbojsb/pseudo/tree/master"
             },
-            "time": "2018-07-13T13:55:10+00:00"
+            "time": "2020-03-06T13:22:43+00:00"
         },
         {
             "name": "myclabs/deep-copy",
