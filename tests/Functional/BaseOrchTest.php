@@ -36,7 +36,7 @@ class BaseOrchTest extends TestCase {
 	 */
 	public function testRead() {
 		$mockResult = [[ 'id' => 42, 'field1' => "expectedData1", 'field2' => "expectedData2", 'field3' => "expectedData3"]];
-		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = 42", $mockResult);
+		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult);
 
 		$result = $this->testOrch::Read(42, TestContainer::getContainer());
 		$this->assertEquals(42, $result['id'], 'Read id');
