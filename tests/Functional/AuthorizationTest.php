@@ -93,7 +93,7 @@ class AuthorizationTest extends BaseTestCase {
 	 */
 	public function testLogin() {
 		$mockResult = [['email' => 'test@email.com', 'password' => '$2y$10$XtLla3j.dySzJa4PA93mu.6lxIle5WbnRlQoa.la1LGSHXlmd/k3q']];
-		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult, array('email' => 'test@email.com'));
 
 		$data = array('email' => 'test@test.com', 'password' => 'password123');
 		$response = $this->runApp('POST', '/login', $data, false, false);
@@ -207,7 +207,7 @@ class AuthorizationTest extends BaseTestCase {
 			'taxible' => 0 
 		]];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 7));
 
 		$exp = time() + 500;
 		$token = array(
@@ -226,7 +226,7 @@ class AuthorizationTest extends BaseTestCase {
 	 */
 	function testSubGetPlans() {
 		$mockResult = [[ 'id' => 7 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 7));
 
 		$exp = time() + 500;
 		$token = array(

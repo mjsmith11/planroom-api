@@ -81,7 +81,7 @@ class AuthApisTest extends BaseTestCase {
 	 */
 	public function testFailedLogin() {
 		$mockResult = [];
-		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult, array('email' => 'test@test.com'));
 
 		$data = array('email' => 'test@test.com', 'password' => 'p');
 		$response = $this->runApp('POST', '/login', $data, false, false);
@@ -93,7 +93,7 @@ class AuthApisTest extends BaseTestCase {
 	 */
 	public function testSuccessfulLogin() {
 		$mockResult = [['email' => 'test@email.com', 'password' => '$2y$10$XtLla3j.dySzJa4PA93mu.6lxIle5WbnRlQoa.la1LGSHXlmd/k3q']];
-		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult, array('email' => 'test@test.com'));
 
 		$data = array('email' => 'test@test.com', 'password' => 'password123');
 		$response = $this->runApp('POST', '/login', $data, false, false);
