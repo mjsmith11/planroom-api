@@ -72,7 +72,7 @@ class InviteApiTest extends BaseTestCase {
 			'taxible' => 0 
 		]];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 45));
 		
 		$data = array('validDays' => 3, 'emails' => array('email1@test.com', 'email2@test.com'));
 

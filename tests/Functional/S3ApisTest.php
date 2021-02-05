@@ -66,7 +66,7 @@ class S3ApisTest extends BaseTestCase {
 	 */
 	public function testUpload() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 45));
 		
 		$response = $this->runApp('POST', '/jobs/45/plans?filename=xyz.abc', null, false, false);
 		
@@ -82,7 +82,7 @@ class S3ApisTest extends BaseTestCase {
 	 */
 	public function testGetObjects() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 45));
 
 		$response = $this->runApp('GET', '/jobs/45/plans?filename', null, true, false);
 

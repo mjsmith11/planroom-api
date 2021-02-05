@@ -73,7 +73,7 @@ class ReadJobsApisTest extends BaseTestCase {
 			'taxible' => 0 
 		]];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 45));
 		
 		$response = $this->runApp('GET', '/jobs/45', null, false, false);
 		
