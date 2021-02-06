@@ -83,7 +83,7 @@ class Invitations {
 	 * 
 	 * @returns alternate body
 	 */
-	public static function buildAltBody($email, $jobId, $exp, $container) {
+	public static function buildAltBody($email, $job, $exp, $container) {
 		$dt = new \DateTime('@' . $exp);
 		$dt->setTimeZone(new \DateTimeZone('America/Indianapolis'));
 		$expStr = $dt->format("F j, Y, g:i a");  
