@@ -3,8 +3,6 @@
 	require_once(__DIR__ . '/../../email/invitations.php');
 	require_once(__DIR__ . "/../db/orchestrators/jobOrch.php");
 
-	use JobOrch;
-
 	/**
 	 * @SuppressWarnings checkUnusedVariables
 	 * Orchestrator for Jobs
