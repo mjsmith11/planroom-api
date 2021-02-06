@@ -30,7 +30,7 @@
 		 * @param container dependency container
 		 */
 		public static function sendInvitations($id, $expDays, $emails, $container) {
-			$job = $this->Read($id, $container);
+			$job = self::Read($id, $container);
 			$container['logger']->debug('sending invitations', array('id' => $id, 'expDays' => $expDays, 'emails' => $emails));
 			$exp = time() + ($expDays * 86400);
 			foreach ($emails as $email) {
