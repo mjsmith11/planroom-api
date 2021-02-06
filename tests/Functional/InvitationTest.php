@@ -142,7 +142,7 @@ class InvitationTest extends BaseTestCase {
 	 * Test sending invitations
 	 */
 	public function testSendInvitation() {
-		$readMockResult = [[ 
+		$job = [
 			'id' => 45, 
 			'name' => 'jobName',
 			'bidDate' => '08-19-2019',
@@ -152,8 +152,7 @@ class InvitationTest extends BaseTestCase {
 			'bidEmail' => 'abc@xyz.com',
 			'bonding' => 1,
 			'taxible' => 0 
-		]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 45));
+		];
 
 		$container = TestContainer::getContainer();
 		$stub = $this->createMock(PHPMailer::class);
@@ -168,7 +167,7 @@ class InvitationTest extends BaseTestCase {
 		unset($container['mailer']);
 		$container['mailer'] = $stub;
 
-		Invitations::sendInvitation('test@test.com', 45, 1000, $container);
+		Invitations::sendInvitation('test@test.com', $job, 1000, $container);
 		// It's difficult to find something to assert here, but this will show it won't error
 	}
 }

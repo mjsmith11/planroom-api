@@ -1,11 +1,9 @@
 <?php
 namespace Planroom\Email;
 
-require_once(__DIR__ . "/../db/orchestrators/jobOrch.php");
 require_once(__DIR__ . "/../jwt/orch.php");
 require_once(__DIR__ . "/../config/configReader.php");
 
-use JobOrch;
 use ConfigReader;
 
 /**
@@ -15,12 +13,11 @@ class Invitations {
 	/**
 	 * Sends a single invitation
 	 * @param email address to send to
-	 * @param jobId id of job to invite
+	 * @param job object of job to invite
 	 * @param exp unix timestamp for link expiration
 	 * @param container dependency container
 	 */
-	public static function sendInvitation($email, $jobId, $exp, $container) {
-		$job = JobOrch::Read($jobId, $container);
+	public static function sendInvitation($email, $job, $exp, $container) {
 		$mail = $container['mailer'];
 		$mail->clearAddresses(); // try to avoid sending to extraneous addresses
 		$mail->addAddress($email);
@@ -31,7 +28,7 @@ class Invitations {
 		$mail->AltBody = self::buildAltBody($email, $job, $exp, $container);
 
 		$mail->send();
-		$container['logger']->info('Invitation Sent', array('email' => $email, 'Job Id' => $jobId, 'Expiration' => $exp));
+		$container['logger']->info('Invitation Sent', array('email' => $email, 'Job Id' => $job['id'], 'Expiration' => $exp));
 		$mail->clearAddresses(); // so they aren't there for the next email.
 	}
 
