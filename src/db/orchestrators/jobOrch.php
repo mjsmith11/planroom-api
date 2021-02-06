@@ -1,7 +1,6 @@
 <?php
 	require_once(__DIR__ . '/../base/orch.php');
 	require_once(__DIR__ . '/../../email/invitations.php');
-	require_once(__DIR__ . "/../db/orchestrators/jobOrch.php");
 
 	/**
 	 * @SuppressWarnings checkUnusedVariables
@@ -31,7 +30,7 @@
 		 * @param container dependency container
 		 */
 		public static function sendInvitations($id, $expDays, $emails, $container) {
-			$job = JobOrch::Read($id, $container);
+			$job = $this->Read($id, $container);
 			$container['logger']->debug('sending invitations', array('id' => $id, 'expDays' => $expDays, 'emails' => $emails));
 			$exp = time() + ($expDays * 86400);
 			foreach ($emails as $email) {
