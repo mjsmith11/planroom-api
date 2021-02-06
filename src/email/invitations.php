@@ -20,15 +20,14 @@ class Invitations {
 	 * @param container dependency container
 	 */
 	public static function sendInvitation($email, $jobId, $exp, $container) {
-		$job = JobOrch::Read($jobId, $container);
 		$mail = $container['mailer'];
 		$mail->clearAddresses(); // try to avoid sending to extraneous addresses
 		$mail->addAddress($email);
 
 		$mail->isHTML(true);
-		$mail->Subject = self::buildSubject($job, $container);
-		$mail->Body = self::buildBody($email, $job, $exp, $container);
-		$mail->AltBody = self::buildAltBody($email, $job, $exp, $container);
+		$mail->Subject = self::buildSubject($jobId, $container);
+		$mail->Body = self::buildBody($email, $jobId, $exp, $container);
+		$mail->AltBody = self::buildAltBody($email, $jobId, $exp, $container);
 
 		$mail->send();
 		$container['logger']->info('Invitation Sent', array('email' => $email, 'Job Id' => $jobId, 'Expiration' => $exp));
@@ -37,25 +36,27 @@ class Invitations {
 
 	/**
 	 * Generates the subject for the email
-	 * @param job object of the job for invitation
+	 * @param jobId id of the job for invitation
 	 * @param container dependency container
 	 * 
 	 * @returns subject
 	 */
-	public static function buildSubject($job, $container) {
+	public static function buildSubject($jobId, $container) {
+		$job = JobOrch::Read($jobId, $container);
 		return "Invitation To Bid: " . $job['name'];
 	}
 
 	/**
 	 * Creates the html body of the invitation
 	 * @param email - email being invited
-	 * @param job - object of the job in invitation
+	 * @param jobId - id of the job in invitation
 	 * @param exp - unix expiration time
 	 * @param container - dependency container
 	 * 
 	 * @returns html body
 	 */
-	public static function buildBody($email, $job, $exp, $container) {
+	public static function buildBody($email, $jobId, $exp, $container) {
+		$job = JobOrch::Read($jobId, $container);
 		$dt = new \DateTime('@' . $exp);
 		$dt->setTimeZone(new \DateTimeZone('America/Indianapolis'));
 		$expStr = $dt->format("F j, Y, g:i a");  
@@ -77,13 +78,14 @@ class Invitations {
 	/**
 	 * Creates the text only alternate body of the invitation
 	 * @param email - email being invited
-	 * @param job - object of the job in invitation
+	 * @param jobId - id of the job in invitation
 	 * @param exp - unix expiration time
 	 * @param container - dependency container
 	 * 
 	 * @returns alternate body
 	 */
-	public static function buildAltBody($email, $job, $exp, $container) {
+	public static function buildAltBody($email, $jobId, $exp, $container) {
+		$job = JobOrch::Read($jobId, $container);
 		$dt = new \DateTime('@' . $exp);
 		$dt->setTimeZone(new \DateTimeZone('America/Indianapolis'));
 		$expStr = $dt->format("F j, Y, g:i a");  
