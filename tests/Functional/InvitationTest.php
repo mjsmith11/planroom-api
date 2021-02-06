@@ -82,7 +82,7 @@ class InvitationTest extends BaseTestCase {
 		];
 
 		
-		$subject = Invitations::buildSubject($job, TestContainer::getContainer());
+		$subject = Invitations::buildSubject($job);
 		$this->assertEquals($subject, 'Invitation To Bid: jobName', 'Generated subject');
 	}
 

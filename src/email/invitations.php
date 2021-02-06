@@ -23,7 +23,6 @@ class Invitations {
 		$mail->addAddress($email);
 
 		$mail->isHTML(true);
-		$mail->Subject = self::buildSubject($job, $container);
 		$mail->Body = self::buildBody($email, $job, $exp, $container);
 		$mail->AltBody = self::buildAltBody($email, $job, $exp, $container);
 
@@ -35,11 +34,10 @@ class Invitations {
 	/**
 	 * Generates the subject for the email
 	 * @param job object of the job for invitation
-	 * @param container dependency container
 	 * 
 	 * @returns subject
 	 */
-	public static function buildSubject($job, $container) {
+	public static function buildSubject($job) {
 		return "Invitation To Bid: " . $job['name'];
 	}
 
