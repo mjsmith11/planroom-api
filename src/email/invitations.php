@@ -20,14 +20,15 @@ class Invitations {
 	 * @param container dependency container
 	 */
 	public static function sendInvitation($email, $jobId, $exp, $container) {
+		$job = JobOrch::Read($jobId, $container);
 		$mail = $container['mailer'];
 		$mail->clearAddresses(); // try to avoid sending to extraneous addresses
 		$mail->addAddress($email);
 
 		$mail->isHTML(true);
-		$mail->Subject = self::buildSubject($jobId, $container);
-		$mail->Body = self::buildBody($email, $jobId, $exp, $container);
-		$mail->AltBody = self::buildAltBody($email, $jobId, $exp, $container);
+		$mail->Subject = self::buildSubject($job, $container);
+		$mail->Body = self::buildBody($email, $job, $exp, $container);
+		$mail->AltBody = self::buildAltBody($email, $job, $exp, $container);
 
 		$mail->send();
 		$container['logger']->info('Invitation Sent', array('email' => $email, 'Job Id' => $jobId, 'Expiration' => $exp));
@@ -36,32 +37,30 @@ class Invitations {
 
 	/**
 	 * Generates the subject for the email
-	 * @param jobId id of the job for invitation
+	 * @param job object of the job for invitation
 	 * @param container dependency container
 	 * 
 	 * @returns subject
 	 */
-	public static function buildSubject($jobId, $container) {
-		$job = JobOrch::Read($jobId, $container);
+	public static function buildSubject($job, $container) {
 		return "Invitation To Bid: " . $job['name'];
 	}
 
 	/**
 	 * Creates the html body of the invitation
 	 * @param email - email being invited
-	 * @param jobId - id of the job in invitation
+	 * @param job - Object of the job in invitation
 	 * @param exp - unix expiration time
 	 * @param container - dependency container
 	 * 
 	 * @returns html body
 	 */
-	public static function buildBody($email, $jobId, $exp, $container) {
-		$job = JobOrch::Read($jobId, $container);
+	public static function buildBody($email, $job, $exp, $container) {
 		$dt = new \DateTime('@' . $exp);
 		$dt->setTimeZone(new \DateTimeZone('America/Indianapolis'));
 		$expStr = $dt->format("F j, Y, g:i a");  
-		$token = \Planroom\JWT\Orch::getSubcontractorToken($email, $jobId, $exp, $container);
-		$link = ConfigReader::getBaseUrl() . '/jobs/' . $jobId . '?token=' . $token;
+		$token = \Planroom\JWT\Orch::getSubcontractorToken($email, $job['id'], $exp, $container);
+		$link = ConfigReader::getBaseUrl() . '/jobs/' . $job['id'] . '?token=' . $token;
 		$body = '<center>
 	<img src="https://benchmarkmechanical.com/Images/logo1.jpg" />
 	<br><br><br>
@@ -85,12 +84,11 @@ class Invitations {
 	 * @returns alternate body
 	 */
 	public static function buildAltBody($email, $jobId, $exp, $container) {
-		$job = JobOrch::Read($jobId, $container);
 		$dt = new \DateTime('@' . $exp);
 		$dt->setTimeZone(new \DateTimeZone('America/Indianapolis'));
 		$expStr = $dt->format("F j, Y, g:i a");  
-		$token = \Planroom\JWT\Orch::getSubcontractorToken($email, $jobId, $exp, $container);
-		$link = ConfigReader::getBaseUrl() . '/jobs/' . $jobId . '?token=' . $token;
+		$token = \Planroom\JWT\Orch::getSubcontractorToken($email, $job['id'], $exp, $container);
+		$link = ConfigReader::getBaseUrl() . '/jobs/' . $job['id'] . '?token=' . $token;
 		$body = 'This is an invitation from Benchmark Mechanical to bid on the ' . $job['name'] . ' project. Bidding documents';
 		$body .= 'and project details are available at the link below. The link will expire ' . $expStr . '.';
 		$body .= '\n\n';
