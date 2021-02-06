@@ -1,7 +1,5 @@
 language: php
 php:
-- '7.1'
-- '7.2'
 - '7.3'
 - '7.4'
 script:
@@ -29,4 +27,4 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    php: '7.2'
+    php: '7.4'
