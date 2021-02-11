@@ -4,7 +4,7 @@ This repository contains a php back end using the slim framework for the planroo
 It adheres to [Semantic Versioning](https://semver.org/) and [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 
 ## Honorary Dependency
- - [lkf](https://github.cm/mjsmith11/lkf)
+ - [lkf](https://github.com/mjsmith11/lkf)
 
 ## Ubuntu Environment Setup
 1. Prepare an empty MySQL 5.5 database and a user with full permissions for that database. The MySQL server can be run in a docker container using `docker run --name planroom-mysql -e MYSQL_ROOT_PASSWORD=SuperSecret -d -p 3306:3306 mysql:5.5` 
