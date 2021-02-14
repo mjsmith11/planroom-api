@@ -3,12 +3,14 @@ php:
 - '7.3'
 - '7.4'
 script:
-- if find . -name "*.php" ! -path "./vendor/*" -print0 | xargs -0 -n 1 -P 8 php -l | grep -v "No syntax errors detected"; then exit 1; fi
+- if find . -name "*.php" ! -path "./vendor/*" -print0 | xargs -0 -n 1 -P 8 php -l
+  | grep -v "No syntax errors detected"; then exit 1; fi
 - composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
 - composer run test
 - composer run lint
 - rm -rf vendor
-- composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
+- composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts
+  --optimize-autoloader
 before_deploy:
 - mkdir dist
 - cp LICENSE dist
