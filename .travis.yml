@@ -3,28 +3,31 @@ php:
 - '7.3'
 - '7.4'
 script:
-- if find . -name "*.php" ! -path "./vendor/*" -print0 | xargs -0 -n 1 -P 8 php -l | grep -v "No syntax errors detected"; then exit 1; fi
+- if find . -name "*.php" ! -path "./vendor/*" -print0 | xargs -0 -n 1 -P 8 php -l
+  | grep -v "No syntax errors detected"; then exit 1; fi
 - composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
 - composer run test
 - composer run lint
 - rm -rf vendor
-- composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
-before_deploy: 
- - mkdir dist
- - cp LICENSE dist
- - cp .htaccess dist
- - cp -r logs dist
- - cp -r public dist
- - cp -r src dist
- - cp -r vendor dist
- - rm -f dist/logs/app.log
- - zip -r planroom-api-${TRAVIS_TAG}.zip dist
+- composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts
+  --optimize-autoloader
+before_deploy:
+- mkdir dist
+- cp LICENSE dist
+- cp .htaccess dist
+- cp -r logs dist
+- cp -r public dist
+- cp -r src dist
+- cp -r vendor dist
+- rm -f dist/logs/app.log
+- zip -r planroom-api-${TRAVIS_TAG}.zip dist
 deploy:
   provider: releases
-  api_key:
-    secure: VXD0AG1fKr4oWSD0TBhbDK2LoKcmeSIHqFgIxUDhJgoN/7cEq9au+4kf3qr50e0k1IK63WXCHYt5C808JTI6/EtOaOF4X44DVfeAj4iwkUh8Y5r7pbkjTY0iwh2mAh7sOlAmHxRiOzP7jq5eP1Re6Jj8DSXHY5EpshFK4GxPwJKrvARl1Nu1dC6ZgIGXoTlK+Hgb2tNg13QPNXJHLiwEmV6Q0EsOjvtL2a45p7q5gHCsb/KgDg08/8EsXCZviiqeR+sF/w4Uocsn2kw6JM7ky89Vz6diBa6VuM8f772CAiDtK5qSI5GPPKGpQzOobUQkfCu/leX0fin1fOD0RIpc8cMqd8xBcPFX5+8VBQOw8tByXGPoQ0DDKS+KYxJlrpGukVP4M/sssFOYtwbA8moGB9ixHk3XpmiGVQ4Y5b5SNvT4lOTiPCERdr0trx07180yClKS3qRjvKNGTaIVWL3gKstRep6Ovls5blZV6HT0AqJIUmQTG8YzP5wIDqlX11ahPupJ5zr0zHAyle2hyx2Ou+sUrm1UpYPuA/IMsSixUqP6WJptbeEodOehyY7WF2w49D18XCM5BqpSUFjnsfcB7ZdFrBnkZp9noXd6SK3hwAa0MzR2cvRV8AZPkcDNYdL3CraFlusFFqtcUi3TiVDsbWr8Ogh+T0lBxEgPIU/QOXg=
+   api-key:
+    secure: Cj9RGYfSrNA2FLVIwqODRRjjDII+fCiiZO95HzhqEomG5wSnl2KatSAzzJHRZQXftsR/GUbmTP94dY/QzuKY4hrNiur6+W7Tjn3431Rc8XuEyAZeiRM1UCasiZuvYo73GGN3tqJR/bNECXeOKuN86HgRS5gMFuonLq/AcrlsRHw2B3EaRiU9ZUOAlnWKykNTbmrrJcekG7aSEF7YAd+1SMKc7NFHfl4+nlZ4jKmN588qdh8EB1XBKez0rTHeXMmIRsiPLAWGnaBCHgkw6Qh/kQqUljXqJv2w4Q+IIHHBGFiq4AdvT1jUVtXvkXKptQkcH16mzA89xTTDFAPRSBlGd8d82cHRWRPYXUPl3vhZWk1sl+fSmCCK6pK6bvgu0ioi+U0MArj1rff5PJ+krbJ8FNtFPm4245pM+HNYETI06S8P3wJUC9BCV/3gp8sfdIv3kw//89BzOYxjBH9Jb36tmKeOH0tJXv4xC/w5DiJ6YQoCI4Ly8s9v6cMJRVHvtflbESuk/aZRTI0SaAfvsUxV16Agpvm68R/+4n1FMUIxJ0fNSdtOuo2sBS414806wJIHJpESFAxBBhLRMg1skv2DROPf986yn+0CQHFAtFyeyl8hVAtNH/BSVBAhW3v666MVqTNY1GSKX+SYYJYMitKQGTv8zNCwYsSSmB9K07zdqA8=
   file: planroom-api-${TRAVIS_TAG}.zip
   skip_cleanup: true
   on:
     tags: true
     php: '7.4'
+
