@@ -6,19 +6,20 @@ require_once(__DIR__ . "/testDependenciesContainer.php");
 
 use ConfigReader;
 use TestContainer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for configuration reader
  * @SuppressWarnings checkProhibitedFunctions
  */
-class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
+class ConfigReaderTest extends TestCase {
 	private static $fileBackup;
 	private static $filePath = __DIR__ . '/../../config.json';
 
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
 			unlink(self::$filePath);
@@ -28,7 +29,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');
 			fwrite($file, self::$fileBackup);
@@ -39,7 +40,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Remove the config file and reset the ConfigReader after each test
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		unlink(self::$filePath);
 		ConfigReader::reset(TestContainer::getContainer());
 	}

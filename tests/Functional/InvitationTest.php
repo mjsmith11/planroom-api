@@ -26,7 +26,7 @@ class InvitationTest extends BaseTestCase {
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
 			unlink(self::$filePath);
@@ -49,7 +49,7 @@ class InvitationTest extends BaseTestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		unlink(self::$filePath);
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');
@@ -61,7 +61,7 @@ class InvitationTest extends BaseTestCase {
 	/**
 	 * Set up test connection
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 
@@ -69,7 +69,7 @@ class InvitationTest extends BaseTestCase {
 	 * Test subject generation
 	 */
 	public function testBuildSubject() {
-		$readMockResult = [[ 
+		$job = [ 
 			'id' => 45, 
 			'name' => 'jobName',
 			'bidDate' => '08-19-2019',
@@ -79,11 +79,10 @@ class InvitationTest extends BaseTestCase {
 			'bidEmail' => 'abc@xyz.com',
 			'bonding' => 1,
 			'taxible' => 0 
-		]];
+		];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
 		
-		$subject = Invitations::buildSubject(45, TestContainer::getContainer());
+		$subject = Invitations::buildSubject($job);
 		$this->assertEquals($subject, 'Invitation To Bid: jobName', 'Generated subject');
 	}
 
@@ -91,7 +90,7 @@ class InvitationTest extends BaseTestCase {
 	 * Test building body
 	 */
 	public function testBuildBody() {
-		$readMockResult = [[ 
+		$job = [ 
 			'id' => 45, 
 			'name' => 'jobName',
 			'bidDate' => '08-19-2019',
@@ -101,9 +100,8 @@ class InvitationTest extends BaseTestCase {
 			'bidEmail' => 'abc@xyz.com',
 			'bonding' => 1,
 			'taxible' => 0 
-		]];
+		];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
 		$expected = '<center>
 	   <img src="https://benchmarkmechanical.com/Images/logo1.jpg" />
 	   <br><br><br>
@@ -115,7 +113,7 @@ class InvitationTest extends BaseTestCase {
 			   <span style="color:grey;font-size:10pt"><em>Please do not reply to this email. The mailbox is not monitored.</em></span>
 	   </div>
 </center>';
-		$actual = Invitations::buildBody('test@test.com', 45, 1000, TestContainer::getContainer());
+		$actual = Invitations::buildBody('test@test.com', $job, 1000, TestContainer::getContainer());
 		$this->assertEquals(str_replace(' ', '', str_replace("\t", '', $expected)), str_replace(' ', '', str_replace("\t", '', $actual)), 'Generated body');
 	}
 	
@@ -123,7 +121,7 @@ class InvitationTest extends BaseTestCase {
 	 * Test building alternate body
 	 */
 	public function testBuildAltBody() {
-		$readMockResult = [[ 
+		$job = [
 			'id' => 45, 
 			'name' => 'jobName',
 			'bidDate' => '08-19-2019',
@@ -133,11 +131,10 @@ class InvitationTest extends BaseTestCase {
 			'bidEmail' => 'abc@xyz.com',
 			'bonding' => 1,
 			'taxible' => 0 
-		]];
+		];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
 		$expected = 'This is an invitation from Benchmark Mechanical to bid on the jobName project. Bidding documentsand project details are available at the link below. The link will expire December 31, 1969, 7:16 pm.\n\ntest.com/jobs/45?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjEwMDAsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsInJvbGUiOiJzdWJjb250cmFjdG9yIiwiam9iIjo0NX0.97GW23zdyQRPYkdgQSWbHewLj82PdKAP-EaJ8ewPRxsa1wvh41x92JV1tXEDa8n8r8szwwuDiXoJEhNa4AZX5w\n\nPlease do not reply to this email. The mailbox is not monitored';
-		$actual = Invitations::buildAltBody('test@test.com', 45, 1000, TestContainer::getContainer());
+		$actual = Invitations::buildAltBody('test@test.com', $job, 1000, TestContainer::getContainer());
 		$this->assertEquals($expected, $actual, 'Generated body');
 	}
 	
@@ -145,8 +142,7 @@ class InvitationTest extends BaseTestCase {
 	 * Test sending invitations
 	 */
 	public function testSendInvitation() {
-		// mock the job record
-		$readMockResult = [[ 
+		$job = [
 			'id' => 45, 
 			'name' => 'jobName',
 			'bidDate' => '08-19-2019',
@@ -156,8 +152,7 @@ class InvitationTest extends BaseTestCase {
 			'bidEmail' => 'abc@xyz.com',
 			'bonding' => 1,
 			'taxible' => 0 
-		]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		];
 
 		// mock the email record
 		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[]]);
@@ -204,7 +199,7 @@ class InvitationTest extends BaseTestCase {
 		unset($container['mailer']);
 		$container['mailer'] = $stub;
 
-		Invitations::sendInvitation('test@test.com', 45, 1000, $container);
+		Invitations::sendInvitation('test@test.com', $job, 1000, $container);
 		// It's difficult to find something to assert here, but this will show it won't error
 	}
 }

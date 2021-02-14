@@ -10,12 +10,13 @@
 	use Connection;
 	use TestContainer;
 	use ConfigReader;
+	use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for the JWT Orch
  * @SuppressWarnings checkProhibitedFunctions
  */
-class JwtOrchTest extends \PHPUnit_Framework_TestCase {
+class JwtOrchTest extends TestCase {
 	private $pdo;
 	private static $fileBackup;
 	private static $filePath = __DIR__ . '/../../config.json';
@@ -23,14 +24,14 @@ class JwtOrchTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Setup class to FakePdo connection
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		ConfigReader::reset(TestContainer::getContainer());
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
@@ -46,7 +47,7 @@ class JwtOrchTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		unlink(self::$filePath);
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');

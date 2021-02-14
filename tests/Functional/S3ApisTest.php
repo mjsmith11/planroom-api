@@ -21,7 +21,7 @@ class S3ApisTest extends BaseTestCase {
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		ConfigReader::reset(TestContainer::getContainer());
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
@@ -44,7 +44,7 @@ class S3ApisTest extends BaseTestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		unlink(self::$filePath);
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');
@@ -57,7 +57,7 @@ class S3ApisTest extends BaseTestCase {
 	/**
 	 * Setup pdo for tests
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		$this->pdo = Connection::getConnection(true)['conn'];
 	}
 
@@ -66,7 +66,7 @@ class S3ApisTest extends BaseTestCase {
 	 */
 	public function testUpload() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 45));
 		
 		$response = $this->runApp('POST', '/jobs/45/plans?filename=xyz.abc', null, false, false);
 		
@@ -82,7 +82,7 @@ class S3ApisTest extends BaseTestCase {
 	 */
 	public function testGetObjects() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 45));
 
 		$response = $this->runApp('GET', '/jobs/45/plans?filename', null, true, false);
 

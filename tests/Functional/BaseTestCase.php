@@ -8,6 +8,7 @@ use Slim\Http\Response;
 use Slim\Http\Environment;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use PHPUnit\Framework\TestCase;
 
 /**
  * This is an example class that shows how you could set up a method that
@@ -17,7 +18,7 @@ use PHPMailer\PHPMailer\Exception;
  * 
  * @SuppressWarnings functionMaxParameters
  */
-class BaseTestCase extends \PHPUnit_Framework_TestCase {
+class BaseTestCase extends TestCase {
 	/**
 	 * Process the application given a request method and URI
 	 *

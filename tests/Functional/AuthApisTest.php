@@ -21,7 +21,7 @@ class AuthApisTest extends BaseTestCase {
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
 			unlink(self::$filePath);
@@ -44,7 +44,7 @@ class AuthApisTest extends BaseTestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		unlink(self::$filePath);
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');
@@ -56,7 +56,7 @@ class AuthApisTest extends BaseTestCase {
 	/**
 	 * Set up test connection
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 
@@ -81,7 +81,7 @@ class AuthApisTest extends BaseTestCase {
 	 */
 	public function testFailedLogin() {
 		$mockResult = [];
-		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult, array('email' => 'test@test.com'));
 
 		$data = array('email' => 'test@test.com', 'password' => 'p');
 		$response = $this->runApp('POST', '/login', $data, false, false);
@@ -93,7 +93,7 @@ class AuthApisTest extends BaseTestCase {
 	 */
 	public function testSuccessfulLogin() {
 		$mockResult = [['email' => 'test@email.com', 'password' => '$2y$10$XtLla3j.dySzJa4PA93mu.6lxIle5WbnRlQoa.la1LGSHXlmd/k3q']];
-		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult, array('email' => 'test@test.com'));
 
 		$data = array('email' => 'test@test.com', 'password' => 'password123');
 		$response = $this->runApp('POST', '/login', $data, false, false);

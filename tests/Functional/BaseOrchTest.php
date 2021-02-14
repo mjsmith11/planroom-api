@@ -8,6 +8,7 @@ require_once(__DIR__ . "/testDependenciesContainer.php");
 use BaseOrch;
 use Connection;
 use TestContainer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for the Base Orch
@@ -15,14 +16,14 @@ use TestContainer;
  * @SuppressWarnings docBlocks
  * @SuppressWarnings oneClassPerFile
  */
-class BaseOrchTest extends \PHPUnit_Framework_TestCase {
+class BaseOrchTest extends TestCase {
 	private $testOrch;
 	private $pdo;
 
 	/**
 	 * Setup class to extend BaseOrch and FakePdo connection
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		$this->testOrch = new class extends BaseOrch {
 			protected static $tableName = "testTable";
 			protected static $fieldList = array('id, field1', 'field2', 'field3');
@@ -35,7 +36,7 @@ class BaseOrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRead() {
 		$mockResult = [[ 'id' => 42, 'field1' => "expectedData1", 'field2' => "expectedData2", 'field3' => "expectedData3"]];
-		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult, array('id' => 42));
 
 		$result = $this->testOrch::Read(42, TestContainer::getContainer());
 		$this->assertEquals(42, $result['id'], 'Read id');
@@ -79,10 +80,10 @@ class BaseOrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testCreate() {
 		$readMockResult = [[ 'id' => 45, 'field1' => "myData1", 'field2' => "myData2", 'field3' => "myData3"]];
-		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $readMockResult, array('id' => 45));
 
 		$createMockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("INSERT INTO testTable (`id, field1`, `field2`, `field3`) VALUES (:id, field1, :field2, :field3)", $createMockResult);
+		$this->pdo->mock("INSERT INTO testTable (`id, field1`, `field2`, `field3`) VALUES (:id, field1, :field2, :field3)", $createMockResult, array('id' => 45));
 
 		$this->pdo->setLastId(45);
 		
@@ -100,7 +101,7 @@ class BaseOrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testExistsYes() {
 		$mockResult = [[ 'id' => 42, 'field1' => "expectedData1", 'field2' => "expectedData2", 'field3' => "expectedData3"]];
-		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult, array('id' => 42));
 
 		$result = $this->testOrch::exists(42, TestContainer::getContainer());
 		$this->assertEquals(true, $result, "record should exist");
@@ -111,7 +112,7 @@ class BaseOrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testExistsNo() {
 		$mockResult = [];
-		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult, array('id' => 42));
 
 		$result = $this->testOrch::exists(42, TestContainer::getContainer());
 		$this->assertEquals(false, $result, "record should exist");

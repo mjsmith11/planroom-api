@@ -14,6 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
  - Switch SMTP mail to PHP mail function
 
+## [1.1.2] - 02/14/2021
+### Added
+ - Honorary Dependency lkf
+### Changed
+ - Updates to Support PHP 7.3 and 7.4 (Test changes and an Optimization to the Invitation Process)
+
+## [1.1.1] - 11/11/2018
+### Changed
+ - Use PHPMailer instead of SMTP
+
 ## [1.1.0] - 11/11/2018
 ### Added
  - Request Authorization Middleware

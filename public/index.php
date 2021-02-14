@@ -1,5 +1,5 @@
 <?php
-// https://github.cm/mjsmith11/lkf
+// https://github.com/mjsmith11/lkf
 
 if (PHP_SAPI === 'cli-server') {
 	// To help the built-in PHP dev server, check if the request was actually for

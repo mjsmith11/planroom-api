@@ -24,7 +24,7 @@ class AuthorizationTest extends BaseTestCase {
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
 			unlink(self::$filePath);
@@ -48,7 +48,7 @@ class AuthorizationTest extends BaseTestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		unlink(self::$filePath);
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');
@@ -60,7 +60,7 @@ class AuthorizationTest extends BaseTestCase {
 	/**
 	 * Set up test connection
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		$this->pdo = Connection::getConnection(true)['conn'];
 	}
 
@@ -93,7 +93,7 @@ class AuthorizationTest extends BaseTestCase {
 	 */
 	public function testLogin() {
 		$mockResult = [['email' => 'test@email.com', 'password' => '$2y$10$XtLla3j.dySzJa4PA93mu.6lxIle5WbnRlQoa.la1LGSHXlmd/k3q']];
-		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult);
+		$this->pdo->mock("SELECT * FROM user WHERE `email` = :email", $mockResult, array('email' => 'test@test.com'));
 
 		$data = array('email' => 'test@test.com', 'password' => 'password123');
 		$response = $this->runApp('POST', '/login', $data, false, false);
@@ -207,7 +207,7 @@ class AuthorizationTest extends BaseTestCase {
 			'taxible' => 0 
 		]];
 
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 7));
 
 		$exp = time() + 500;
 		$token = array(
@@ -226,7 +226,7 @@ class AuthorizationTest extends BaseTestCase {
 	 */
 	function testSubGetPlans() {
 		$mockResult = [[ 'id' => 7 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 7));
 
 		$exp = time() + 500;
 		$token = array(

@@ -1,7 +1,7 @@
 language: php
 php:
-- '7.1'
-- '7.2'
+- '7.3'
+- '7.4'
 script:
 - if find . -name "*.php" ! -path "./vendor/*" -print0 | xargs -0 -n 1 -P 8 php -l | grep -v "No syntax errors detected"; then exit 1; fi
 - composer install --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
@@ -28,4 +28,4 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    php: '7.2'
+    php: '7.4'

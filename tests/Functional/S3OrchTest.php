@@ -10,12 +10,13 @@ require_once(__DIR__ . '/../../src/config/configReader.php');
 use TestContainer;
 use Connection;
 use ConfigReader;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for AWS S3 Orch
  * @SuppressWarnings checkProhibitedFunctions
  */
-class S3OrchTest extends \PHPUnit_Framework_TestCase {
+class S3OrchTest extends TestCase {
 	private static $fileBackup;
 	private static $filePath = __DIR__ . '/../../config.json';
 	private $pdo;
@@ -23,7 +24,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
 			unlink(self::$filePath);
@@ -45,7 +46,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		unlink(self::$filePath);
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');
@@ -58,7 +59,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Setup pdo for the test
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 
@@ -67,7 +68,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetPresignedPostNoJob() {
 		$mockResult = [];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 1));
 		
 		try {
 			\Planroom\S3\S3Orch::getPresignedPost(1, 'myFile', TestContainer::getContainer());
@@ -82,7 +83,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetPresignedPostBlankFile() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 1));
 		
 		try {
 			\Planroom\S3\S3Orch::getPresignedPost(1, ' ', TestContainer::getContainer());
@@ -97,7 +98,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetPresignedPostSuccess() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 1));
 		
 		$res = \Planroom\S3\S3Orch::getPresignedPost(1, 'file.txt', TestContainer::getContainer());
 		$this->assertEquals($res['postEndpoint'], "https://some-bucket.s3.amazonaws.com", "post endpoint");
@@ -109,7 +110,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetObjectsByJobNoJob() {
 		$mockResult = [];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 1));
 		
 		try {
 			\Planroom\S3\S3Orch::getObjectsByJob(1, TestContainer::getContainer());
@@ -124,7 +125,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetObjectsByJobEmpty() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 45));
 
 		$stub = $this->createMock(\Aws\S3\S3Client::class);
 		$stub->method('getIterator')
@@ -144,7 +145,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetObjectsByJobOne() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 45));
 		
 		$stub = $this->createMock(\Aws\S3\S3Client::class);
 		$stub->method('getIterator')
@@ -170,7 +171,7 @@ class S3OrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetObjectsByJobTwo() {
 		$mockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult);
+		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $mockResult, array('id' => 45));
 		
 		$stub = $this->createMock(\Aws\S3\S3Client::class);
 		$stub->method('getIterator')
