@@ -35,13 +35,15 @@ class Invitations {
 		$mail->clearAddresses(); // so they aren't there for the next email.
 
 		$emailAddressObj = EmailAddressOrch::recordUse($email, $container);
-		$sentMail = array('timestamp' => date("Y-m-d H:i:s"),
+		// don't do this yet because nothing needs it yet and it will take up db space
+		/**$sentMail = array('timestamp' => date("Y-m-d H:i:s"),
 			'subject' => $mail->Subject,
 			'body' => $mail->Body,
 			'alt_body' => $mail->AltBody,
 			'job_id' => $jobId,
 			'address_id' => $emailAddressObj['id']);
 		SentEmailOrch::create($sentMail, $container);
+		*/
 		
 	}
 

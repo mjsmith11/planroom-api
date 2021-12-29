@@ -172,7 +172,7 @@ class InvitationTest extends BaseTestCase {
 		]];
 		$this->pdo->mock("SELECT * FROM email_address WHERE `id` = :id", $readEmailMock);
 
-		//mock sent_email insertion
+		/*//mock sent_email insertion
 		$this->pdo->mock("INSERT INTO sent_email (`timestamp`, `subject`, `body`, `alt_body`, `job_id`, `address_id`) VALUES (:timestamp, :subject, :body, :alt_body, :job_id, :address_id)", [[]]);
 		// mock read after create
 		$readSentEmailMock = [[
@@ -185,6 +185,7 @@ class InvitationTest extends BaseTestCase {
 			'address_id' => 12
 		]];
 		$this->pdo->mock("SELECT * FROM sent_email WHERE `id` = :id", $readSentEmailMock);
+		*/
 
 		$container = TestContainer::getContainer();
 		$stub = $this->createMock(PHPMailer::class);

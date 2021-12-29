@@ -114,7 +114,7 @@ class JobOrchTest extends TestCase {
 		$this->pdo->mock("SELECT * FROM email_address WHERE `id` = :id", $readEmailMock);
 
 		//mock sent_email insertion
-		$query = "INSERT INTO sent_email (`timestamp`, `subject`, `body`, `alt_body`, `job_id`, `address_id`) ";
+		/*$query = "INSERT INTO sent_email (`timestamp`, `subject`, `body`, `alt_body`, `job_id`, `address_id`) ";
 		$query = $query . "VALUES (:timestamp, :subject, :body, :alt_body, :job_id, :address_id)";
 		$this->pdo->mock($query, [[]]);
 		// mock read after create
@@ -127,7 +127,7 @@ class JobOrchTest extends TestCase {
 			'job_id' => 1,
 			'address_id' => 12
 		]];
-		$this->pdo->mock("SELECT * FROM sent_email WHERE `id` = :id", $readSentEmailMock);
+		$this->pdo->mock("SELECT * FROM sent_email WHERE `id` = :id", $readSentEmailMock);*/
 
 
 		$container = TestContainer::getContainer();
