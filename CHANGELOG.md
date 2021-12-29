@@ -5,14 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
- - Honorary Dependency
  - Tracking sent emails
  - Autocomplete email suggestions
  - Swagger API Documentation
-
-## [1.1.1] - 11/11/2018
-### Changed
- - Switch SMTP mail to PHP mail function
 
 ## [1.1.2] - 02/14/2021
 ### Added
