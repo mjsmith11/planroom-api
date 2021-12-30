@@ -65,6 +65,11 @@
 				'alert'     => \Monolog\Logger::ALERT,
 				'emergency' => \Monolog\Logger::EMERGENCY								
 			];
+			$level =  $levels[self::$logging['level']];
+			if($level==null) {
+				echo "Throwing exception";
+				throw new Exception("Unknown Log Level");
+			}
 			return $levels[self::$logging['level']];
 		}
 

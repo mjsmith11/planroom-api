@@ -21,7 +21,7 @@ class AutocompleteApiTest extends BaseTestCase {
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
 			unlink(self::$filePath);
@@ -44,7 +44,7 @@ class AutocompleteApiTest extends BaseTestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass() : void {
 		unlink(self::$filePath);
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');
@@ -56,7 +56,7 @@ class AutocompleteApiTest extends BaseTestCase {
 	/**
 	 * Set up test connection
 	 */
-	public function setUp() {
+	public function setUp() : void {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 
@@ -71,10 +71,11 @@ class AutocompleteApiTest extends BaseTestCase {
 		[ 
 			'address' => 'email2@test.com'
 		]];
-		$this->pdo->mock("SELECT address FROM email_address WHERE `address` LIKE :input ORDER BY `uses` DESC", $mockResult);
+		$this->pdo->mock("SELECT address FROM email_address WHERE `address` LIKE :input ORDER BY `uses` DESC", $mockResult,array('input'=>'email%'));
 		$response = $this->runApp('GET', '/email/autocomplete?text=email', null, false, false);
 		$this->assertEquals(200, $response->getStatusCode());
 		$parsedResp = json_decode((string)$response->getBody(), true);
+
 		$this->assertEquals('email6@test.com', $parsedResp[0], 'first result');
 		$this->assertEquals('email2@test.com', $parsedResp[1], 'second result');        
 	}

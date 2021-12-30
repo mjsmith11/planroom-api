@@ -96,7 +96,7 @@ class JobOrchTest extends TestCase {
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 45));
 
 		// mock the email record
-		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[]]);
+		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[]],array('address' => 'test1@test.com'));
 
 		// mock the Insert query for email
 		$readEmailMock = [[
@@ -111,7 +111,7 @@ class JobOrchTest extends TestCase {
 			'address' => 'abc@xyz.com',
 			'uses' => 1
 		]];
-		$this->pdo->mock("SELECT * FROM email_address WHERE `id` = :id", $readEmailMock);
+		$this->pdo->mock("SELECT * FROM email_address WHERE `id` = :id", $readEmailMock,array('id'=>''));
 
 		//mock sent_email insertion
 		/*$query = "INSERT INTO sent_email (`timestamp`, `subject`, `body`, `alt_body`, `job_id`, `address_id`) ";
@@ -142,7 +142,7 @@ class JobOrchTest extends TestCase {
 			->willReturn('');
 		unset($container['mailer']);
 		$container['mailer'] = $stub;
-		$emails = array('test1@test.com', 'test2@test.com');
+		$emails = array('test1@test.com', 'test1@test.com'); // same email twice because we can't mock the email_address table for multiple addresses at once
 		JobOrch::sendInvitations(45, 3, $emails, $container);
 		// It's tough to assert something here, but this shows it won't error
 	}

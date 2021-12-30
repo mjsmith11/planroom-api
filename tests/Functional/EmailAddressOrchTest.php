@@ -14,7 +14,7 @@ use TestContainer;
  * Tests for the Base Orch
  * @SuppressWarnings checkProhibitedFunctions
  */
-class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
+class EmailAddressOrchTest extends BaseTestCase {
 	private $pdo;
 	private static $fileBackup;
 	private static $filePath = __DIR__ . '/../../config.json';
@@ -22,7 +22,7 @@ class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Set up for tests. Backup config file and delete it if it exists
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		if (file_exists(self::$filePath)) {
 			self::$fileBackup = file_get_contents(self::$filePath);
 			unlink(self::$filePath);
@@ -45,7 +45,7 @@ class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * After tests: Restore config file if it was backed up
 	 */
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass() : void {
 		unlink(self::$filePath);
 		if (isset(self::$fileBackup)) {
 			$file = fopen(__DIR__ . '/../../config.json', 'w');
@@ -57,7 +57,7 @@ class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Setup class to FakePdo connection
 	 */
-	public function setUp() {
+	public function setUp() : void {
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
 	
@@ -65,11 +65,8 @@ class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
 	 * Test reading by address
 	 */
 	public function testReadByAddress() {
-		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[
-			'id' => 10,
-			'address' => 'myemail@xyz.com',
-			'uses' => 61
-		]]);
+		$mockResult = [['id' => 10,'address' => 'myemail@xyz.com','uses' => 61]];
+		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", $mockResult, array('address' => 'myemail@xyz.com'));
 		$container = TestContainer::getContainer();
 		$result = EmailAddressOrch::readByAddress('myemail@xyz.com', $container);
 		$this->assertEquals(10, $result['id'], 'Read id');
@@ -81,7 +78,7 @@ class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
 	 * Test for an address that doesn't exist
 	*/
 	public function testAddressExistsFalse() {
-		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[]]);
+		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[]], array('address' => 'myemail@xyz.com'));
 		$container = TestContainer::getContainer();
 		$result = EmailAddressOrch::addressExists('myemail@xyz.com', $container);
 		$this->assertFalse($result, 'address should not exist');
@@ -95,7 +92,7 @@ class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
 			'id' => 10,
 			'address' => 'myemail@xyz.com',
 			'uses' => 61
-		]]);
+		]], array('address' => 'myemail@xyz.com'));
 		$container = TestContainer::getContainer();
 		$result = EmailAddressOrch::addressExists('myemail@xyz.com', $container);
 		$this->assertTrue($result, 'address should not exist');
@@ -106,7 +103,7 @@ class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testAutocompleteSuggestionsEmpty() {
 		$mockResult = [];
-		$this->pdo->mock("SELECT address FROM email_address WHERE `address` LIKE :input ORDER BY `uses` DESC", $mockResult);
+		$this->pdo->mock("SELECT address FROM email_address WHERE `address` LIKE :input ORDER BY `uses` DESC", $mockResult, array('input' => 'email%'));
 		$container = TestContainer::getContainer();
 		$result = EmailAddressOrch::getAutoCompleteSuggestions('email', $container);
 		$this->assertEquals(count($result), 0, "result length");
@@ -122,7 +119,7 @@ class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
 		[ 
 			'address' => 'email2@test.com'
 		]];
-		$this->pdo->mock("SELECT address FROM email_address WHERE `address` LIKE :input ORDER BY `uses` DESC", $mockResult);
+		$this->pdo->mock("SELECT address FROM email_address WHERE `address` LIKE :input ORDER BY `uses` DESC", $mockResult, array('input' => 'email%'));
 		$container = TestContainer::getContainer();
 		$result = EmailAddressOrch::getAutoCompleteSuggestions('email', $container);
 		$this->assertEquals(count($result), 2, "result length");
@@ -135,7 +132,7 @@ class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRecordFirstUse() {
 		// mock exists as false
-		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[]]);
+		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[]],array('address' => 'abc@xyz.com'));
 
 		// mock the insert
 		$this->pdo->mock("INSERT INTO email_address (`address`, `uses`) VALUES (:address, :uses)", [[]]);
@@ -145,7 +142,8 @@ class EmailAddressOrchTest extends \PHPUnit_Framework_TestCase {
 			'address' => 'abc@xyz.com',
 			'uses' => 1
 		]];
-		$this->pdo->mock("SELECT * FROM email_address WHERE `id` = :id", $readEmailMock);
+
+		$this->pdo->mock("SELECT * FROM email_address WHERE `id` = :id", $readEmailMock, array('id' => ''));
 
 		$container = TestContainer::getContainer();
 		$result = EmailAddressOrch::recordUse("abc@xyz.com", $container);
