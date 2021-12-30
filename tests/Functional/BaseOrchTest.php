@@ -26,7 +26,7 @@ class BaseOrchTest extends TestCase {
 	public function setUp(): void {
 		$this->testOrch = new class extends BaseOrch {
 			protected static $tableName = "testTable";
-			protected static $fieldList = array('id, field1', 'field2', 'field3');
+			protected static $fieldList = array('field1', 'field2', 'field3');
 		};
 		$this->pdo = Connection::getConnection(TestContainer::getContainer(), true)['conn'];
 	}
@@ -69,7 +69,7 @@ class BaseOrchTest extends TestCase {
 			$this->testOrch::Create($data, TestContainer::getContainer());
 			$this->fail("Expected Exception not thrown");
 		} catch (\Pseudo\Exception $e) {
-			$query = 'INSERT INTO testTable (`id, field1`, `field2`, `field3`) VALUES (:id, field1, :field2, :field3)';
+			$query = 'INSERT INTO testTable (`field1`, `field2`, `field3`) VALUES (:field1, :field2, :field3)';
 			$expectedMessage = 'Attempting an operation on an un-mocked query is not allowed, the raw query: ' . $query;
 			$this->assertEquals($expectedMessage, $e->getMessage(), "Exception Message");
 		}
@@ -83,7 +83,7 @@ class BaseOrchTest extends TestCase {
 		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $readMockResult, array('id' => 45));
 
 		$createMockResult = [[ 'id' => 45 ]];
-		$this->pdo->mock("INSERT INTO testTable (`id, field1`, `field2`, `field3`) VALUES (:id, field1, :field2, :field3)", $createMockResult, array('id' => 45));
+		$this->pdo->mock("INSERT INTO testTable (`field1`, `field2`, `field3`) VALUES (:field1, :field2, :field3)", $createMockResult, array('id' => 45));
 
 		$this->pdo->setLastId(45);
 		
@@ -115,6 +115,54 @@ class BaseOrchTest extends TestCase {
 		$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult, array('id' => 42));
 
 		$result = $this->testOrch::exists(42, TestContainer::getContainer());
-		$this->assertEquals(false, $result, "record should exist");
+		$this->assertEquals(false, $result, "record should not exist");
 	}
+
+	/**
+	 * 
+	 * Test for exception when calling update without id
+	 */
+	public function testUpdateWithoutId() {
+		$data = ['field1' => 43];
+		try {
+			$this->testOrch::Update($data, TestContainer::getContainer());
+			$this->fail("Expected Exception not thrown");
+		} catch (\Throwable $e) {
+			$this->assertEquals('Id cannot be specified on Update', $e->getMessage(), "Exception Message");
+		}
+	}
+
+	/**
+	 * 
+	 * Test for exception when calling update without an existing record
+	 */
+	public function testUpdateDoesNotExist() {
+		$data = ['field1' => 43, 'id' => 42];
+		try {
+			$mockResult = [];
+			$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult, array('id' => 42));
+			$this->testOrch::Update($data, TestContainer::getContainer());
+			$this->fail("Expected Exception not thrown");
+		} catch (\Throwable $e) {
+			$this->assertEquals("Trying to update a record that doesn't exist", $e->getMessage(), "Exception Message");
+		}
+	}
+
+	/**
+	 * Prove that update is using an Update query by checking for exception when not mocking it
+	 */
+	public function testUpdateNoMock() {
+		$data = ['field1' => "Data1", 'field2' => "Data2", 'field3' => "Data3", "id"=>45];
+		try {
+			$mockResult = [[ 'id' => 42, 'field1' => "expectedData1", 'field2' => "expectedData2", 'field3' => "expectedData3"]];
+			$this->pdo->mock("SELECT * FROM testTable WHERE `id` = :id", $mockResult, array('id' => 45));
+			$this->testOrch::Update($data, TestContainer::getContainer());
+			$this->fail("Expected Exception not thrown");
+		} catch (\Pseudo\Exception $e) {
+			$query = 'UPDATE testTable SET `field1` = :field1, `field2` = :field2, `field3` = :field3 WHERE `id` = :id';
+			$expectedMessage = 'Attempting an operation on an un-mocked query is not allowed, the raw query: ' . $query;
+			$this->assertEquals($expectedMessage, $e->getMessage(), "Exception Message");
+		}
+	}
+	
 }

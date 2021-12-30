@@ -49,6 +49,49 @@
 		}
 
 		/**
+		 * Updates a record in the database
+		 * 
+		 * @param object $object the object to update with id
+		 * @param container dependency container
+		 * 
+		 * @return object the object as updated including id
+		 * 
+		 * @throws Exception if id is not defined or no object with that id exists
+		 */
+		public static function update($object, $container) {
+			$container['logger']->info('Updating', array('table' => static::$tableName));
+			if (!isset($object['id'])) {
+				$container['logger']->error('Id not specified on update', array('table' => static::$tableName));
+				throw new Exception("Id cannot be specified on Update");
+			}
+
+			if (!self::exists($object['id'], $container)) {
+				$container['logger']->error('Id does not exist update', array('table' => static::$tableName, 'id' => $object['id']));
+				throw new Exception("Trying to update a record that doesn't exist");
+			}
+
+			$sets = "";
+			foreach (static::$fieldList as $value) {
+				$sets = $sets . "`" . $value . "` = :" . $value . ", ";
+			}
+			// remove trailing comma and space
+			$sets = substr($sets, 0, -2);
+			$sql = "UPDATE " . static::$tableName . " SET " . $sets . " WHERE `id` = :id";
+			$container['logger']->debug('Update query built', array('sql' => $sql));
+
+			$pdo = Connection::getConnection($container)['conn'];
+			$statement = $pdo->prepare($sql);
+
+			foreach (static::$fieldList as $value) {
+				$statement->bindParam($value, $object[$value]);
+			}
+			$statement->bindParam('id', $object['id']);
+
+			$statement->execute();
+			return self::read($object['id'], $container);
+		}
+
+		/**
 		 * Read one record from database
 		 * 
 		 * @param id the id of the record to read
