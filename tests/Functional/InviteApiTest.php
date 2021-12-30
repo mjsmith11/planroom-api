@@ -79,8 +79,8 @@ class InviteApiTest extends BaseTestCase {
 		]];
 
 		$this->pdo->mock("SELECT * FROM job WHERE `id` = :id", $readMockResult, array('id' => 45));
-		$this->pdo->mock("SELECT * FROM email_address WHERE `id` = :id", $readEmailMock,array('id',''));
-		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[]], array('address'=>'email@test.com'));
+		$this->pdo->mock("SELECT * FROM email_address WHERE `id` = :id", $readEmailMock, array('id', ''));
+		$this->pdo->mock("SELECT * FROM email_address WHERE `address` = :address", [[]], array('address' =>'email@test.com'));
 		
 		$data = array('validDays' => 3, 'emails' => array('email@test.com', 'email@test.com')); // invite the same email twice due to a limitation in the pdo mock tool
 
