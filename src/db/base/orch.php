@@ -59,10 +59,10 @@
 		 * @throws Exception if id is not defined or no object with that id exists
 		 */
 		public static function update($object, $container) {
-			$container['logger']->info('Updating', array('table' => static::$tableName));
+			$container['logger']->info('Updating', array('table' => static::$tableName, 'object'=>$object));
 			if (!isset($object['id'])) {
 				$container['logger']->error('Id not specified on update', array('table' => static::$tableName));
-				throw new Exception("Id cannot be specified on Update");
+				throw new Exception("Id not specified on Update");
 			}
 
 			if (!self::exists($object['id'], $container)) {
@@ -83,6 +83,7 @@
 			$statement = $pdo->prepare($sql);
 
 			foreach (static::$fieldList as $value) {
+				$container['logger']->debug('binding field for update', array('field' => $value, 'value' => $object[$value]));
 				$statement->bindParam($value, $object[$value]);
 			}
 			$statement->bindParam('id', $object['id']);

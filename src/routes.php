@@ -44,6 +44,47 @@ $app->group('/jobs', function() {
 	});
 
 	/**
+	 * @OA\Put(
+	 * 		tags={"Jobs"},
+	 * 		path="/jobs/{job_id}",
+	 * 		summary="Updates a job",
+	 * @OA\Parameter(
+	 * 		parameter="job_id_in_path",
+	 * 		name="job_id",
+	 * 		description="The ID of the job to retrieve",
+	 * 		@OA\Schema(
+	 * 			type="integer",
+	 * 			format="int64",
+	 * 			example=25
+	 * 		),
+	 * 		in="path",
+	 * 		required=true
+	 * 	),
+	 * 		@OA\RequestBody(ref="#/components/requestBodies/job_in_body"),
+	 * 	 	@OA\Parameter(ref="#/components/parameters/auth-token"),
+	 * 		@OA\Response(
+	 * 			response=200,
+	 * 			description="job updated successfully",
+	 * 			@OA\JsonContent(ref="#/components/schemas/job_resp")
+	 * 		),
+	 * 		@OA\Response(
+	 * 			response=401,
+	 *	 		description="Unauthorized"
+	 * 		),
+	 * 		@OA\Response(
+	 * 			response=403,
+	 * 			description="Forbidden"
+	 * 		)
+	 * )
+	 */
+	$this->put('/{id}', function($request, $response, $args) {
+		$in = $request->getParsedBody();
+		$in['id']=$args['id'];
+		$out = JobOrch::update($in, $this);
+		return $this->response->withJson($out);
+	});
+
+	/**
 	 * @OA\Get(
 	 * 	tags={"Jobs"},
 	 * 	path="/jobs",

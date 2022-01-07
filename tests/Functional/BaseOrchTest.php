@@ -128,7 +128,7 @@ class BaseOrchTest extends TestCase {
 			$this->testOrch::Update($data, TestContainer::getContainer());
 			$this->fail("Expected Exception not thrown");
 		} catch (\Throwable $e) {
-			$this->assertEquals('Id cannot be specified on Update', $e->getMessage(), "Exception Message");
+			$this->assertEquals('Id not specified on Update', $e->getMessage(), "Exception Message");
 		}
 	}
 
